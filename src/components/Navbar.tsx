@@ -64,7 +64,7 @@ export function Navbar() {
               </Link>
               <span className="hidden text-sm text-purple-300/40 lg:inline">{session.user.name}</span>
               <button
-                onClick={() => signOut({ callbackUrl: "/" })}
+                onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "https://wakeup-app.com" })}
                 className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70 transition hover:bg-white/5 hover:text-purple-200"
               >
                 Salir
@@ -141,7 +141,7 @@ export function Navbar() {
                 <div className="flex items-center justify-between border-t border-white/5 pt-3">
                   <span className="text-sm text-purple-300/40">{session.user.name}</span>
                   <button
-                    onClick={() => signOut({ callbackUrl: "/" })}
+                    onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "https://wakeup-app.com" })}
                     className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70"
                   >
                     Salir
