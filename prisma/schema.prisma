@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model User {
@@ -21,8 +21,13 @@ model User {
   accounts             Account[]
   sessions             Session[]
   professionalProfile  ProfessionalProfile?
+  userProfile          UserProfile?
   clientBookings       Booking[]  @relation("ClientBookings")
   professionalBookings Booking[]  @relation("ProfessionalBookings")
+  trustedDevices       TrustedDevice[]
+  twoFactorCodes       TwoFactorCode[]
+  cartItems            CartItem[]
+  orders               Order[]
 }
 
 model Account {
@@ -61,6 +66,20 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model UserProfile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  interests   String   @default("")
+  disciplines String   @default("")
+  level       String   @default("")
+  bio         String?
+  goals       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model ProfessionalProfile {
   id              String   @id @default(cuid())
   userId          String   @unique
@@ -79,6 +98,8 @@ model ProfessionalProfile {
   availabilities Availability[]
   services      Service[]
   bookings      Booking[]      @relation("ProfessionalProfileBookings")
+  subscription  ProfessionalSubscription?
+  products      Product[]
 }
 
 model Service {
@@ -138,4 +159,100 @@ model Review {
   createdAt DateTime @default(now())
 
   booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+}
+
+model TwoFactorCode {
+  id        String   @id @default(cuid())
+  userId    String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, code])
+}
+
+model TrustedDevice {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model ProfessionalSubscription {
+  id            String   @id @default(cuid())
+  profileId     String   @unique
+  stripeSubscriptionId String?
+  status        String   @default("TRIALING")
+  trialEndsAt   DateTime?
+  currentPeriodStart DateTime?
+  currentPeriodEnd   DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  profile ProfessionalProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id              String   @id @default(cuid())
+  profileId       String
+  name            String
+  description     String?
+  price           Int      @default(0)
+  image           String?
+  amazonUrl       String?
+  commissionPercent Int    @default(15)
+  active          Boolean  @default(true)
+  category        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  profile  ProfessionalProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  cartItems CartItem[]
+  orderItems OrderItem[]
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}
+
+model Order {
+  id              String   @id @default(cuid())
+  userId          String
+  total           Int      @default(0)
+  platformFee     Int      @default(0)
+  status          String   @default("PENDING")
+  stripePaymentIntentId String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderItems  OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int      @default(1)
+  price     Int      @default(0)
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
