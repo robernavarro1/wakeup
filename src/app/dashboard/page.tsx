@@ -25,7 +25,7 @@ export default async function DashboardPage() {
 
   if (!user) redirect("/auth/login")
 
-  const isPro = user.role === "PROFESSIONAL"
+  const hasProProfile = !!user.professionalProfile
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -36,19 +36,27 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <div className="mb-6">
+      <div className="mb-6 flex gap-3">
         <Link
           href="/explore"
           className="inline-block rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-600/25"
         >
           Explorar oferta completa
         </Link>
+        {!hasProProfile && (
+          <Link
+            href="/dashboard/profile"
+            className="inline-block rounded-lg border border-purple-500/30 px-5 py-2.5 text-sm font-semibold text-purple-300 hover:bg-purple-500/10"
+          >
+            Soy profesional &rarr;
+          </Link>
+        )}
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {isPro && (
+        {hasProProfile && (
           <>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
+            <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl shadow-purple-950/40">
               <h2 className="text-lg font-semibold text-white">Perfil profesional</h2>
               {user.professionalProfile?.published ? (
                 <p className="mt-2 text-sm text-emerald-400">
@@ -67,15 +75,15 @@ export default async function DashboardPage() {
               </Link>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
-              <h2 className="text-lg font-semibold text-white">Próximas reservas</h2>
+            <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-950/50 to-purple-950/60 p-6 shadow-xl shadow-amber-950/20">
+              <h2 className="text-lg font-semibold text-white">Próximas reservas (como profesional)</h2>
               {user.professionalProfile?.bookings &&
               user.professionalProfile.bookings.length > 0 ? (
                 <div className="mt-4 space-y-3">
                   {user.professionalProfile.bookings.map((booking) => (
                     <div
                       key={booking.id}
-                      className="rounded-lg border border-white/5 bg-white/[0.02] p-3 text-sm"
+                      className="rounded-lg border border-white/5 bg-purple-950/40 p-3 text-sm"
                     >
                       <p>
                         <span className="font-medium text-purple-200">
@@ -96,7 +104,7 @@ export default async function DashboardPage() {
                 </div>
               ) : (
                 <p className="mt-4 text-sm text-purple-300/40">
-                  No tienes reservas aún
+                  No tienes reservas como profesional aún
                 </p>
               )}
               <Link
@@ -109,35 +117,48 @@ export default async function DashboardPage() {
           </>
         )}
 
-        {!isPro && (
-          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
-            <h2 className="text-lg font-semibold text-white">Mis reservas</h2>
-            {user.clientBookings.length > 0 ? (
-              <div className="mt-4 space-y-3">
-                {user.clientBookings.map((booking) => (
-                  <div
-                    key={booking.id}
-                    className="rounded-lg border border-white/5 bg-white/[0.02] p-3 text-sm"
-                  >
-                    <p className="font-medium text-purple-200">
-                      {new Date(booking.date).toLocaleDateString("es-ES")}
-                    </p>
-                    <p className="mt-1 text-purple-300/40">
-                      Estado: {booking.status}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="mt-4 text-sm text-purple-300/40">
-                No has hecho ninguna reserva aún
-              </p>
-            )}
+        <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950/50 to-purple-950/60 p-6 shadow-xl shadow-emerald-950/20">
+          <h2 className="text-lg font-semibold text-white">Mis reservas</h2>
+          {user.clientBookings.length > 0 ? (
+            <div className="mt-4 space-y-3">
+              {user.clientBookings.map((booking) => (
+                <div
+                  key={booking.id}
+                  className="rounded-lg border border-white/5 bg-white/[0.02] p-3 text-sm"
+                >
+                  <p className="font-medium text-purple-200">
+                    {new Date(booking.date).toLocaleDateString("es-ES")}
+                  </p>
+                  <p className="mt-1 text-purple-300/40">
+                    Estado: {booking.status}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-4 text-sm text-purple-300/40">
+              No has hecho ninguna reserva aún
+            </p>
+          )}
+          <Link
+            href="/explore"
+            className="mt-4 inline-block text-sm font-medium text-purple-400 hover:text-purple-300"
+          >
+            Explorar profesionales &rarr;
+          </Link>
+        </div>
+
+        {!hasProProfile && (
+          <div className="rounded-2xl border border-dashed border-purple-500/30 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl shadow-purple-950/40">
+            <h2 className="text-lg font-semibold text-white">¿Eres profesional?</h2>
+            <p className="mt-2 text-sm text-purple-300/50">
+              Da el salto: crea tu perfil, ofrece tus servicios y empieza a recibir clientes. Puedes tener una misma cuenta para explorar y para ofrecer sesiones.
+            </p>
             <Link
-              href="/explore"
-              className="mt-4 inline-block text-sm font-medium text-purple-400 hover:text-purple-300"
+              href="/dashboard/profile"
+              className="mt-4 inline-block rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-600/25"
             >
-              Explorar profesionales &rarr;
+              Crear perfil profesional
             </Link>
           </div>
         )}

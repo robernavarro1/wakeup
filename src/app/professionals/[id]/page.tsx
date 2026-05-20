@@ -48,150 +48,163 @@ export default async function ProfessionalPage({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="rounded-2xl border bg-white p-8">
-        <div className="flex items-start justify-between">
+      {/* Hero section */}
+      <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-8 shadow-xl shadow-purple-950/40">
+        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-6">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-indigo-100 text-3xl font-bold text-indigo-600">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-amber-500/20 text-3xl font-bold text-purple-200 shadow-lg">
               {user.name?.[0] || "?"}
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-white">
                 {user.name}
               </h1>
               {profile.title && (
-                <p className="mt-1 text-lg text-gray-600">{profile.title}</p>
+                <p className="mt-1 text-lg text-amber-300/80">{profile.title}</p>
               )}
               {avgRating && (
-                <p className="mt-1 text-sm text-amber-500">
+                <p className="mt-1 text-sm text-amber-400">
                   {"★".repeat(Math.round(avgRating))}
                   {"☆".repeat(5 - Math.round(avgRating))}{" "}
-                  <span className="text-gray-500">
+                  <span className="text-purple-300/50">
                     ({reviews.length} valoraciones)
                   </span>
                 </p>
+              )}
+              {profile.city && (
+                <p className="mt-1 text-sm text-purple-300/50">📍 {profile.city}</p>
               )}
             </div>
           </div>
 
           <Link
             href={`/professionals/${id}/book`}
-            className="rounded-lg bg-indigo-600 px-6 py-3 text-sm font-semibold text-white hover:bg-indigo-700"
+            className="rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-600/25 transition hover:shadow-purple-600/40"
           >
             Reservar sesión
           </Link>
         </div>
+      </div>
 
-        {profile.bio && (
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">Sobre mí</h2>
-            <p className="mt-2 text-gray-600 whitespace-pre-line">
-              {profile.bio}
-            </p>
+      {/* Bio */}
+      {profile.bio && (
+        <div className="mt-6 rounded-2xl border border-white/10 bg-gradient-to-br from-purple-950/60 to-indigo-950/40 p-6 shadow-xl shadow-purple-950/20">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/20 text-lg">🕊️</span>
+            <h2 className="text-lg font-semibold text-white">Sobre mí</h2>
           </div>
-        )}
+          <p className="text-purple-200/70 whitespace-pre-line leading-relaxed">
+            {profile.bio}
+          </p>
+        </div>
+      )}
 
-        {specialties.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Especialidades
-            </h2>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {specialties.map((s) => (
-                <span
-                  key={s}
-                  className="rounded-full bg-indigo-50 px-4 py-1.5 text-sm font-medium text-indigo-700"
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
+      {/* Specialties */}
+      {specialties.length > 0 && (
+        <div className="mt-6 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-950/50 to-purple-950/60 p-6 shadow-xl shadow-amber-950/20">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20 text-lg">🌟</span>
+            <h2 className="text-lg font-semibold text-white">Especialidades</h2>
           </div>
-        )}
+          <div className="flex flex-wrap gap-2">
+            {specialties.map((s) => (
+              <span
+                key={s}
+                className="rounded-full border border-purple-500/20 bg-purple-950/60 px-4 py-1.5 text-sm font-medium text-purple-200"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
-        {profile.services.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">Servicios</h2>
-            <div className="mt-4 space-y-3">
-              {profile.services.map((service) => (
-                <div
-                  key={service.id}
-                  className="flex items-center justify-between rounded-lg border p-4"
-                >
-                  <div>
-                    <p className="font-medium text-gray-900">{service.name}</p>
-                    <p className="text-sm text-gray-500">
-                      {service.durationMinutes} min
-                    </p>
-                  </div>
-                  <p className="text-lg font-semibold text-gray-900">
-                    {service.price / 100} &euro;
+      {/* Services */}
+      {profile.services.length > 0 && (
+        <div className="mt-6 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl shadow-purple-950/40">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/20 text-lg">✨</span>
+            <h2 className="text-lg font-semibold text-white">Servicios</h2>
+          </div>
+          <div className="space-y-3">
+            {profile.services.map((service) => (
+              <div
+                key={service.id}
+                className="flex items-center justify-between rounded-xl border border-white/5 bg-purple-950/40 p-4 transition hover:border-purple-500/20"
+              >
+                <div>
+                  <p className="font-medium text-white">{service.name}</p>
+                  <p className="text-sm text-purple-300/50">
+                    {service.durationMinutes} min
                   </p>
                 </div>
-              ))}
-            </div>
+                <p className="text-lg font-semibold text-amber-300">
+                  {service.price / 100} €
+                </p>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
+      )}
 
-        {profile.availabilities.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Disponibilidad
-            </h2>
-            <div className="mt-3 space-y-2">
-              {profile.availabilities.map((avail) => (
-                <div key={avail.id} className="flex items-center gap-2 text-sm text-gray-600">
-                  <span className="w-24 font-medium">
-                    {DAYS[avail.dayOfWeek]}
-                  </span>
-                  <span>
-                    {avail.startTime} - {avail.endTime}
-                  </span>
-                </div>
-              ))}
-            </div>
+      {/* Availability */}
+      {profile.availabilities.length > 0 && (
+        <div className="mt-6 rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950/50 to-purple-950/60 p-6 shadow-xl shadow-emerald-950/20">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/20 text-lg">📅</span>
+            <h2 className="text-lg font-semibold text-white">Disponibilidad</h2>
           </div>
-        )}
-
-        {profile.city && (
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">Ubicación</h2>
-            <p className="mt-1 text-gray-600">{profile.city}</p>
+          <div className="space-y-2">
+            {profile.availabilities.map((avail) => (
+              <div key={avail.id} className="flex items-center gap-3 text-sm">
+                <span className="w-28 rounded-lg border border-white/5 bg-purple-950/40 px-3 py-1.5 font-medium text-purple-200">
+                  {DAYS[avail.dayOfWeek]}
+                </span>
+                <span className="text-purple-300/60">
+                  {avail.startTime} - {avail.endTime}
+                </span>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
+      )}
 
-        {reviews.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold text-gray-900">
+      {/* Reviews */}
+      {reviews.length > 0 && (
+        <div className="mt-6 rounded-2xl border border-white/10 bg-gradient-to-br from-purple-950/60 to-indigo-950/40 p-6 shadow-xl shadow-purple-950/20">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/20 text-lg">💬</span>
+            <h2 className="text-lg font-semibold text-white">
               Valoraciones ({reviews.length})
             </h2>
-            <div className="mt-4 space-y-4">
-              {reviews.map((review) => {
-                const booking = profile.bookings.find(
-                  (b) => b.review?.id === review.id
-                )
-                return (
-                  <div key={review.id} className="rounded-lg border p-4">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium text-gray-900">
-                        {booking?.client.name || "Anónimo"}
-                      </p>
-                      <p className="text-sm text-amber-500">
-                        {"★".repeat(review.rating)}
-                        {"☆".repeat(5 - review.rating)}
-                      </p>
-                    </div>
-                    {review.comment && (
-                      <p className="mt-2 text-sm text-gray-600">
-                        {review.comment}
-                      </p>
-                    )}
-                  </div>
-                )
-              })}
-            </div>
           </div>
-        )}
-      </div>
+          <div className="space-y-4">
+            {reviews.map((review) => {
+              const booking = profile.bookings.find(
+                (b) => b.review?.id === review.id
+              )
+              return (
+                <div key={review.id} className="rounded-xl border border-white/5 bg-purple-950/40 p-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-purple-200">
+                      {booking?.client.name || "Anónimo"}
+                    </p>
+                    <p className="text-sm text-amber-400">
+                      {"★".repeat(review.rating)}
+                      {"☆".repeat(5 - review.rating)}
+                    </p>
+                  </div>
+                  {review.comment && (
+                    <p className="mt-2 text-sm text-purple-200/60">
+                      {review.comment}
+                    </p>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

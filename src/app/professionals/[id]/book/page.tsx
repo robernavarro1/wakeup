@@ -30,17 +30,17 @@ export default async function BookPage({
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="rounded-2xl border bg-white p-8">
+      <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-8 shadow-xl shadow-purple-950/40">
         <div className="flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-100 text-lg font-bold text-indigo-600">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-purple-500/30 to-amber-500/20 text-lg font-bold text-purple-200 shadow-lg">
             {user.name?.[0] || "?"}
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">
+            <h1 className="text-xl font-bold text-white">
               {user.name}
             </h1>
             {user.professionalProfile.title && (
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-amber-300/70">
                 {user.professionalProfile.title}
               </p>
             )}

@@ -102,7 +102,7 @@ export function BookingForm({
     const date = new Date(selectedDate)
     date.setHours(hours, minutes, 0, 0)
 
-    const res = await fetch("/api/bookings", {
+    const res = await fetch("/api/stripe/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -112,51 +112,43 @@ export function BookingForm({
         durationMinutes: selectedService?.durationMinutes || 60,
         price,
         notes,
+        type: "booking",
       }),
     })
 
     const data = await res.json()
 
     if (!res.ok) {
-      setError(data.error || "Error al crear la reserva")
+      setError(data.error || "Error al procesar el pago")
       setLoading(false)
       return
     }
 
-    router.push(`/book/success?bookingId=${data.bookingId}`)
+    window.open(data.url, "_blank")
   }
 
   return (
     <div className="mt-8">
       {/* Steps indicator */}
       <div className="flex items-center gap-2 text-sm">
-        <div
-          className={`flex h-8 w-8 items-center justify-center rounded-full ${
-            step >= 1 ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-500"
-          }`}
-        >
-          1
-        </div>
-        <div className="h-px flex-1 bg-gray-200" />
-        <div
-          className={`flex h-8 w-8 items-center justify-center rounded-full ${
-            step >= 2 ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-500"
-          }`}
-        >
-          2
-        </div>
-        <div className="h-px flex-1 bg-gray-200" />
-        <div
-          className={`flex h-8 w-8 items-center justify-center rounded-full ${
-            step >= 3 ? "bg-indigo-600 text-white" : "bg-gray-200 text-gray-500"
-          }`}
-        >
-          3
-        </div>
+        {[1, 2, 3].map((s) => (
+          <div key={s} className="flex items-center gap-2 flex-1 last:flex-none">
+            <div
+              className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition ${
+                step >= s
+                  ? "bg-gradient-to-r from-purple-600 to-amber-600 text-white shadow-lg shadow-purple-600/25"
+                  : "border border-white/10 bg-purple-950/40 text-purple-300/50"
+              }`}
+            >
+              {s}
+            </div>
+            {s < 3 && <div className={`h-px flex-1 ${step > s ? "bg-purple-500/30" : "bg-white/10"}`} />}
+          </div>
+        ))}
       </div>
 
       {error && (
-        <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
+        <div className="mt-4 rounded-xl border border-red-500/20 bg-red-950/60 p-4 text-sm text-red-300">
           {error}
         </div>
       )}
@@ -164,7 +156,7 @@ export function BookingForm({
       {/* Step 1: Service */}
       {step === 1 && (
         <div className="mt-8">
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-white">
             1. Selecciona un servicio
           </h2>
           <div className="mt-4 space-y-3">
@@ -176,23 +168,23 @@ export function BookingForm({
                     setSelectedService(service)
                     setStep(2)
                   }}
-                  className={`w-full rounded-lg border p-4 text-left transition ${
+                  className={`w-full rounded-xl border p-4 text-left transition ${
                     selectedService?.id === service.id
-                      ? "border-indigo-600 bg-indigo-50"
-                      : "hover:border-gray-300"
+                      ? "border-purple-500/40 bg-purple-950/80"
+                      : "border-white/5 bg-purple-950/40 hover:border-purple-500/20"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-white">
                         {service.name}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-purple-300/50">
                         {service.durationMinutes} min
                       </p>
                     </div>
-                    <p className="text-lg font-semibold text-gray-900">
-                      {service.price / 100} &euro;
+                    <p className="text-lg font-semibold text-amber-300">
+                      {service.price / 100} €
                     </p>
                   </div>
                 </button>
@@ -200,15 +192,15 @@ export function BookingForm({
             ) : (
               <button
                 onClick={() => setStep(2)}
-                className={`w-full rounded-lg border p-4 text-left transition hover:border-gray-300`}
+                className={`w-full rounded-xl border border-white/5 bg-purple-950/40 p-4 text-left transition hover:border-purple-500/20`}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Sesión</p>
-                    <p className="text-sm text-gray-500">60 min</p>
+                    <p className="font-medium text-white">Sesión</p>
+                    <p className="text-sm text-purple-300/50">60 min</p>
                   </div>
-                  <p className="text-lg font-semibold text-gray-900">
-                    {profile.pricePerSession / 100} &euro;
+                  <p className="text-lg font-semibold text-amber-300">
+                    {profile.pricePerSession / 100} €
                   </p>
                 </div>
               </button>
@@ -220,7 +212,7 @@ export function BookingForm({
       {/* Step 2: Date & Time */}
       {step === 2 && (
         <div className="mt-8">
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-white">
             2. Elige fecha y hora
           </h2>
           <div className="mt-4">
@@ -235,19 +227,19 @@ export function BookingForm({
                       setSelectedDate(date)
                       setSelectedTime(null)
                     }}
-                    className={`flex-shrink-0 rounded-lg border p-3 text-center transition ${
+                    className={`flex-shrink-0 rounded-xl border p-3 text-center transition ${
                       isSelected
-                        ? "border-indigo-600 bg-indigo-50"
-                        : "hover:border-gray-300"
+                        ? "border-purple-500/40 bg-purple-950/80 shadow-lg shadow-purple-500/20"
+                        : "border-white/5 bg-purple-950/40 hover:border-purple-500/20"
                     }`}
                   >
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-purple-300/50">
                       {DAYS[date.getDay()].slice(0, 3)}
                     </p>
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-lg font-bold text-white">
                       {date.getDate()}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-purple-300/50">
                       {date.toLocaleDateString("es-ES", {
                         month: "short",
                       })}
@@ -259,7 +251,7 @@ export function BookingForm({
 
             {selectedDate && (
               <div className="mt-6">
-                <h3 className="text-sm font-medium text-gray-700">
+                <h3 className="text-sm font-medium text-purple-300/70">
                   Horarios disponibles
                 </h3>
                 <div className="mt-3 grid grid-cols-4 gap-2">
@@ -268,10 +260,10 @@ export function BookingForm({
                       key={slot.time}
                       disabled={!slot.available}
                       onClick={() => setSelectedTime(slot.time)}
-                      className={`rounded-lg border py-2 text-sm transition ${
+                      className={`rounded-xl border py-2 text-sm transition ${
                         selectedTime === slot.time
-                          ? "border-indigo-600 bg-indigo-50 text-indigo-700"
-                          : "hover:border-gray-300"
+                          ? "border-amber-500/40 bg-amber-950/60 text-amber-300 shadow-lg shadow-amber-500/20"
+                          : "border-white/5 bg-purple-950/40 text-purple-300/70 hover:border-purple-500/20"
                       }`}
                     >
                       {slot.time}
@@ -285,14 +277,14 @@ export function BookingForm({
           <div className="mt-6 flex gap-4">
             <button
               onClick={() => setStep(1)}
-              className="rounded-lg border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70 hover:bg-white/5"
             >
               Atrás
             </button>
             <button
               onClick={() => setStep(3)}
               disabled={!selectedDate || !selectedTime}
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-4 py-2 text-sm font-medium text-white shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 disabled:opacity-50"
             >
               Continuar
             </button>
@@ -303,20 +295,20 @@ export function BookingForm({
       {/* Step 3: Confirm */}
       {step === 3 && (
         <div className="mt-8">
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-white">
             3. Confirma tu reserva
           </h2>
 
-          <div className="mt-6 space-y-4 rounded-lg border bg-gray-50 p-6">
+          <div className="mt-6 space-y-4 rounded-xl border border-white/5 bg-purple-950/40 p-6">
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Servicio</span>
-              <span className="font-medium">
+              <span className="text-purple-300/50">Servicio</span>
+              <span className="font-medium text-white">
                 {selectedService?.name || "Sesión"}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Fecha</span>
-              <span className="font-medium">
+              <span className="text-purple-300/50">Fecha</span>
+              <span className="font-medium text-white">
                 {selectedDate?.toLocaleDateString("es-ES", {
                   weekday: "long",
                   year: "numeric",
@@ -326,37 +318,37 @@ export function BookingForm({
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Hora</span>
-              <span className="font-medium">{selectedTime}</span>
+              <span className="text-purple-300/50">Hora</span>
+              <span className="font-medium text-white">{selectedTime}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Duración</span>
-              <span className="font-medium">
+              <span className="text-purple-300/50">Duración</span>
+              <span className="font-medium text-white">
                 {selectedService?.durationMinutes || 60} min
               </span>
             </div>
-            <div className="border-t pt-4">
+            <div className="border-t border-white/5 pt-4">
               <div className="flex justify-between text-base">
-                <span className="font-semibold">Total</span>
-                <span className="font-bold text-indigo-600">
-                  {price / 100} &euro;
+                <span className="font-semibold text-white">Total</span>
+                <span className="font-bold text-amber-300">
+                  {price / 100} €
                 </span>
               </div>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-purple-300/40">
                 Incluye tasas de plataforma
               </p>
             </div>
           </div>
 
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-purple-300/70">
               Notas (opcional)
             </label>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
-              className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              className="mt-1 block w-full rounded-xl border border-purple-500/20 bg-purple-950/60 px-3 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
               placeholder="Algo que el profesional deba saber..."
             />
           </div>
@@ -364,14 +356,14 @@ export function BookingForm({
           <div className="mt-6 flex gap-4">
             <button
               onClick={() => setStep(2)}
-              className="rounded-lg border px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70 hover:bg-white/5"
             >
               Atrás
             </button>
             <button
               onClick={handleConfirm}
               disabled={loading}
-              className="rounded-lg bg-indigo-600 px-6 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 disabled:opacity-50"
             >
               {loading ? "Procesando..." : "Confirmar y pagar"}
             </button>
