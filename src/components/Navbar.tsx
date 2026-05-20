@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useSession } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 
 export function Navbar() {
   const { data: session, status } = useSession()
@@ -64,10 +64,7 @@ export function Navbar() {
               </Link>
               <span className="hidden text-sm text-purple-300/40 lg:inline">{session.user.name}</span>
               <button
-                onClick={async () => {
-                  await fetch("/api/auth/signout", { method: "POST" })
-                  window.location.href = "/"
-                }}
+                onClick={() => signOut({ callbackUrl: "/" })}
                 className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70 transition hover:bg-white/5 hover:text-purple-200"
               >
                 Salir
@@ -144,10 +141,7 @@ export function Navbar() {
                 <div className="flex items-center justify-between border-t border-white/5 pt-3">
                   <span className="text-sm text-purple-300/40">{session.user.name}</span>
                   <button
-                    onClick={async () => {
-                      await fetch("/api/auth/signout", { method: "POST" })
-                      window.location.href = "/"
-                    }}
+                    onClick={() => signOut({ callbackUrl: "/" })}
                     className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70"
                   >
                     Salir
