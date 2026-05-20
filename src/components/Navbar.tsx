@@ -5,8 +5,9 @@ import Link from "next/link"
 import { useSession } from "next-auth/react"
 
 export function Navbar() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const [menuOpen, setMenuOpen] = useState(false)
+  const isLoggedIn = status === "authenticated"
 
   return (
     <nav className="relative z-50 border-b border-white/10 bg-[#0a0515]/80 backdrop-blur-xl">
@@ -42,7 +43,7 @@ export function Navbar() {
             Productos
           </Link>
 
-          {session?.user ? (
+          {isLoggedIn && session?.user ? (
             <>
               <Link
                 href="/dashboard"
@@ -92,7 +93,7 @@ export function Navbar() {
 
         {/* Mobile hamburger */}
         <div className="flex items-center gap-3 sm:hidden">
-          {!session?.user ? (
+          {!isLoggedIn ? (
             <Link
               href="/auth/register"
               className="rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-4 py-1.5 text-sm font-semibold text-white shadow-lg shadow-purple-600/25"
@@ -132,7 +133,7 @@ export function Navbar() {
             <Link href="/products" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-purple-300/70 hover:text-purple-200">
               Productos
             </Link>
-            {session?.user ? (
+            {isLoggedIn && session?.user ? (
               <>
                 <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-purple-300/70 hover:text-purple-200">
                   Dashboard
