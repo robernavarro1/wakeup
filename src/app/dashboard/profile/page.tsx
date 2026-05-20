@@ -19,16 +19,21 @@ export default async function EditProfilePage() {
     },
   })
 
-  if (!user || user.role !== "PROFESSIONAL") {
+  if (!user) {
     redirect("/dashboard")
   }
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold text-white">Editar perfil profesional</h1>
-      <p className="mt-1 text-sm text-purple-300/50">
-        Completa tu perfil para que los alumnos puedan encontrarte
-      </p>
+      <div className="mb-2 flex items-center gap-3">
+        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500/20 to-amber-500/20 text-2xl">🪷</span>
+        <div>
+          <h1 className="text-2xl font-bold text-white">Mi perfil profesional</h1>
+          <p className="text-sm text-purple-300/50">
+            Preséntate a la comunidad y empieza a recibir alumnos
+          </p>
+        </div>
+      </div>
       <ProfileForm profile={user.professionalProfile} userId={user.id} />
     </div>
   )
