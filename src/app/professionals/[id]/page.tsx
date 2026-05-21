@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import { formatPrice, amazonAffiliateUrl } from "@/lib/utils"
 
 export default async function ProfessionalPage({
   params,
@@ -22,6 +23,10 @@ export default async function ProfessionalPage({
               review: true,
               client: true,
             },
+          },
+          products: {
+            where: { active: true },
+            orderBy: { createdAt: "desc" },
           },
         },
       },
@@ -163,6 +168,45 @@ export default async function ProfessionalPage({
                 <span className="text-purple-300/60">
                   {avail.startTime} - {avail.endTime}
                 </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Products */}
+      {profile.products.length > 0 && (
+        <div className="mt-6 rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-950/50 to-purple-950/60 p-6 shadow-xl shadow-amber-950/20">
+          <div className="mb-4 flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/20 text-lg">🛒</span>
+            <h2 className="text-lg font-semibold text-white">Productos recomendados</h2>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {profile.products.map((product) => (
+              <div key={product.id} className="rounded-xl border border-white/5 bg-purple-950/40 p-4 transition hover:border-amber-500/20">
+                <div className="mb-2 inline-block rounded-full bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-300">
+                  {product.amazonUrl ? "🛒 Amazon" : "✨ Wakeup"}
+                </div>
+                {product.image && (
+                  <img src={product.image} alt={product.name} className="mb-3 h-32 w-full rounded-lg object-cover" />
+                )}
+                <h3 className="font-medium text-white text-sm">{product.name}</h3>
+                <p className="mt-1 text-xs text-purple-300/50">{product.description}</p>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="text-sm font-bold text-amber-300">
+                    {product.price > 0 ? formatPrice(product.price) : ""}
+                  </span>
+                  {product.amazonUrl ? (
+                    <a
+                      href={amazonAffiliateUrl(product.amazonUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer sponsored"
+                      className="rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 px-3 py-1.5 text-xs font-semibold text-white"
+                    >
+                      Comprar
+                    </a>
+                  ) : null}
+                </div>
               </div>
             ))}
           </div>

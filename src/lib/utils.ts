@@ -19,3 +19,16 @@ export function generateZoomLink(): string {
 export function classNames(...classes: (string | boolean | undefined | null)[]): string {
   return classes.filter(Boolean).join(" ")
 }
+
+export function amazonAffiliateUrl(url: string): string {
+  try {
+    const parsed = new URL(url)
+    const tag = process.env.NEXT_PUBLIC_AMAZON_TAG
+    if (tag && (parsed.hostname.includes("amazon") || parsed.hostname.includes("amzn"))) {
+      parsed.searchParams.set("tag", tag)
+    }
+    return parsed.toString()
+  } catch {
+    return url
+  }
+}
