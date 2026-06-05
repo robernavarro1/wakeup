@@ -47,7 +47,7 @@ export function RegisterForm() {
         )}
 
         <div>
-          <label className="block text-sm font-medium text-purple-300/70">Tipo de cuenta</label>
+          <label className="block text-sm font-medium text-purple-300/70">¿Qué buscas?</label>
           <div className="mt-2 flex gap-2">
             <button
               type="button"
@@ -58,7 +58,7 @@ export function RegisterForm() {
                   : "border-white/10 text-purple-300/50 hover:bg-white/5"
               }`}
             >
-              Alumno
+              Empieza a explorar
             </button>
             <button
               type="button"

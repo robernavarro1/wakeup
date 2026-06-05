@@ -11,9 +11,9 @@ export async function PUT(request: Request) {
   try {
     const data = await request.json()
 
-    const profile = await prisma.professionalProfile.update({
+    const profile = await prisma.professionalProfile.upsert({
       where: { userId: session.user.id },
-      data: {
+      update: {
         title: data.title,
         bio: data.bio,
         phone: data.phone,
@@ -22,6 +22,21 @@ export async function PUT(request: Request) {
         specialties: data.specialties,
         published: data.published ?? true,
       },
+      create: {
+        userId: session.user.id,
+        title: data.title,
+        bio: data.bio,
+        phone: data.phone,
+        city: data.city,
+        pricePerSession: data.pricePerSession,
+        specialties: data.specialties,
+        published: data.published ?? true,
+      },
+    })
+
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: { role: "PROFESSIONAL" },
     })
 
     if (data.services) {

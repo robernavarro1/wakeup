@@ -1,42 +1,17 @@
 import Link from "next/link"
 
 const categories = [
-  {
-    name: "Yoga",
-    icon: "🧘",
-    description: "Profesores, cursos y retiros de yoga para despertar tu energía",
-    href: "/explore?c=yoga",
-  },
-  {
-    name: "Reiki",
-    icon: "✨",
-    description: "Sesiones, formaciones y maestría de Reiki Usui",
-    href: "/explore?c=reiki",
-  },
-  {
-    name: "Terapias Alternativas",
-    icon: "🌿",
-    description: "Constelaciones, flores de Bach, biomagnetismo, sanación con sonido",
-    href: "/explore?c=terapias",
-  },
-  {
-    name: "Meditación & Mindfulness",
-    icon: "🪷",
-    description: "Meditaciones guiadas, mindfulness y atención plena",
-    href: "/explore?c=meditacion",
-  },
-  {
-    name: "Crecimiento Personal",
-    icon: "🌱",
-    description: "Talleres, formaciones y desarrollo espiritual",
-    href: "/explore?c=crecimiento",
-  },
-  {
-    name: "Eventos & Retiros",
-    icon: "🔥",
-    description: "Retiros espirituales, ceremonias y eventos presenciales",
-    href: "/explore?c=retiros",
-  },
+  { name: "Todas", icon: "☥", href: "/explore" },
+  { name: "En tu Zona", icon: "⊙", href: "/explore?c=zona" },
+  { name: "Podcasts", icon: "◈", href: "/explore?c=podcasts" },
+  { name: "Despertar del Cuerpo", icon: "☉", href: "/explore?g=cuerpo" },
+  { name: "Despertar del Alma", icon: "☯", href: "/explore?g=alma" },
+  { name: "Despertar del Conocimiento", icon: "◇", href: "/explore?g=conocimiento" },
+  { name: "Despertar del Futuro", icon: "☆", href: "/explore?g=futuro" },
+  { name: "Despertar de lo Oculto", icon: "☾", href: "/explore?g=oculto" },
+  { name: "Retiros y Viajes", icon: "✦", href: "/explore?g=viajes" },
+  { name: "Materiales", icon: "◆", href: "/explore?c=materiales" },
+  { name: "Tienda", icon: "⊞", href: "/products" },
 ]
 
 export default function Home() {
@@ -68,7 +43,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/auth/register?role=PROFESSIONAL"
-                className="rounded-xl border border-white/10 px-8 py-4 text-base font-semibold text-purple-200/80 transition hover:bg-white/5 hover:text-purple-200"
+                className="rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-purple-600/25 transition hover:shadow-purple-600/40"
               >
                 Soy profesional
               </Link>
@@ -79,28 +54,23 @@ export default function Home() {
       </section>
 
       {/* Categories */}
-      <section className="py-20">
+      <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-white">Explora por categoría</h2>
-            <p className="mt-2 text-purple-200/50">
-              Encuentra tu camino hacia el despertar
+            <h2 className="text-2xl font-bold text-white sm:text-3xl">Categorías</h2>
+            <p className="mt-2 text-sm text-purple-200/50 sm:text-base">
+              Elige tu camino y encuentra profesionales
             </p>
           </div>
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
             {categories.map((cat) => (
               <Link
                 key={cat.name}
                 href={cat.href}
-                className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm transition hover:border-purple-500/30 hover:bg-white/[0.05] hover:shadow-lg hover:shadow-purple-500/5"
+                className="flex flex-col items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-4 text-center transition hover:border-purple-500/30 hover:bg-white/[0.05] sm:px-4 sm:py-5"
               >
-                <span className="text-3xl">{cat.icon}</span>
-                <h3 className="mt-4 text-lg font-semibold text-white group-hover:text-purple-300">
-                  {cat.name}
-                </h3>
-                <p className="mt-2 text-sm text-purple-200/50">
-                  {cat.description}
-                </p>
+                <span className="text-2xl sm:text-3xl">{cat.icon}</span>
+                <span className="text-sm font-medium text-white sm:text-base">{cat.name}</span>
               </Link>
             ))}
           </div>
@@ -112,7 +82,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <span className="text-5xl opacity-40">🕉️</span>
+            <span className="text-5xl opacity-40">☥</span>
             <h2 className="mt-6 text-3xl font-bold text-white">
               ¿Eres profesional holístico?
             </h2>

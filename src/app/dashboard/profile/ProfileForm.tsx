@@ -382,9 +382,14 @@ function StripeConnectSection() {
 
   async function handleConnect() {
     setLoading(true)
-    const res = await fetch("/api/stripe/connect", { method: "POST" })
-    const data = await res.json()
-    if (data.url) window.location.href = data.url
+    try {
+      const res = await fetch("/api/stripe/connect", { method: "POST" })
+      const data = await res.json()
+      if (data.url) { window.location.href = data.url; return }
+      alert(data.error || "Error al conectar con Stripe. ¿Has configurado las claves de Stripe?")
+    } catch {
+      alert("Error de conexión. Inténtalo de nuevo.")
+    }
     setLoading(false)
   }
 

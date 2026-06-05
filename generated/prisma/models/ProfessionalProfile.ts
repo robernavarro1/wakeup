@@ -276,6 +276,8 @@ export type ProfessionalProfileWhereInput = {
   availabilities?: Prisma.AvailabilityListRelationFilter
   services?: Prisma.ServiceListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
+  subscription?: Prisma.XOR<Prisma.ProfessionalSubscriptionNullableScalarRelationFilter, Prisma.ProfessionalSubscriptionWhereInput> | null
+  products?: Prisma.ProductListRelationFilter
 }
 
 export type ProfessionalProfileOrderByWithRelationInput = {
@@ -295,6 +297,8 @@ export type ProfessionalProfileOrderByWithRelationInput = {
   availabilities?: Prisma.AvailabilityOrderByRelationAggregateInput
   services?: Prisma.ServiceOrderByRelationAggregateInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
+  subscription?: Prisma.ProfessionalSubscriptionOrderByWithRelationInput
+  products?: Prisma.ProductOrderByRelationAggregateInput
 }
 
 export type ProfessionalProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -317,6 +321,8 @@ export type ProfessionalProfileWhereUniqueInput = Prisma.AtLeast<{
   availabilities?: Prisma.AvailabilityListRelationFilter
   services?: Prisma.ServiceListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
+  subscription?: Prisma.XOR<Prisma.ProfessionalSubscriptionNullableScalarRelationFilter, Prisma.ProfessionalSubscriptionWhereInput> | null
+  products?: Prisma.ProductListRelationFilter
 }, "id" | "userId">
 
 export type ProfessionalProfileOrderByWithAggregationInput = {
@@ -373,6 +379,8 @@ export type ProfessionalProfileCreateInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProfileInput
   services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateInput = {
@@ -391,6 +399,8 @@ export type ProfessionalProfileUncheckedCreateInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProfileInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUpdateInput = {
@@ -409,6 +419,8 @@ export type ProfessionalProfileUpdateInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProfileNestedInput
   services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateInput = {
@@ -427,6 +439,8 @@ export type ProfessionalProfileUncheckedUpdateInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProfileNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileCreateManyInput = {
@@ -624,6 +638,34 @@ export type ProfessionalProfileUpdateOneWithoutBookingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessionalProfileUpdateToOneWithWhereWithoutBookingsInput, Prisma.ProfessionalProfileUpdateWithoutBookingsInput>, Prisma.ProfessionalProfileUncheckedUpdateWithoutBookingsInput>
 }
 
+export type ProfessionalProfileCreateNestedOneWithoutSubscriptionInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutSubscriptionInput, Prisma.ProfessionalProfileUncheckedCreateWithoutSubscriptionInput>
+  connectOrCreate?: Prisma.ProfessionalProfileCreateOrConnectWithoutSubscriptionInput
+  connect?: Prisma.ProfessionalProfileWhereUniqueInput
+}
+
+export type ProfessionalProfileUpdateOneRequiredWithoutSubscriptionNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutSubscriptionInput, Prisma.ProfessionalProfileUncheckedCreateWithoutSubscriptionInput>
+  connectOrCreate?: Prisma.ProfessionalProfileCreateOrConnectWithoutSubscriptionInput
+  upsert?: Prisma.ProfessionalProfileUpsertWithoutSubscriptionInput
+  connect?: Prisma.ProfessionalProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessionalProfileUpdateToOneWithWhereWithoutSubscriptionInput, Prisma.ProfessionalProfileUpdateWithoutSubscriptionInput>, Prisma.ProfessionalProfileUncheckedUpdateWithoutSubscriptionInput>
+}
+
+export type ProfessionalProfileCreateNestedOneWithoutProductsInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutProductsInput, Prisma.ProfessionalProfileUncheckedCreateWithoutProductsInput>
+  connectOrCreate?: Prisma.ProfessionalProfileCreateOrConnectWithoutProductsInput
+  connect?: Prisma.ProfessionalProfileWhereUniqueInput
+}
+
+export type ProfessionalProfileUpdateOneRequiredWithoutProductsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutProductsInput, Prisma.ProfessionalProfileUncheckedCreateWithoutProductsInput>
+  connectOrCreate?: Prisma.ProfessionalProfileCreateOrConnectWithoutProductsInput
+  upsert?: Prisma.ProfessionalProfileUpsertWithoutProductsInput
+  connect?: Prisma.ProfessionalProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessionalProfileUpdateToOneWithWhereWithoutProductsInput, Prisma.ProfessionalProfileUpdateWithoutProductsInput>, Prisma.ProfessionalProfileUncheckedUpdateWithoutProductsInput>
+}
+
 export type ProfessionalProfileCreateWithoutUserInput = {
   id?: string
   title?: string | null
@@ -639,6 +681,8 @@ export type ProfessionalProfileCreateWithoutUserInput = {
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProfileInput
   services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutUserInput = {
@@ -656,6 +700,8 @@ export type ProfessionalProfileUncheckedCreateWithoutUserInput = {
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProfileInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutUserInput = {
@@ -689,6 +735,8 @@ export type ProfessionalProfileUpdateWithoutUserInput = {
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProfileNestedInput
   services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutUserInput = {
@@ -706,6 +754,8 @@ export type ProfessionalProfileUncheckedUpdateWithoutUserInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProfileNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileCreateWithoutServicesInput = {
@@ -723,6 +773,8 @@ export type ProfessionalProfileCreateWithoutServicesInput = {
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutServicesInput = {
@@ -740,6 +792,8 @@ export type ProfessionalProfileUncheckedCreateWithoutServicesInput = {
   updatedAt?: Date | string
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutServicesInput = {
@@ -773,6 +827,8 @@ export type ProfessionalProfileUpdateWithoutServicesInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutServicesInput = {
@@ -790,6 +846,8 @@ export type ProfessionalProfileUncheckedUpdateWithoutServicesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileCreateWithoutAvailabilitiesInput = {
@@ -807,6 +865,8 @@ export type ProfessionalProfileCreateWithoutAvailabilitiesInput = {
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
   services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutAvailabilitiesInput = {
@@ -824,6 +884,8 @@ export type ProfessionalProfileUncheckedCreateWithoutAvailabilitiesInput = {
   updatedAt?: Date | string
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutAvailabilitiesInput = {
@@ -857,6 +919,8 @@ export type ProfessionalProfileUpdateWithoutAvailabilitiesInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
   services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutAvailabilitiesInput = {
@@ -874,6 +938,8 @@ export type ProfessionalProfileUncheckedUpdateWithoutAvailabilitiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileCreateWithoutBookingsInput = {
@@ -891,6 +957,8 @@ export type ProfessionalProfileCreateWithoutBookingsInput = {
   user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
   availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProfileInput
   services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutBookingsInput = {
@@ -908,6 +976,8 @@ export type ProfessionalProfileUncheckedCreateWithoutBookingsInput = {
   updatedAt?: Date | string
   availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProfileInput
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutBookingsInput = {
@@ -941,6 +1011,8 @@ export type ProfessionalProfileUpdateWithoutBookingsInput = {
   user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
   availabilities?: Prisma.AvailabilityUpdateManyWithoutProfileNestedInput
   services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutBookingsInput = {
@@ -958,6 +1030,192 @@ export type ProfessionalProfileUncheckedUpdateWithoutBookingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProfileNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfessionalProfileCreateWithoutSubscriptionInput = {
+  id?: string
+  title?: string | null
+  bio?: string | null
+  phone?: string | null
+  city?: string | null
+  pricePerSession?: number
+  specialties?: string
+  stripeAccountId?: string | null
+  published?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
+  availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProfileInput
+  services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
+  products?: Prisma.ProductCreateNestedManyWithoutProfileInput
+}
+
+export type ProfessionalProfileUncheckedCreateWithoutSubscriptionInput = {
+  id?: string
+  userId: string
+  title?: string | null
+  bio?: string | null
+  phone?: string | null
+  city?: string | null
+  pricePerSession?: number
+  specialties?: string
+  stripeAccountId?: string | null
+  published?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProfileInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfessionalProfileCreateOrConnectWithoutSubscriptionInput = {
+  where: Prisma.ProfessionalProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutSubscriptionInput, Prisma.ProfessionalProfileUncheckedCreateWithoutSubscriptionInput>
+}
+
+export type ProfessionalProfileUpsertWithoutSubscriptionInput = {
+  update: Prisma.XOR<Prisma.ProfessionalProfileUpdateWithoutSubscriptionInput, Prisma.ProfessionalProfileUncheckedUpdateWithoutSubscriptionInput>
+  create: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutSubscriptionInput, Prisma.ProfessionalProfileUncheckedCreateWithoutSubscriptionInput>
+  where?: Prisma.ProfessionalProfileWhereInput
+}
+
+export type ProfessionalProfileUpdateToOneWithWhereWithoutSubscriptionInput = {
+  where?: Prisma.ProfessionalProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfessionalProfileUpdateWithoutSubscriptionInput, Prisma.ProfessionalProfileUncheckedUpdateWithoutSubscriptionInput>
+}
+
+export type ProfessionalProfileUpdateWithoutSubscriptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
+  specialties?: Prisma.StringFieldUpdateOperationsInput | string
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
+  availabilities?: Prisma.AvailabilityUpdateManyWithoutProfileNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
+  products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfessionalProfileUncheckedUpdateWithoutSubscriptionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
+  specialties?: Prisma.StringFieldUpdateOperationsInput | string
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProfileNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfessionalProfileCreateWithoutProductsInput = {
+  id?: string
+  title?: string | null
+  bio?: string | null
+  phone?: string | null
+  city?: string | null
+  pricePerSession?: number
+  specialties?: string
+  stripeAccountId?: string | null
+  published?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
+  availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProfileInput
+  services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
+}
+
+export type ProfessionalProfileUncheckedCreateWithoutProductsInput = {
+  id?: string
+  userId: string
+  title?: string | null
+  bio?: string | null
+  phone?: string | null
+  city?: string | null
+  pricePerSession?: number
+  specialties?: string
+  stripeAccountId?: string | null
+  published?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProfileInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
+}
+
+export type ProfessionalProfileCreateOrConnectWithoutProductsInput = {
+  where: Prisma.ProfessionalProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutProductsInput, Prisma.ProfessionalProfileUncheckedCreateWithoutProductsInput>
+}
+
+export type ProfessionalProfileUpsertWithoutProductsInput = {
+  update: Prisma.XOR<Prisma.ProfessionalProfileUpdateWithoutProductsInput, Prisma.ProfessionalProfileUncheckedUpdateWithoutProductsInput>
+  create: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutProductsInput, Prisma.ProfessionalProfileUncheckedCreateWithoutProductsInput>
+  where?: Prisma.ProfessionalProfileWhereInput
+}
+
+export type ProfessionalProfileUpdateToOneWithWhereWithoutProductsInput = {
+  where?: Prisma.ProfessionalProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfessionalProfileUpdateWithoutProductsInput, Prisma.ProfessionalProfileUncheckedUpdateWithoutProductsInput>
+}
+
+export type ProfessionalProfileUpdateWithoutProductsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
+  specialties?: Prisma.StringFieldUpdateOperationsInput | string
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
+  availabilities?: Prisma.AvailabilityUpdateManyWithoutProfileNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
+}
+
+export type ProfessionalProfileUncheckedUpdateWithoutProductsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
+  specialties?: Prisma.StringFieldUpdateOperationsInput | string
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProfileNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
 }
 
 
@@ -969,12 +1227,14 @@ export type ProfessionalProfileCountOutputType = {
   availabilities: number
   services: number
   bookings: number
+  products: number
 }
 
 export type ProfessionalProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   availabilities?: boolean | ProfessionalProfileCountOutputTypeCountAvailabilitiesArgs
   services?: boolean | ProfessionalProfileCountOutputTypeCountServicesArgs
   bookings?: boolean | ProfessionalProfileCountOutputTypeCountBookingsArgs
+  products?: boolean | ProfessionalProfileCountOutputTypeCountProductsArgs
 }
 
 /**
@@ -1008,6 +1268,13 @@ export type ProfessionalProfileCountOutputTypeCountBookingsArgs<ExtArgs extends 
   where?: Prisma.BookingWhereInput
 }
 
+/**
+ * ProfessionalProfileCountOutputType without action
+ */
+export type ProfessionalProfileCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProductWhereInput
+}
+
 
 export type ProfessionalProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1026,6 +1293,8 @@ export type ProfessionalProfileSelect<ExtArgs extends runtime.Types.Extensions.I
   availabilities?: boolean | Prisma.ProfessionalProfile$availabilitiesArgs<ExtArgs>
   services?: boolean | Prisma.ProfessionalProfile$servicesArgs<ExtArgs>
   bookings?: boolean | Prisma.ProfessionalProfile$bookingsArgs<ExtArgs>
+  subscription?: boolean | Prisma.ProfessionalProfile$subscriptionArgs<ExtArgs>
+  products?: boolean | Prisma.ProfessionalProfile$productsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["professionalProfile"]>
 
@@ -1082,6 +1351,8 @@ export type ProfessionalProfileInclude<ExtArgs extends runtime.Types.Extensions.
   availabilities?: boolean | Prisma.ProfessionalProfile$availabilitiesArgs<ExtArgs>
   services?: boolean | Prisma.ProfessionalProfile$servicesArgs<ExtArgs>
   bookings?: boolean | Prisma.ProfessionalProfile$bookingsArgs<ExtArgs>
+  subscription?: boolean | Prisma.ProfessionalProfile$subscriptionArgs<ExtArgs>
+  products?: boolean | Prisma.ProfessionalProfile$productsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProfessionalProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1098,6 +1369,8 @@ export type $ProfessionalProfilePayload<ExtArgs extends runtime.Types.Extensions
     availabilities: Prisma.$AvailabilityPayload<ExtArgs>[]
     services: Prisma.$ServicePayload<ExtArgs>[]
     bookings: Prisma.$BookingPayload<ExtArgs>[]
+    subscription: Prisma.$ProfessionalSubscriptionPayload<ExtArgs> | null
+    products: Prisma.$ProductPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1510,6 +1783,8 @@ export interface Prisma__ProfessionalProfileClient<T, Null = never, ExtArgs exte
   availabilities<T extends Prisma.ProfessionalProfile$availabilitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalProfile$availabilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   services<T extends Prisma.ProfessionalProfile$servicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalProfile$servicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ServicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookings<T extends Prisma.ProfessionalProfile$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalProfile$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  subscription<T extends Prisma.ProfessionalProfile$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalProfile$subscriptionArgs<ExtArgs>>): Prisma.Prisma__ProfessionalSubscriptionClient<runtime.Types.Result.GetResult<Prisma.$ProfessionalSubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  products<T extends Prisma.ProfessionalProfile$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalProfile$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1785,6 +2060,7 @@ export type ProfessionalProfileCreateManyArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many ProfessionalProfiles.
    */
   data: Prisma.ProfessionalProfileCreateManyInput | Prisma.ProfessionalProfileCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1803,6 +2079,7 @@ export type ProfessionalProfileCreateManyAndReturnArgs<ExtArgs extends runtime.T
    * The data used to create many ProfessionalProfiles.
    */
   data: Prisma.ProfessionalProfileCreateManyInput | Prisma.ProfessionalProfileCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
@@ -2019,6 +2296,49 @@ export type ProfessionalProfile$bookingsArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
+}
+
+/**
+ * ProfessionalProfile.subscription
+ */
+export type ProfessionalProfile$subscriptionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProfessionalSubscription
+   */
+  select?: Prisma.ProfessionalSubscriptionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProfessionalSubscription
+   */
+  omit?: Prisma.ProfessionalSubscriptionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfessionalSubscriptionInclude<ExtArgs> | null
+  where?: Prisma.ProfessionalSubscriptionWhereInput
+}
+
+/**
+ * ProfessionalProfile.products
+ */
+export type ProfessionalProfile$productsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Product
+   */
+  select?: Prisma.ProductSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Product
+   */
+  omit?: Prisma.ProductOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProductInclude<ExtArgs> | null
+  where?: Prisma.ProductWhereInput
+  orderBy?: Prisma.ProductOrderByWithRelationInput | Prisma.ProductOrderByWithRelationInput[]
+  cursor?: Prisma.ProductWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProductScalarFieldEnum | Prisma.ProductScalarFieldEnum[]
 }
 
 /**

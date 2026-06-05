@@ -448,6 +448,7 @@ export type AvailabilityCreateOrConnectWithoutProfileInput = {
 
 export type AvailabilityCreateManyProfileInputEnvelope = {
   data: Prisma.AvailabilityCreateManyProfileInput | Prisma.AvailabilityCreateManyProfileInput[]
+  skipDuplicates?: boolean
 }
 
 export type AvailabilityUpsertWithWhereUniqueWithoutProfileInput = {
@@ -1238,6 +1239,7 @@ export type AvailabilityCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * The data used to create many Availabilities.
    */
   data: Prisma.AvailabilityCreateManyInput | Prisma.AvailabilityCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1256,6 +1258,7 @@ export type AvailabilityCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    * The data used to create many Availabilities.
    */
   data: Prisma.AvailabilityCreateManyInput | Prisma.AvailabilityCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

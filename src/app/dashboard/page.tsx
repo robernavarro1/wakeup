@@ -114,6 +114,20 @@ export default async function DashboardPage() {
                 Ver todas &rarr;
               </Link>
             </div>
+
+            <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl shadow-purple-950/40">
+              <h2 className="text-lg font-semibold text-white">Mis productos</h2>
+              <p className="mt-2 text-sm text-purple-300/50">
+                Gestiona los productos que vendes en Wakeup. Añade artículos, edita precios y
+                recibe pagos directamente a tu cuenta de Stripe.
+              </p>
+              <Link
+                href="/dashboard/products"
+                className="mt-4 inline-block text-sm font-medium text-purple-400 hover:text-purple-300"
+              >
+                Gestionar productos &rarr;
+              </Link>
+            </div>
           </>
         )}
 

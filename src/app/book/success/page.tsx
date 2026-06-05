@@ -1,4 +1,6 @@
 import Link from "next/link"
+import { prisma } from "@/lib/prisma"
+import { notFound } from "next/navigation"
 
 export default async function BookingSuccessPage({
   searchParams,
@@ -6,6 +8,15 @@ export default async function BookingSuccessPage({
   searchParams: Promise<{ bookingId: string }>
 }) {
   const { bookingId } = await searchParams
+
+  if (!bookingId) notFound()
+
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    select: { id: true, status: true },
+  })
+
+  if (!booking) notFound()
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">

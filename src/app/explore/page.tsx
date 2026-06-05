@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { auth } from "@/lib/auth"
+import MapComponent from "@/components/MapComponent"
 import {
   CATEGORIES,
   DEMO_PROFESSIONALS,
@@ -22,23 +23,23 @@ const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     id: "cuerpo",
     name: "Despertar del Cuerpo",
-    icon: "🌅",
-    description: "Yoga, Reiki, actividades físicas espirituales y medicina alternativa para despertar la energía vital del cuerpo",
+    icon: "☉",
+    description: "Yoga, Reiki, biohacking, nutrición consciente, actividades físicas espirituales y medicina alternativa para despertar la energía vital del cuerpo",
     gradient: "from-amber-900/40 via-orange-900/20 to-transparent",
-    children: ["yoga", "reiki", "actividades", "medicina"],
+    children: ["yoga", "reiki", "biohacking", "nutricion", "actividades", "medicina"],
   },
   {
     id: "alma",
     name: "Despertar del Alma",
-    icon: "🕊️",
-    description: "Meditación, terapias alternativas, constelaciones, flores de Bach, tarot, astrología y crecimiento personal",
+    icon: "☯",
+    description: "Meditación, terapias de sonido, respiración consciente, terapia con animales, terapias alternativas y crecimiento personal para sanar y expandir el alma",
     gradient: "from-purple-900/40 via-pink-900/20 to-transparent",
-    children: ["meditacion", "terapias", "crecimiento"],
+    children: ["meditacion", "sonido", "respiracion", "animales", "terapias", "crecimiento"],
   },
   {
     id: "conocimiento",
     name: "Despertar del Conocimiento",
-    icon: "📖",
+    icon: "◇",
     description: "Tradiciones sagradas, sabiduría ancestral, textos sumerios y egipcios, Cábala, hermetismo y ciencias ocultas",
     gradient: "from-blue-900/40 via-indigo-900/20 to-transparent",
     children: ["tradiciones", "ancestral", "hermetismo"],
@@ -46,22 +47,29 @@ const CATEGORY_GROUPS: CategoryGroup[] = [
   {
     id: "futuro",
     name: "Despertar del Futuro",
-    icon: "🔮",
-    description: "Ocultismo, demonología, brujería, grimorios y las tradiciones esotéricas de la adivinación y el más allá",
+    icon: "☆",
+    description: "Tarot, astrología, médiums, oráculos, runas y todas las artes adivinatorias",
+    gradient: "from-fuchsia-900/40 via-pink-900/20 to-transparent",
+    children: ["tarot"],
+  },
+  {
+    id: "oculto",
+    name: "Despertar de lo Oculto",
+    icon: "☾",
+    description: "Ocultismo, demonología, brujería, grimorios, satanismo, espiritismo y las tradiciones esotéricas de la sombra",
     gradient: "from-gray-900/60 via-zinc-900/40 to-transparent",
-    children: ["tarot", "ocultismo"],
+    children: ["ocultismo"],
   },
   {
     id: "viajes",
     name: "Retiros y Viajes",
-    icon: "✈️",
+    icon: "✦",
     description: "Retiros espirituales, viajes iniciáticos, peregrinaciones y ceremonias alrededor del mundo",
     gradient: "from-cyan-900/40 via-teal-900/20 to-transparent",
     children: ["retiros", "viajes"],
   },
 ]
 
-const STANDALONE_CATEGORIES = ["zona", "materiales", "podcasts"]
 
 function StarRating({
   rating,
@@ -128,7 +136,7 @@ function DailyPhrase() {
   const phrase = getDailyPhrase()
   return (
     <div className="relative mb-8 overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-500/10 via-purple-500/5 to-transparent p-6">
-      <div className="absolute right-4 top-4 text-4xl opacity-10">🕉️</div>
+      <div className="absolute right-4 top-4 text-4xl opacity-10">☥</div>
       <p className="text-xs font-semibold uppercase tracking-widest text-amber-400/70">
         Frase del día
       </p>
@@ -184,8 +192,34 @@ export default async function ExplorePage({
                 : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
             }`}
           >
-            <span className="text-lg">🌌</span>
+            <span className="text-lg">☥</span>
             Todas
+          </Link>
+
+          {/* Top standalone */}
+          <Link
+            href="/explore?c=zona"
+            scroll={false}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
+              activeId === "zona"
+                ? "bg-purple-500/20 text-purple-200"
+                : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
+            }`}
+          >
+            <span className="text-lg">⊙</span>
+            En tu Zona
+          </Link>
+          <Link
+            href="/explore?c=podcasts"
+            scroll={false}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
+              activeId === "podcasts"
+                ? "bg-purple-500/20 text-purple-200"
+                : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
+            }`}
+          >
+            <span className="text-lg">◈</span>
+            Podcasts Espirituales
           </Link>
 
           {/* Groups */}
@@ -233,28 +267,27 @@ export default async function ExplorePage({
             )
           })}
 
-          {/* Standalone */}
+          {/* Bottom standalone */}
           <div className="my-3 border-t border-white/5" />
-          {STANDALONE_CATEGORIES.map((catId) => {
-            const cat = CATEGORIES.find((c) => c.id === catId)
-            if (!cat) return null
-            const standaloneActive = isActiveStandalone(catId)
-            return (
-              <Link
-                key={catId}
-                href={`/explore?c=${catId}`}
-                scroll={false}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
-                  standaloneActive
-                    ? "bg-purple-500/20 text-purple-200"
-                    : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
-                }`}
-              >
-                <span className="text-lg">{cat.icon}</span>
-                {cat.name}
-              </Link>
-            )
-          })}
+          <Link
+            href="/explore?c=materiales"
+            scroll={false}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
+              activeId === "materiales"
+                ? "bg-purple-500/20 text-purple-200"
+                : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
+            }`}
+          >
+            <span className="text-lg">⚘</span>
+            Materiales
+          </Link>
+          <Link
+            href="/products"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-purple-300/60 transition hover:bg-white/5 hover:text-purple-200"
+          >
+            <span className="text-lg">⊞</span>
+            Tienda
+          </Link>
         </nav>
 
         <div className="mt-12 rounded-xl border border-white/5 bg-white/[0.02] p-4">
@@ -299,7 +332,7 @@ function AllView() {
     <div className="space-y-8">
       <DailyPhrase />
 
-      <SectionCard title="Top Podcasts Espirituales" icon="🎙️">
+      <SectionCard title="Top Podcasts Espirituales" icon="◈">
         {topPodcasts.map((pod) => (
           <GlassCard key={pod.id}>
             <div className="mb-2 flex items-center justify-between">
@@ -331,7 +364,7 @@ function AllView() {
       {/* Standalone previews */}
       <section>
         <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-white">
-          <span>📌</span> Más secciones
+          <span>☥</span> Más secciones
         </h2>
         <div className="grid gap-4 sm:grid-cols-3">
           {["zona", "materiales", "podcasts"].map((catId) => {
@@ -528,7 +561,7 @@ function CategoryView({
         )}
       </div>
 
-      <SectionCard title="Profesores" icon="👤">
+      <SectionCard title="Profesores" icon="♁">
         {pros.length > 0 ? (
           pros.map((pro) => (
             <ProfessionalCard
@@ -607,7 +640,7 @@ function PodcastsView() {
           &larr; Todas las categorías
         </Link>
         <h1 className="text-3xl font-bold text-white">
-          🎙️ Podcasts Espirituales
+          ◈ Podcasts Espirituales
         </h1>
         <p className="mt-2 text-purple-200/60">
           Los mejores podcasts sobre espiritualidad, yoga, meditación y crecimiento
@@ -615,7 +648,7 @@ function PodcastsView() {
         </p>
       </div>
 
-      <SectionCard title="Top Podcasts" icon="⭐">
+      <SectionCard title="Top Podcasts" icon="☆">
         {topPodcasts.map((pod) => (
           <GlassCard key={pod.id}>
             <div className="mb-3 flex items-center justify-between">
@@ -636,27 +669,37 @@ function PodcastsView() {
             <div className="mt-4 flex items-center gap-2">
               <span className="rounded-md bg-purple-500/20 px-2 py-0.5 text-xs text-purple-300">
                 {pod.category === "yoga"
-                  ? "🧘 Yoga"
+                  ? "☉ Yoga"
                   : pod.category === "reiki"
-                    ? "✨ Reiki"
+                    ? "✴ Reiki"
                     : pod.category === "meditacion"
-                      ? "🪷 Meditación"
+                      ? "◯ Meditación"
                       : pod.category === "terapias"
-                        ? "🌿 Terapias"
+                        ? "⚘ Terapias"
                         : pod.category === "crecimiento"
-                          ? "🌱 Crecimiento"
+                          ? "⟡ Crecimiento"
                           : pod.category === "actividades"
-                            ? "💃 Movimiento"
+                            ? "◈ Movimiento"
                             : pod.category === "retiros"
-                              ? "🔥 Retiros"
-                              : pod.category}
+                              ? "▲ Retiros"
+                              : pod.category === "sonido"
+                                ? "♫ Sonido"
+                                : pod.category === "animales"
+                                  ? "♡ Animales"
+                                  : pod.category === "biohacking"
+                                    ? "⚡ Biohacking"
+                                    : pod.category === "respiracion"
+                                      ? "☁ Respiración"
+                                      : pod.category === "nutricion"
+                                        ? "⚘ Nutrición"
+                                        : pod.category}
               </span>
             </div>
           </GlassCard>
         ))}
       </SectionCard>
 
-      <SectionCard title="Más Podcasts Recomendados" icon="🎧">
+      <SectionCard title="Más Podcasts Recomendados" icon="♪">
         {otherPodcasts.map((pod) => (
           <GlassCard key={pod.id}>
             <h3 className="font-semibold text-white">{pod.title}</h3>
@@ -696,7 +739,7 @@ function OcultismoPodcastsView() {
           &larr; Todas las categorías
         </Link>
         <h1 className="text-3xl font-bold text-white">
-          🔮 Ocultismo
+          ◐ Ocultismo
         </h1>
         <p className="mt-2 text-purple-200/60">
           Podcasts sobre ocultismo, satanismo, demonología, brujería, grimorios y
@@ -704,7 +747,7 @@ function OcultismoPodcastsView() {
         </p>
       </div>
 
-      <SectionCard title="Podcasts Destacados" icon="⭐">
+      <SectionCard title="Podcasts Destacados" icon="☆">
         {topOculto.map((pod) => (
           <GlassCard key={pod.id}>
             <div className="mb-3 flex items-center justify-between">
@@ -726,7 +769,7 @@ function OcultismoPodcastsView() {
         ))}
       </SectionCard>
 
-      <SectionCard title="Más Podcasts Recomendados" icon="🎧">
+      <SectionCard title="Más Podcasts Recomendados" icon="♪">
         {otherOculto.map((pod) => (
           <GlassCard key={pod.id}>
             <h3 className="font-semibold text-white">{pod.title}</h3>
@@ -763,7 +806,7 @@ function ActivitiesView() {
           &larr; Todas las categorías
         </Link>
         <h1 className="text-3xl font-bold text-white">
-          💃 Actividades Físicas Espirituales
+          ◈ Actividades Físicas Espirituales
         </h1>
         <p className="mt-2 text-purple-200/60">
           Grupos de yoga, Tai Chi, Bio-danza, Chi Kung y movimiento consciente para
@@ -772,7 +815,7 @@ function ActivitiesView() {
       </div>
 
       {/* Grupos y actividades */}
-      <SectionCard title="Grupos y Clases" icon="👥">
+      <SectionCard title="Grupos y Clases" icon="◇">
         {DEMO_ACTIVITIES.map((act) => {
           const typeIcon =
             act.type === "Tai Chi"
@@ -814,7 +857,7 @@ function ActivitiesView() {
       </SectionCard>
 
       {/* Profesores de actividades físicas */}
-      <SectionCard title="Profesores" icon="👤">
+      <SectionCard title="Profesores" icon="♁">
         {instructors.map((pro) => (
           <ProfessionalCard
             key={pro.id}
@@ -825,7 +868,7 @@ function ActivitiesView() {
       </SectionCard>
 
       {/* Eventos de actividades */}
-      <SectionCard title="Eventos y Encuentros" icon="🔥">
+      <SectionCard title="Eventos y Encuentros" icon="▲">
         {DEMO_EVENTS.filter((e) => e.category === "actividades").map((ev) => {
           const typeIcon =
             ev.type === "taller"
@@ -896,7 +939,7 @@ function LocalEventsView() {
           &larr; Todas las categorías
         </Link>
         <h1 className="text-3xl font-bold text-white">
-          📍 En tu Zona
+          ⊙ En tu Zona
         </h1>
         <p className="mt-2 text-purple-200/60">
           Ferias holísticas, mercados esotéricos, charlas, círculos y encuentros
@@ -905,7 +948,34 @@ function LocalEventsView() {
         </p>
       </div>
 
-      <SectionCard title="Esta Semana" icon="📅">
+      {/* Mini map */}
+      <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+        <MapComponent
+          items={[
+            ...DEMO_PROFESSIONALS.filter((p) => p.city && p.city !== "Online").map((p) => ({
+              id: p.id,
+              name: p.name,
+              subtitle: p.title,
+              city: p.city,
+              href: `/professionals/${p.id}`,
+              type: "professional" as const,
+            })),
+            ...localEvents
+              .filter((e) => e.city)
+              .map((e) => ({
+                id: e.id,
+                name: e.title,
+                subtitle: e.organizer,
+                city: e.city!,
+                type: "event" as const,
+              })),
+          ]}
+          className="h-[300px] sm:h-[400px]"
+          zoom={5}
+        />
+      </div>
+
+      <SectionCard title="Esta Semana" icon="◇">
         {thisWeek.length > 0 ? (
           thisWeek.map((ev) => (
             <GlassCard key={ev.id}>
@@ -942,7 +1012,7 @@ function LocalEventsView() {
         )}
       </SectionCard>
 
-      <SectionCard title="Este Mes" icon="🗓️">
+      <SectionCard title="Este Mes" icon="◇">
         {thisMonth.map((ev) => (
           <GlassCard key={ev.id}>
             <div className="mb-2 flex items-center justify-between">
@@ -971,7 +1041,7 @@ function LocalEventsView() {
         ))}
       </SectionCard>
 
-      <SectionCard title="Profesionales Cerca de Ti" icon="👤">
+      <SectionCard title="Profesionales Cerca de Ti" icon="⊙">
         {cities.slice(0, 6).map((city) => {
           const prosInCity = DEMO_PROFESSIONALS.filter(
             (p) => p.city === city
@@ -1045,7 +1115,7 @@ function MaterialesView() {
           &larr; Todas las categorías
         </Link>
         <h1 className="text-3xl font-bold text-white">
-          💎 Materiales Espirituales
+          ◆ Materiales Espirituales
         </h1>
         <p className="mt-2 text-purple-200/60">
           Cristales, cuencos, inciensos, velas, libros, herbolaria y todo lo
@@ -1053,7 +1123,7 @@ function MaterialesView() {
         </p>
       </div>
 
-      <SectionCard title="Tiendas y Artesanos" icon="🏪">
+      <SectionCard title="Tiendas y Artesanos" icon="⊞">
         {sellers.map((pro) => {
           const firstSpecialty = pro.specialties[0] || ""
           const icon = typeIcon(firstSpecialty)
