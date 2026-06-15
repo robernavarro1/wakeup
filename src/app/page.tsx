@@ -3,13 +3,13 @@ import Link from "next/link"
 const categories = [
   { name: "Todas", icon: "☥", href: "/explore" },
   { name: "En tu Zona", icon: "⊙", href: "/explore?c=zona" },
-  { name: "Podcasts", icon: "◈", href: "/explore?c=podcasts" },
+  { name: "Podcasts", icon: "♪", href: "/explore?c=podcasts" },
   { name: "Despertar del Cuerpo", icon: "☉", href: "/explore?g=cuerpo" },
   { name: "Despertar del Alma", icon: "☯", href: "/explore?g=alma" },
   { name: "Despertar del Conocimiento", icon: "◇", href: "/explore?g=conocimiento" },
-  { name: "Despertar del Futuro", icon: "☆", href: "/explore?g=futuro" },
+  { name: "Despertar a lo Desconocido", icon: "☆", href: "/explore?g=desconocido" },
   { name: "Despertar de lo Oculto", icon: "☾", href: "/explore?g=oculto" },
-  { name: "Retiros y Viajes", icon: "✦", href: "/explore?g=viajes" },
+  { name: "Experiencias para Despertar", icon: "✦", href: "/explore?g=experiencias" },
   { name: "Materiales", icon: "◆", href: "/explore?c=materiales" },
   { name: "Tienda", icon: "⊞", href: "/products" },
 ]
@@ -31,8 +31,9 @@ export default function Home() {
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-purple-200/60">
               El lugar donde profesionales del mundo holístico y espiritual
-              comparten su sabiduría. Yoga, Reiki, terapias, meditación,
-              retiros y formaciones para elevar tu nivel de conciencia.
+              comparten su sabiduría. Yoga, Reiki, meditación, Tai Chi,
+              constelaciones, hipnosis, tarot, retiros y mucho más para
+              elevar tu nivel de conciencia.
             </p>
             <div className="mt-10 flex items-center justify-center gap-4">
               <Link
@@ -104,10 +105,11 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-8">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <span className="text-sm text-purple-300/30">☥</span>
-          <p className="mt-2 text-xs text-purple-300/30">
-            Wakeup &copy; {new Date().getFullYear()} &mdash; Despierta tu conciencia
-          </p>
+          <div className="flex flex-col items-center gap-2 text-xs text-purple-300/50">
+            <span className="text-sm text-purple-300/30">☥</span>
+            <p>Contacto: hola@wakeup-app.com</p>
+            <p>Wakeup &copy; {new Date().getFullYear()} &mdash; Despierta tu conciencia</p>
+          </div>
         </div>
       </footer>
     </div>

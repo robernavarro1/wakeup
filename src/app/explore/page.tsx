@@ -24,49 +24,49 @@ const CATEGORY_GROUPS: CategoryGroup[] = [
     id: "cuerpo",
     name: "Despertar del Cuerpo",
     icon: "☉",
-    description: "Yoga, Reiki, biohacking, nutrición consciente, actividades físicas espirituales y medicina alternativa para despertar la energía vital del cuerpo",
+    description: "Yoga, Reiki, Tai Chi, Bio-danza, Chi Kung, Ecstatic Dance, Barras de Access, nutrición consciente y medicina alternativa",
     gradient: "from-amber-900/40 via-orange-900/20 to-transparent",
-    children: ["yoga", "reiki", "biohacking", "nutricion", "actividades", "medicina"],
+    children: ["yoga", "reiki", "tai-chi", "bio-danza", "chi-kung", "ecstatic-dance", "barras-access", "nutricion", "medicina"],
   },
   {
     id: "alma",
     name: "Despertar del Alma",
     icon: "☯",
-    description: "Meditación, terapias de sonido, respiración consciente, terapia con animales, terapias alternativas y crecimiento personal para sanar y expandir el alma",
+    description: "Meditación, terapias de sonido, respiración consciente, terapia con animales, constelaciones, hipnosis, crecimiento personal y limpieza energética",
     gradient: "from-purple-900/40 via-pink-900/20 to-transparent",
-    children: ["meditacion", "sonido", "respiracion", "animales", "terapias", "crecimiento"],
+    children: ["meditacion", "sonido", "respiracion", "animales", "constelaciones", "hipnosis", "crecimiento", "limpieza-energetica"],
   },
   {
     id: "conocimiento",
     name: "Despertar del Conocimiento",
     icon: "◇",
-    description: "Tradiciones sagradas, sabiduría ancestral, textos sumerios y egipcios, Cábala, hermetismo y ciencias ocultas",
+    description: "Tradiciones sagradas, sabiduría ancestral, hermetismo, Cábala y numerología",
     gradient: "from-blue-900/40 via-indigo-900/20 to-transparent",
-    children: ["tradiciones", "ancestral", "hermetismo"],
+    children: ["tradiciones", "cabala", "numerologia"],
   },
   {
-    id: "futuro",
-    name: "Despertar del Futuro",
+    id: "desconocido",
+    name: "Despertar a lo Desconocido",
     icon: "☆",
-    description: "Tarot, astrología, médiums, oráculos, runas y todas las artes adivinatorias",
+    description: "Tarot, runas, mediums, astrología y todas las artes adivinatorias",
     gradient: "from-fuchsia-900/40 via-pink-900/20 to-transparent",
-    children: ["tarot"],
+    children: ["tarot", "mediums", "astrologia"],
   },
   {
     id: "oculto",
     name: "Despertar de lo Oculto",
     icon: "☾",
-    description: "Ocultismo, demonología, brujería, grimorios, satanismo, espiritismo y las tradiciones esotéricas de la sombra",
+    description: "Podcasts sobre ocultismo, satanismo, demonología, brujería y las tradiciones esotéricas de la sombra",
     gradient: "from-gray-900/60 via-zinc-900/40 to-transparent",
     children: ["ocultismo"],
   },
   {
-    id: "viajes",
-    name: "Retiros y Viajes",
+    id: "experiencias",
+    name: "Experiencias para Despertar",
     icon: "✦",
-    description: "Retiros espirituales, viajes iniciáticos, peregrinaciones y ceremonias alrededor del mundo",
+    description: "Viajes iniciáticos, retiros espirituales, ceremonias, ferias y eventos",
     gradient: "from-cyan-900/40 via-teal-900/20 to-transparent",
-    children: ["retiros", "viajes"],
+    children: ["viajes", "retiros", "ceremonias", "ferias-eventos"],
   },
 ]
 
@@ -219,7 +219,7 @@ export default async function ExplorePage({
             }`}
           >
             <span className="text-lg">◈</span>
-            Podcasts Espirituales
+            Top Podcasts Espirituales
           </Link>
 
           {/* Groups */}
@@ -279,7 +279,7 @@ export default async function ExplorePage({
             }`}
           >
             <span className="text-lg">⚘</span>
-            Materiales
+            Materiales para tu Despertar
           </Link>
           <Link
             href="/products"
@@ -298,6 +298,9 @@ export default async function ExplorePage({
             <br />
             Todo lo que das, vuelve.&rdquo;
           </p>
+          <div className="mt-4 border-t border-white/5 pt-3 text-center text-[10px] text-purple-300/30">
+            <p>hola@wakeup-app.com</p>
+          </div>
         </div>
       </aside>
 
@@ -309,8 +312,6 @@ export default async function ExplorePage({
           <PodcastsView />
         ) : activeId === "ocultismo" ? (
           <OcultismoPodcastsView />
-        ) : activeId === "actividades" ? (
-          <ActivitiesView />
         ) : activeId === "zona" ? (
           <LocalEventsView />
         ) : activeId === "materiales" ? (
@@ -367,7 +368,7 @@ function AllView() {
           <span>☥</span> Más secciones
         </h2>
         <div className="grid gap-4 sm:grid-cols-3">
-          {["zona", "materiales", "podcasts"].map((catId) => {
+          {["zona", "podcasts", "materiales"].map((catId) => {
             const cat = CATEGORIES.find((c) => c.id === catId)
             if (!cat) return null
             return (
@@ -668,31 +669,10 @@ function PodcastsView() {
             </p>
             <div className="mt-4 flex items-center gap-2">
               <span className="rounded-md bg-purple-500/20 px-2 py-0.5 text-xs text-purple-300">
-                {pod.category === "yoga"
-                  ? "☉ Yoga"
-                  : pod.category === "reiki"
-                    ? "✴ Reiki"
-                    : pod.category === "meditacion"
-                      ? "◯ Meditación"
-                      : pod.category === "terapias"
-                        ? "⚘ Terapias"
-                        : pod.category === "crecimiento"
-                          ? "⟡ Crecimiento"
-                          : pod.category === "actividades"
-                            ? "◈ Movimiento"
-                            : pod.category === "retiros"
-                              ? "▲ Retiros"
-                              : pod.category === "sonido"
-                                ? "♫ Sonido"
-                                : pod.category === "animales"
-                                  ? "♡ Animales"
-                                  : pod.category === "biohacking"
-                                    ? "⚡ Biohacking"
-                                    : pod.category === "respiracion"
-                                      ? "☁ Respiración"
-                                      : pod.category === "nutricion"
-                                        ? "⚘ Nutrición"
-                                        : pod.category}
+                {(() => {
+                  const cat = CATEGORIES.find((c) => c.id === pod.category)
+                  return cat ? `${cat.icon} ${cat.name}` : pod.category
+                })()}
               </span>
             </div>
           </GlassCard>
