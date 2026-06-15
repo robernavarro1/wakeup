@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { AuthProvider } from "@/providers/AuthProvider"
 import { Navbar } from "@/components/Navbar"
-import { AIAdvisor } from "@/components/AIAdvisor"
+import { AIAdvisorWrapper } from "@/components/AIAdvisorWrapper"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +36,7 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
-          <AIAdvisor />
+          <AIAdvisorWrapper />
         </AuthProvider>
       </body>
     </html>
