@@ -13,18 +13,23 @@ export function RegisterForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [role, setRole] = useState(roleParam)
+  const [acceptTerms, setAcceptTerms] = useState(false)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    if (!acceptTerms) {
+      setError("Debes aceptar los términos y condiciones")
+      return
+    }
     setLoading(true)
     setError("")
 
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, role }),
+      body: JSON.stringify({ name, email, password, role, acceptTerms }),
     })
 
     if (!res.ok) {
@@ -111,9 +116,28 @@ export function RegisterForm() {
           />
         </div>
 
+        <label className="flex items-start gap-2 text-xs text-purple-300/50">
+          <input
+            type="checkbox"
+            checked={acceptTerms}
+            onChange={(e) => setAcceptTerms(e.target.checked)}
+            className="mt-0.5 rounded border-white/10 bg-white/5"
+          />
+          <span>
+            Acepto los{" "}
+            <Link href="/terms" target="_blank" className="text-purple-400 underline hover:text-purple-300">
+              Términos y Condiciones
+            </Link>{" "}
+            y la{" "}
+            <Link href="/privacy" target="_blank" className="text-purple-400 underline hover:text-purple-300">
+              Política de Privacidad
+            </Link>
+          </span>
+        </label>
+
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !acceptTerms}
           className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-600/25 transition hover:shadow-purple-600/40 disabled:opacity-50"
         >
           {loading ? "Creando cuenta..." : "Crear cuenta"}

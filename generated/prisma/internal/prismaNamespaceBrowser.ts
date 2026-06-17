@@ -64,6 +64,7 @@ export const ModelName = {
   TwoFactorCode: 'TwoFactorCode',
   TrustedDevice: 'TrustedDevice',
   ProfessionalSubscription: 'ProfessionalSubscription',
+  AdCampaign: 'AdCampaign',
   Product: 'Product',
   CartItem: 'CartItem',
   Order: 'Order',
@@ -94,6 +95,7 @@ export const UserScalarFieldEnum = {
   image: 'image',
   role: 'role',
   emailVerified: 'emailVerified',
+  termsAcceptedAt: 'termsAcceptedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -257,6 +259,9 @@ export type TrustedDeviceScalarFieldEnum = (typeof TrustedDeviceScalarFieldEnum)
 export const ProfessionalSubscriptionScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
+  plan: 'plan',
+  maxCategories: 'maxCategories',
+  maxDisciplines: 'maxDisciplines',
   stripeSubscriptionId: 'stripeSubscriptionId',
   status: 'status',
   trialEndsAt: 'trialEndsAt',
@@ -267,6 +272,21 @@ export const ProfessionalSubscriptionScalarFieldEnum = {
 } as const
 
 export type ProfessionalSubscriptionScalarFieldEnum = (typeof ProfessionalSubscriptionScalarFieldEnum)[keyof typeof ProfessionalSubscriptionScalarFieldEnum]
+
+
+export const AdCampaignScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  plan: 'plan',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  price: 'price',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdCampaignScalarFieldEnum = (typeof AdCampaignScalarFieldEnum)[keyof typeof AdCampaignScalarFieldEnum]
 
 
 export const ProductScalarFieldEnum = {

@@ -23,28 +23,28 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 py-28 sm:px-6 lg:px-8">
           <div className="relative text-center">
             <div className="mb-6 text-6xl opacity-60">☥</div>
-            <h1 className="text-5xl font-bold tracking-tight text-white sm:text-7xl">
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-7xl">
               Despierta tu
               <span className="bg-gradient-to-r from-purple-400 to-amber-400 bg-clip-text text-transparent">
                 {" "}conciencia
               </span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-purple-200/60">
+            <p className="mx-auto mt-6 max-w-2xl text-base text-purple-200/60 sm:text-lg">
               El lugar donde profesionales del mundo holístico y espiritual
               comparten su sabiduría. Yoga, Reiki, meditación, Tai Chi,
               constelaciones, hipnosis, tarot, retiros y mucho más para
               elevar tu nivel de conciencia.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-4">
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/explore"
-                className="rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-purple-600/25 transition hover:shadow-purple-600/40"
+                className="w-full sm:w-auto rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-purple-600/25 transition hover:shadow-purple-600/40"
               >
                 Comienza a explorar
               </Link>
               <Link
                 href="/auth/register?role=PROFESSIONAL"
-                className="rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-purple-600/25 transition hover:shadow-purple-600/40"
+                className="w-full sm:w-auto rounded-xl border border-purple-500/30 px-8 py-4 text-base font-semibold text-purple-300 transition hover:bg-purple-500/10"
               >
                 Soy profesional
               </Link>
@@ -108,6 +108,12 @@ export default function Home() {
           <div className="flex flex-col items-center gap-2 text-xs text-purple-300/50">
             <span className="text-sm text-purple-300/30">☥</span>
             <p>Contacto: hola@wakeup-app.com</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/privacy" className="hover:text-purple-300 transition">Privacidad</Link>
+              <Link href="/cookies" className="hover:text-purple-300 transition">Cookies</Link>
+              <Link href="/terms" className="hover:text-purple-300 transition">Términos</Link>
+              <Link href="/data" className="hover:text-purple-300 transition">Tus datos</Link>
+            </div>
             <p>Wakeup &copy; {new Date().getFullYear()} &mdash; Despierta tu conciencia</p>
           </div>
         </div>

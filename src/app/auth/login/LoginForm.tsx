@@ -18,24 +18,34 @@ export function LoginForm() {
   const [codeSent, setCodeSent] = useState(false)
   const [devCode, setDevCode] = useState("")
 
+  function safeCallbackUrl(url: string | null): string {
+    if (!url) return "/explore"
+    try {
+      const parsed = new URL(url, window.location.origin)
+      if (parsed.origin !== window.location.origin) return "/explore"
+      return parsed.pathname + parsed.search + parsed.hash
+    } catch {
+      return "/explore"
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError("")
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
+    const credRes = await fetch("/api/auth/check-credentials", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
     })
 
-    if (result?.error) {
+    if (!credRes.ok) {
       setError("Email o contraseña incorrectos")
       setLoading(false)
       return
     }
 
-    // 2FA check
     const twofaRes = await fetch("/api/auth/2fa/send", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -51,7 +61,19 @@ export function LoginForm() {
       return
     }
 
-    const callbackUrl = searchParams.get("callbackUrl") || "/explore"
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    })
+
+    if (result?.error) {
+      setError("Error al iniciar sesión")
+      setLoading(false)
+      return
+    }
+
+    const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"))
     router.push(callbackUrl)
     router.refresh()
   }
@@ -74,7 +96,19 @@ export function LoginForm() {
       return
     }
 
-    const callbackUrl = searchParams.get("callbackUrl") || "/explore"
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    })
+
+    if (result?.error) {
+      setError("Error al iniciar sesión")
+      setLoading(false)
+      return
+    }
+
+    const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"))
     router.push(callbackUrl)
     router.refresh()
   }

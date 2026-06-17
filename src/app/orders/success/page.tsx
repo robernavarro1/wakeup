@@ -1,22 +1,26 @@
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
-import { notFound } from "next/navigation"
+import { redirect, notFound } from "next/navigation"
+import { auth } from "@/lib/auth"
 
 export default async function OrderSuccessPage({
   searchParams,
 }: {
   searchParams: Promise<{ orderId: string }>
 }) {
-  const { orderId } = await searchParams
+  const session = await auth()
+  if (!session?.user) redirect("/auth/login")
 
+  const { orderId } = await searchParams
   if (!orderId) notFound()
 
   const order = await prisma.order.findUnique({
     where: { id: orderId },
-    select: { id: true },
+    select: { id: true, userId: true },
   })
 
   if (!order) notFound()
+  if (order.userId !== session.user.id) notFound()
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">

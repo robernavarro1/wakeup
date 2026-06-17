@@ -89,7 +89,11 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, message: "Código enviado a tu email" })
     } catch (e) { console.log("Email not sent (Resend not configured)", e instanceof Error ? e.message : "") }
 
-    return NextResponse.json({ success: true, message: "Código enviado", devCode: code })
+    return NextResponse.json({
+      success: true,
+      message: "Código enviado",
+      ...(process.env.NODE_ENV === "development" ? { devCode: code } : {}),
+    })
   } catch (error) {
     console.error("2FA send error:", error)
     return NextResponse.json({ error: "Error al enviar código" }, { status: 500 })

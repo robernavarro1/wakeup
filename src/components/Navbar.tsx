@@ -64,7 +64,7 @@ export function Navbar() {
               </Link>
               <span className="hidden text-sm text-purple-300/40 lg:inline">{session.user.name}</span>
               <button
-                onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "https://wakeup-app.com" })}
+                onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "/" })}
                 className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70 transition hover:bg-white/5 hover:text-purple-200"
               >
                 Salir
@@ -106,10 +106,10 @@ export function Navbar() {
           )}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="rounded-lg p-2 text-purple-300/70 hover:bg-white/5"
+            className="flex items-center justify-center rounded-lg p-3 text-purple-300/70 hover:bg-white/5 min-h-[44px] min-w-[44px]"
             aria-label="Menú"
           >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               {menuOpen ? (
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               ) : (
@@ -124,24 +124,24 @@ export function Navbar() {
       {menuOpen && (
         <div className="border-t border-white/10 bg-[#0a0515]/95 px-4 pb-6 pt-4 sm:hidden">
           <div className="flex flex-col gap-3">
-            <Link href="/explore" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-purple-300/70 hover:text-purple-200">
+            <Link href="/explore" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-purple-300/70 hover:text-purple-200 hover:bg-white/5">
               Explorar
             </Link>
-            <Link href="/products" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-purple-300/70 hover:text-purple-200">
+            <Link href="/products" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-purple-300/70 hover:text-purple-200 hover:bg-white/5">
               Productos
             </Link>
             {isLoggedIn && session?.user ? (
               <>
-                <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-purple-300/70 hover:text-purple-200">
+                <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-purple-300/70 hover:text-purple-200 hover:bg-white/5">
                   Dashboard
                 </Link>
-                <Link href="/dashboard/profile" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-purple-300/70 hover:text-purple-200">
+                <Link href="/dashboard/profile" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-purple-300/70 hover:text-purple-200 hover:bg-white/5">
                   Mi Perfil
                 </Link>
                 <div className="flex items-center justify-between border-t border-white/5 pt-3">
                   <span className="text-sm text-purple-300/40">{session.user.name}</span>
                   <button
-                    onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "https://wakeup-app.com" })}
+                    onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "/" })}
                     className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70"
                   >
                     Salir

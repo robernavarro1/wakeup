@@ -102,29 +102,34 @@ export function BookingForm({
     const date = new Date(selectedDate)
     date.setHours(hours, minutes, 0, 0)
 
-    const res = await fetch("/api/stripe/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        professionalId,
-        serviceId: selectedService?.id,
-        date: date.toISOString(),
-        durationMinutes: selectedService?.durationMinutes || 60,
-        price,
-        notes,
-        type: "booking",
-      }),
-    })
+    try {
+      const res = await fetch("/api/stripe/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          professionalId,
+          serviceId: selectedService?.id,
+          date: date.toISOString(),
+          durationMinutes: selectedService?.durationMinutes || 60,
+          price,
+          notes,
+          type: "booking",
+        }),
+      })
 
-    const data = await res.json()
+      const data = await res.json()
 
-    if (!res.ok) {
-      setError(data.error || "Error al procesar el pago")
-      setLoading(false)
-      return
+      if (!res.ok) {
+        setError(data.error || "Error al procesar el pago")
+        setLoading(false)
+        return
+      }
+
+      window.location.href = data.url
+    } catch (e) {
+      console.error("Booking error:", e)
+      setError("Error de conexión. Inténtalo de nuevo.")
     }
-
-    window.open(data.url, "_blank")
   }
 
   return (

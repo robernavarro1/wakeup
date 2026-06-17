@@ -278,6 +278,7 @@ export type ProfessionalProfileWhereInput = {
   bookings?: Prisma.BookingListRelationFilter
   subscription?: Prisma.XOR<Prisma.ProfessionalSubscriptionNullableScalarRelationFilter, Prisma.ProfessionalSubscriptionWhereInput> | null
   products?: Prisma.ProductListRelationFilter
+  adCampaigns?: Prisma.AdCampaignListRelationFilter
 }
 
 export type ProfessionalProfileOrderByWithRelationInput = {
@@ -299,6 +300,7 @@ export type ProfessionalProfileOrderByWithRelationInput = {
   bookings?: Prisma.BookingOrderByRelationAggregateInput
   subscription?: Prisma.ProfessionalSubscriptionOrderByWithRelationInput
   products?: Prisma.ProductOrderByRelationAggregateInput
+  adCampaigns?: Prisma.AdCampaignOrderByRelationAggregateInput
 }
 
 export type ProfessionalProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -323,6 +325,7 @@ export type ProfessionalProfileWhereUniqueInput = Prisma.AtLeast<{
   bookings?: Prisma.BookingListRelationFilter
   subscription?: Prisma.XOR<Prisma.ProfessionalSubscriptionNullableScalarRelationFilter, Prisma.ProfessionalSubscriptionWhereInput> | null
   products?: Prisma.ProductListRelationFilter
+  adCampaigns?: Prisma.AdCampaignListRelationFilter
 }, "id" | "userId">
 
 export type ProfessionalProfileOrderByWithAggregationInput = {
@@ -381,6 +384,7 @@ export type ProfessionalProfileCreateInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateInput = {
@@ -401,6 +405,7 @@ export type ProfessionalProfileUncheckedCreateInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUpdateInput = {
@@ -421,6 +426,7 @@ export type ProfessionalProfileUpdateInput = {
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateInput = {
@@ -441,6 +447,7 @@ export type ProfessionalProfileUncheckedUpdateInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileCreateManyInput = {
@@ -652,6 +659,20 @@ export type ProfessionalProfileUpdateOneRequiredWithoutSubscriptionNestedInput =
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessionalProfileUpdateToOneWithWhereWithoutSubscriptionInput, Prisma.ProfessionalProfileUpdateWithoutSubscriptionInput>, Prisma.ProfessionalProfileUncheckedUpdateWithoutSubscriptionInput>
 }
 
+export type ProfessionalProfileCreateNestedOneWithoutAdCampaignsInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutAdCampaignsInput, Prisma.ProfessionalProfileUncheckedCreateWithoutAdCampaignsInput>
+  connectOrCreate?: Prisma.ProfessionalProfileCreateOrConnectWithoutAdCampaignsInput
+  connect?: Prisma.ProfessionalProfileWhereUniqueInput
+}
+
+export type ProfessionalProfileUpdateOneRequiredWithoutAdCampaignsNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutAdCampaignsInput, Prisma.ProfessionalProfileUncheckedCreateWithoutAdCampaignsInput>
+  connectOrCreate?: Prisma.ProfessionalProfileCreateOrConnectWithoutAdCampaignsInput
+  upsert?: Prisma.ProfessionalProfileUpsertWithoutAdCampaignsInput
+  connect?: Prisma.ProfessionalProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfessionalProfileUpdateToOneWithWhereWithoutAdCampaignsInput, Prisma.ProfessionalProfileUpdateWithoutAdCampaignsInput>, Prisma.ProfessionalProfileUncheckedUpdateWithoutAdCampaignsInput>
+}
+
 export type ProfessionalProfileCreateNestedOneWithoutProductsInput = {
   create?: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutProductsInput, Prisma.ProfessionalProfileUncheckedCreateWithoutProductsInput>
   connectOrCreate?: Prisma.ProfessionalProfileCreateOrConnectWithoutProductsInput
@@ -683,6 +704,7 @@ export type ProfessionalProfileCreateWithoutUserInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutUserInput = {
@@ -702,6 +724,7 @@ export type ProfessionalProfileUncheckedCreateWithoutUserInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutUserInput = {
@@ -737,6 +760,7 @@ export type ProfessionalProfileUpdateWithoutUserInput = {
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutUserInput = {
@@ -756,6 +780,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutUserInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileCreateWithoutServicesInput = {
@@ -775,6 +800,7 @@ export type ProfessionalProfileCreateWithoutServicesInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutServicesInput = {
@@ -794,6 +820,7 @@ export type ProfessionalProfileUncheckedCreateWithoutServicesInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutServicesInput = {
@@ -829,6 +856,7 @@ export type ProfessionalProfileUpdateWithoutServicesInput = {
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutServicesInput = {
@@ -848,6 +876,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutServicesInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileCreateWithoutAvailabilitiesInput = {
@@ -867,6 +896,7 @@ export type ProfessionalProfileCreateWithoutAvailabilitiesInput = {
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutAvailabilitiesInput = {
@@ -886,6 +916,7 @@ export type ProfessionalProfileUncheckedCreateWithoutAvailabilitiesInput = {
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutAvailabilitiesInput = {
@@ -921,6 +952,7 @@ export type ProfessionalProfileUpdateWithoutAvailabilitiesInput = {
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutAvailabilitiesInput = {
@@ -940,6 +972,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutAvailabilitiesInput = {
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileCreateWithoutBookingsInput = {
@@ -959,6 +992,7 @@ export type ProfessionalProfileCreateWithoutBookingsInput = {
   services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutBookingsInput = {
@@ -978,6 +1012,7 @@ export type ProfessionalProfileUncheckedCreateWithoutBookingsInput = {
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutBookingsInput = {
@@ -1013,6 +1048,7 @@ export type ProfessionalProfileUpdateWithoutBookingsInput = {
   services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutBookingsInput = {
@@ -1032,6 +1068,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutBookingsInput = {
   services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileCreateWithoutSubscriptionInput = {
@@ -1051,6 +1088,7 @@ export type ProfessionalProfileCreateWithoutSubscriptionInput = {
   services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
   products?: Prisma.ProductCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutSubscriptionInput = {
@@ -1070,6 +1108,7 @@ export type ProfessionalProfileUncheckedCreateWithoutSubscriptionInput = {
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutSubscriptionInput = {
@@ -1105,6 +1144,7 @@ export type ProfessionalProfileUpdateWithoutSubscriptionInput = {
   services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
   products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutSubscriptionInput = {
@@ -1123,6 +1163,103 @@ export type ProfessionalProfileUncheckedUpdateWithoutSubscriptionInput = {
   availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProfileNestedInput
   services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
+  products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUncheckedUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfessionalProfileCreateWithoutAdCampaignsInput = {
+  id?: string
+  title?: string | null
+  bio?: string | null
+  phone?: string | null
+  city?: string | null
+  pricePerSession?: number
+  specialties?: string
+  stripeAccountId?: string | null
+  published?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutProfessionalProfileInput
+  availabilities?: Prisma.AvailabilityCreateNestedManyWithoutProfileInput
+  services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductCreateNestedManyWithoutProfileInput
+}
+
+export type ProfessionalProfileUncheckedCreateWithoutAdCampaignsInput = {
+  id?: string
+  userId: string
+  title?: string | null
+  bio?: string | null
+  phone?: string | null
+  city?: string | null
+  pricePerSession?: number
+  specialties?: string
+  stripeAccountId?: string | null
+  published?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  availabilities?: Prisma.AvailabilityUncheckedCreateNestedManyWithoutProfileInput
+  services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutProfileInput
+}
+
+export type ProfessionalProfileCreateOrConnectWithoutAdCampaignsInput = {
+  where: Prisma.ProfessionalProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutAdCampaignsInput, Prisma.ProfessionalProfileUncheckedCreateWithoutAdCampaignsInput>
+}
+
+export type ProfessionalProfileUpsertWithoutAdCampaignsInput = {
+  update: Prisma.XOR<Prisma.ProfessionalProfileUpdateWithoutAdCampaignsInput, Prisma.ProfessionalProfileUncheckedUpdateWithoutAdCampaignsInput>
+  create: Prisma.XOR<Prisma.ProfessionalProfileCreateWithoutAdCampaignsInput, Prisma.ProfessionalProfileUncheckedCreateWithoutAdCampaignsInput>
+  where?: Prisma.ProfessionalProfileWhereInput
+}
+
+export type ProfessionalProfileUpdateToOneWithWhereWithoutAdCampaignsInput = {
+  where?: Prisma.ProfessionalProfileWhereInput
+  data: Prisma.XOR<Prisma.ProfessionalProfileUpdateWithoutAdCampaignsInput, Prisma.ProfessionalProfileUncheckedUpdateWithoutAdCampaignsInput>
+}
+
+export type ProfessionalProfileUpdateWithoutAdCampaignsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
+  specialties?: Prisma.StringFieldUpdateOperationsInput | string
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutProfessionalProfileNestedInput
+  availabilities?: Prisma.AvailabilityUpdateManyWithoutProfileNestedInput
+  services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
+  products?: Prisma.ProductUpdateManyWithoutProfileNestedInput
+}
+
+export type ProfessionalProfileUncheckedUpdateWithoutAdCampaignsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
+  specialties?: Prisma.StringFieldUpdateOperationsInput | string
+  stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  published?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  availabilities?: Prisma.AvailabilityUncheckedUpdateManyWithoutProfileNestedInput
+  services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
+  subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
   products?: Prisma.ProductUncheckedUpdateManyWithoutProfileNestedInput
 }
 
@@ -1143,6 +1280,7 @@ export type ProfessionalProfileCreateWithoutProductsInput = {
   services?: Prisma.ServiceCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionCreateNestedOneWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileUncheckedCreateWithoutProductsInput = {
@@ -1162,6 +1300,7 @@ export type ProfessionalProfileUncheckedCreateWithoutProductsInput = {
   services?: Prisma.ServiceUncheckedCreateNestedManyWithoutProfileInput
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfileInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedCreateNestedOneWithoutProfileInput
+  adCampaigns?: Prisma.AdCampaignUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfessionalProfileCreateOrConnectWithoutProductsInput = {
@@ -1197,6 +1336,7 @@ export type ProfessionalProfileUpdateWithoutProductsInput = {
   services?: Prisma.ServiceUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUpdateOneWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfessionalProfileUncheckedUpdateWithoutProductsInput = {
@@ -1216,6 +1356,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutProductsInput = {
   services?: Prisma.ServiceUncheckedUpdateManyWithoutProfileNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutProfileNestedInput
   subscription?: Prisma.ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput
+  adCampaigns?: Prisma.AdCampaignUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 
@@ -1228,6 +1369,7 @@ export type ProfessionalProfileCountOutputType = {
   services: number
   bookings: number
   products: number
+  adCampaigns: number
 }
 
 export type ProfessionalProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1235,6 +1377,7 @@ export type ProfessionalProfileCountOutputTypeSelect<ExtArgs extends runtime.Typ
   services?: boolean | ProfessionalProfileCountOutputTypeCountServicesArgs
   bookings?: boolean | ProfessionalProfileCountOutputTypeCountBookingsArgs
   products?: boolean | ProfessionalProfileCountOutputTypeCountProductsArgs
+  adCampaigns?: boolean | ProfessionalProfileCountOutputTypeCountAdCampaignsArgs
 }
 
 /**
@@ -1275,6 +1418,13 @@ export type ProfessionalProfileCountOutputTypeCountProductsArgs<ExtArgs extends 
   where?: Prisma.ProductWhereInput
 }
 
+/**
+ * ProfessionalProfileCountOutputType without action
+ */
+export type ProfessionalProfileCountOutputTypeCountAdCampaignsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AdCampaignWhereInput
+}
+
 
 export type ProfessionalProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1295,6 +1445,7 @@ export type ProfessionalProfileSelect<ExtArgs extends runtime.Types.Extensions.I
   bookings?: boolean | Prisma.ProfessionalProfile$bookingsArgs<ExtArgs>
   subscription?: boolean | Prisma.ProfessionalProfile$subscriptionArgs<ExtArgs>
   products?: boolean | Prisma.ProfessionalProfile$productsArgs<ExtArgs>
+  adCampaigns?: boolean | Prisma.ProfessionalProfile$adCampaignsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["professionalProfile"]>
 
@@ -1353,6 +1504,7 @@ export type ProfessionalProfileInclude<ExtArgs extends runtime.Types.Extensions.
   bookings?: boolean | Prisma.ProfessionalProfile$bookingsArgs<ExtArgs>
   subscription?: boolean | Prisma.ProfessionalProfile$subscriptionArgs<ExtArgs>
   products?: boolean | Prisma.ProfessionalProfile$productsArgs<ExtArgs>
+  adCampaigns?: boolean | Prisma.ProfessionalProfile$adCampaignsArgs<ExtArgs>
   _count?: boolean | Prisma.ProfessionalProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProfessionalProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1371,6 +1523,7 @@ export type $ProfessionalProfilePayload<ExtArgs extends runtime.Types.Extensions
     bookings: Prisma.$BookingPayload<ExtArgs>[]
     subscription: Prisma.$ProfessionalSubscriptionPayload<ExtArgs> | null
     products: Prisma.$ProductPayload<ExtArgs>[]
+    adCampaigns: Prisma.$AdCampaignPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1785,6 +1938,7 @@ export interface Prisma__ProfessionalProfileClient<T, Null = never, ExtArgs exte
   bookings<T extends Prisma.ProfessionalProfile$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalProfile$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscription<T extends Prisma.ProfessionalProfile$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalProfile$subscriptionArgs<ExtArgs>>): Prisma.Prisma__ProfessionalSubscriptionClient<runtime.Types.Result.GetResult<Prisma.$ProfessionalSubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   products<T extends Prisma.ProfessionalProfile$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalProfile$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adCampaigns<T extends Prisma.ProfessionalProfile$adCampaignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfessionalProfile$adCampaignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AdCampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2339,6 +2493,30 @@ export type ProfessionalProfile$productsArgs<ExtArgs extends runtime.Types.Exten
   take?: number
   skip?: number
   distinct?: Prisma.ProductScalarFieldEnum | Prisma.ProductScalarFieldEnum[]
+}
+
+/**
+ * ProfessionalProfile.adCampaigns
+ */
+export type ProfessionalProfile$adCampaignsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AdCampaign
+   */
+  select?: Prisma.AdCampaignSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AdCampaign
+   */
+  omit?: Prisma.AdCampaignOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdCampaignInclude<ExtArgs> | null
+  where?: Prisma.AdCampaignWhereInput
+  orderBy?: Prisma.AdCampaignOrderByWithRelationInput | Prisma.AdCampaignOrderByWithRelationInput[]
+  cursor?: Prisma.AdCampaignWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AdCampaignScalarFieldEnum | Prisma.AdCampaignScalarFieldEnum[]
 }
 
 /**

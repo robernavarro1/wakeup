@@ -6,11 +6,18 @@ import { getResend } from "@/lib/resend"
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password, role } = await request.json()
+    const { name, email, password, role, acceptTerms } = await request.json()
 
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email y contraseña son requeridos" },
+        { status: 400 }
+      )
+    }
+
+    if (!acceptTerms) {
+      return NextResponse.json(
+        { error: "Debes aceptar los términos y condiciones y la política de privacidad" },
         { status: 400 }
       )
     }
@@ -31,6 +38,7 @@ export async function POST(request: Request) {
         email,
         password: hashedPassword,
         role: role || "STUDENT",
+        termsAcceptedAt: new Date(),
       },
     })
 
@@ -47,7 +55,8 @@ export async function POST(request: Request) {
       data: { identifier: email, token, expires: expiresAt },
     })
 
-    const verifyUrl = `https://wakeup-app.com/auth/verify-email?token=${token}&email=${encodeURIComponent(email)}`
+    const appUrl = process.env.AUTH_URL || process.env.NEXTAUTH_URL || "https://wakeup-app.com"
+    const verifyUrl = `${appUrl}/auth/verify-email?token=${token}&email=${encodeURIComponent(email)}`
 
 try { await getResend().emails.send({
     from: "Wakeup <hola@wakeup-app.com>",

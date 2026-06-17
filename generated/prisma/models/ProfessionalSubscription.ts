@@ -20,13 +20,28 @@ export type ProfessionalSubscriptionModel = runtime.Types.Result.DefaultSelectio
 
 export type AggregateProfessionalSubscription = {
   _count: ProfessionalSubscriptionCountAggregateOutputType | null
+  _avg: ProfessionalSubscriptionAvgAggregateOutputType | null
+  _sum: ProfessionalSubscriptionSumAggregateOutputType | null
   _min: ProfessionalSubscriptionMinAggregateOutputType | null
   _max: ProfessionalSubscriptionMaxAggregateOutputType | null
+}
+
+export type ProfessionalSubscriptionAvgAggregateOutputType = {
+  maxCategories: number | null
+  maxDisciplines: number | null
+}
+
+export type ProfessionalSubscriptionSumAggregateOutputType = {
+  maxCategories: number | null
+  maxDisciplines: number | null
 }
 
 export type ProfessionalSubscriptionMinAggregateOutputType = {
   id: string | null
   profileId: string | null
+  plan: string | null
+  maxCategories: number | null
+  maxDisciplines: number | null
   stripeSubscriptionId: string | null
   status: string | null
   trialEndsAt: Date | null
@@ -39,6 +54,9 @@ export type ProfessionalSubscriptionMinAggregateOutputType = {
 export type ProfessionalSubscriptionMaxAggregateOutputType = {
   id: string | null
   profileId: string | null
+  plan: string | null
+  maxCategories: number | null
+  maxDisciplines: number | null
   stripeSubscriptionId: string | null
   status: string | null
   trialEndsAt: Date | null
@@ -51,6 +69,9 @@ export type ProfessionalSubscriptionMaxAggregateOutputType = {
 export type ProfessionalSubscriptionCountAggregateOutputType = {
   id: number
   profileId: number
+  plan: number
+  maxCategories: number
+  maxDisciplines: number
   stripeSubscriptionId: number
   status: number
   trialEndsAt: number
@@ -62,9 +83,22 @@ export type ProfessionalSubscriptionCountAggregateOutputType = {
 }
 
 
+export type ProfessionalSubscriptionAvgAggregateInputType = {
+  maxCategories?: true
+  maxDisciplines?: true
+}
+
+export type ProfessionalSubscriptionSumAggregateInputType = {
+  maxCategories?: true
+  maxDisciplines?: true
+}
+
 export type ProfessionalSubscriptionMinAggregateInputType = {
   id?: true
   profileId?: true
+  plan?: true
+  maxCategories?: true
+  maxDisciplines?: true
   stripeSubscriptionId?: true
   status?: true
   trialEndsAt?: true
@@ -77,6 +111,9 @@ export type ProfessionalSubscriptionMinAggregateInputType = {
 export type ProfessionalSubscriptionMaxAggregateInputType = {
   id?: true
   profileId?: true
+  plan?: true
+  maxCategories?: true
+  maxDisciplines?: true
   stripeSubscriptionId?: true
   status?: true
   trialEndsAt?: true
@@ -89,6 +126,9 @@ export type ProfessionalSubscriptionMaxAggregateInputType = {
 export type ProfessionalSubscriptionCountAggregateInputType = {
   id?: true
   profileId?: true
+  plan?: true
+  maxCategories?: true
+  maxDisciplines?: true
   stripeSubscriptionId?: true
   status?: true
   trialEndsAt?: true
@@ -137,6 +177,18 @@ export type ProfessionalSubscriptionAggregateArgs<ExtArgs extends runtime.Types.
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ProfessionalSubscriptionAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ProfessionalSubscriptionSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ProfessionalSubscriptionMinAggregateInputType
@@ -167,6 +219,8 @@ export type ProfessionalSubscriptionGroupByArgs<ExtArgs extends runtime.Types.Ex
   take?: number
   skip?: number
   _count?: ProfessionalSubscriptionCountAggregateInputType | true
+  _avg?: ProfessionalSubscriptionAvgAggregateInputType
+  _sum?: ProfessionalSubscriptionSumAggregateInputType
   _min?: ProfessionalSubscriptionMinAggregateInputType
   _max?: ProfessionalSubscriptionMaxAggregateInputType
 }
@@ -174,6 +228,9 @@ export type ProfessionalSubscriptionGroupByArgs<ExtArgs extends runtime.Types.Ex
 export type ProfessionalSubscriptionGroupByOutputType = {
   id: string
   profileId: string
+  plan: string
+  maxCategories: number
+  maxDisciplines: number
   stripeSubscriptionId: string | null
   status: string
   trialEndsAt: Date | null
@@ -182,6 +239,8 @@ export type ProfessionalSubscriptionGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: ProfessionalSubscriptionCountAggregateOutputType | null
+  _avg: ProfessionalSubscriptionAvgAggregateOutputType | null
+  _sum: ProfessionalSubscriptionSumAggregateOutputType | null
   _min: ProfessionalSubscriptionMinAggregateOutputType | null
   _max: ProfessionalSubscriptionMaxAggregateOutputType | null
 }
@@ -207,6 +266,9 @@ export type ProfessionalSubscriptionWhereInput = {
   NOT?: Prisma.ProfessionalSubscriptionWhereInput | Prisma.ProfessionalSubscriptionWhereInput[]
   id?: Prisma.StringFilter<"ProfessionalSubscription"> | string
   profileId?: Prisma.StringFilter<"ProfessionalSubscription"> | string
+  plan?: Prisma.StringFilter<"ProfessionalSubscription"> | string
+  maxCategories?: Prisma.IntFilter<"ProfessionalSubscription"> | number
+  maxDisciplines?: Prisma.IntFilter<"ProfessionalSubscription"> | number
   stripeSubscriptionId?: Prisma.StringNullableFilter<"ProfessionalSubscription"> | string | null
   status?: Prisma.StringFilter<"ProfessionalSubscription"> | string
   trialEndsAt?: Prisma.DateTimeNullableFilter<"ProfessionalSubscription"> | Date | string | null
@@ -220,6 +282,9 @@ export type ProfessionalSubscriptionWhereInput = {
 export type ProfessionalSubscriptionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
+  maxCategories?: Prisma.SortOrder
+  maxDisciplines?: Prisma.SortOrder
   stripeSubscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -236,6 +301,9 @@ export type ProfessionalSubscriptionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ProfessionalSubscriptionWhereInput | Prisma.ProfessionalSubscriptionWhereInput[]
   OR?: Prisma.ProfessionalSubscriptionWhereInput[]
   NOT?: Prisma.ProfessionalSubscriptionWhereInput | Prisma.ProfessionalSubscriptionWhereInput[]
+  plan?: Prisma.StringFilter<"ProfessionalSubscription"> | string
+  maxCategories?: Prisma.IntFilter<"ProfessionalSubscription"> | number
+  maxDisciplines?: Prisma.IntFilter<"ProfessionalSubscription"> | number
   stripeSubscriptionId?: Prisma.StringNullableFilter<"ProfessionalSubscription"> | string | null
   status?: Prisma.StringFilter<"ProfessionalSubscription"> | string
   trialEndsAt?: Prisma.DateTimeNullableFilter<"ProfessionalSubscription"> | Date | string | null
@@ -249,6 +317,9 @@ export type ProfessionalSubscriptionWhereUniqueInput = Prisma.AtLeast<{
 export type ProfessionalSubscriptionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
+  maxCategories?: Prisma.SortOrder
+  maxDisciplines?: Prisma.SortOrder
   stripeSubscriptionId?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -257,8 +328,10 @@ export type ProfessionalSubscriptionOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ProfessionalSubscriptionCountOrderByAggregateInput
+  _avg?: Prisma.ProfessionalSubscriptionAvgOrderByAggregateInput
   _max?: Prisma.ProfessionalSubscriptionMaxOrderByAggregateInput
   _min?: Prisma.ProfessionalSubscriptionMinOrderByAggregateInput
+  _sum?: Prisma.ProfessionalSubscriptionSumOrderByAggregateInput
 }
 
 export type ProfessionalSubscriptionScalarWhereWithAggregatesInput = {
@@ -267,6 +340,9 @@ export type ProfessionalSubscriptionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ProfessionalSubscriptionScalarWhereWithAggregatesInput | Prisma.ProfessionalSubscriptionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ProfessionalSubscription"> | string
   profileId?: Prisma.StringWithAggregatesFilter<"ProfessionalSubscription"> | string
+  plan?: Prisma.StringWithAggregatesFilter<"ProfessionalSubscription"> | string
+  maxCategories?: Prisma.IntWithAggregatesFilter<"ProfessionalSubscription"> | number
+  maxDisciplines?: Prisma.IntWithAggregatesFilter<"ProfessionalSubscription"> | number
   stripeSubscriptionId?: Prisma.StringNullableWithAggregatesFilter<"ProfessionalSubscription"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"ProfessionalSubscription"> | string
   trialEndsAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ProfessionalSubscription"> | Date | string | null
@@ -278,6 +354,9 @@ export type ProfessionalSubscriptionScalarWhereWithAggregatesInput = {
 
 export type ProfessionalSubscriptionCreateInput = {
   id?: string
+  plan?: string
+  maxCategories?: number
+  maxDisciplines?: number
   stripeSubscriptionId?: string | null
   status?: string
   trialEndsAt?: Date | string | null
@@ -291,6 +370,9 @@ export type ProfessionalSubscriptionCreateInput = {
 export type ProfessionalSubscriptionUncheckedCreateInput = {
   id?: string
   profileId: string
+  plan?: string
+  maxCategories?: number
+  maxDisciplines?: number
   stripeSubscriptionId?: string | null
   status?: string
   trialEndsAt?: Date | string | null
@@ -302,6 +384,9 @@ export type ProfessionalSubscriptionUncheckedCreateInput = {
 
 export type ProfessionalSubscriptionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  plan?: Prisma.StringFieldUpdateOperationsInput | string
+  maxCategories?: Prisma.IntFieldUpdateOperationsInput | number
+  maxDisciplines?: Prisma.IntFieldUpdateOperationsInput | number
   stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -315,6 +400,9 @@ export type ProfessionalSubscriptionUpdateInput = {
 export type ProfessionalSubscriptionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  plan?: Prisma.StringFieldUpdateOperationsInput | string
+  maxCategories?: Prisma.IntFieldUpdateOperationsInput | number
+  maxDisciplines?: Prisma.IntFieldUpdateOperationsInput | number
   stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -327,6 +415,9 @@ export type ProfessionalSubscriptionUncheckedUpdateInput = {
 export type ProfessionalSubscriptionCreateManyInput = {
   id?: string
   profileId: string
+  plan?: string
+  maxCategories?: number
+  maxDisciplines?: number
   stripeSubscriptionId?: string | null
   status?: string
   trialEndsAt?: Date | string | null
@@ -338,6 +429,9 @@ export type ProfessionalSubscriptionCreateManyInput = {
 
 export type ProfessionalSubscriptionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  plan?: Prisma.StringFieldUpdateOperationsInput | string
+  maxCategories?: Prisma.IntFieldUpdateOperationsInput | number
+  maxDisciplines?: Prisma.IntFieldUpdateOperationsInput | number
   stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -350,6 +444,9 @@ export type ProfessionalSubscriptionUpdateManyMutationInput = {
 export type ProfessionalSubscriptionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   profileId?: Prisma.StringFieldUpdateOperationsInput | string
+  plan?: Prisma.StringFieldUpdateOperationsInput | string
+  maxCategories?: Prisma.IntFieldUpdateOperationsInput | number
+  maxDisciplines?: Prisma.IntFieldUpdateOperationsInput | number
   stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -367,6 +464,9 @@ export type ProfessionalSubscriptionNullableScalarRelationFilter = {
 export type ProfessionalSubscriptionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
+  maxCategories?: Prisma.SortOrder
+  maxDisciplines?: Prisma.SortOrder
   stripeSubscriptionId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
@@ -376,9 +476,17 @@ export type ProfessionalSubscriptionCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type ProfessionalSubscriptionAvgOrderByAggregateInput = {
+  maxCategories?: Prisma.SortOrder
+  maxDisciplines?: Prisma.SortOrder
+}
+
 export type ProfessionalSubscriptionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
+  maxCategories?: Prisma.SortOrder
+  maxDisciplines?: Prisma.SortOrder
   stripeSubscriptionId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
@@ -391,6 +499,9 @@ export type ProfessionalSubscriptionMaxOrderByAggregateInput = {
 export type ProfessionalSubscriptionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   profileId?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
+  maxCategories?: Prisma.SortOrder
+  maxDisciplines?: Prisma.SortOrder
   stripeSubscriptionId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   trialEndsAt?: Prisma.SortOrder
@@ -398,6 +509,11 @@ export type ProfessionalSubscriptionMinOrderByAggregateInput = {
   currentPeriodEnd?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type ProfessionalSubscriptionSumOrderByAggregateInput = {
+  maxCategories?: Prisma.SortOrder
+  maxDisciplines?: Prisma.SortOrder
 }
 
 export type ProfessionalSubscriptionCreateNestedOneWithoutProfileInput = {
@@ -434,6 +550,9 @@ export type ProfessionalSubscriptionUncheckedUpdateOneWithoutProfileNestedInput 
 
 export type ProfessionalSubscriptionCreateWithoutProfileInput = {
   id?: string
+  plan?: string
+  maxCategories?: number
+  maxDisciplines?: number
   stripeSubscriptionId?: string | null
   status?: string
   trialEndsAt?: Date | string | null
@@ -445,6 +564,9 @@ export type ProfessionalSubscriptionCreateWithoutProfileInput = {
 
 export type ProfessionalSubscriptionUncheckedCreateWithoutProfileInput = {
   id?: string
+  plan?: string
+  maxCategories?: number
+  maxDisciplines?: number
   stripeSubscriptionId?: string | null
   status?: string
   trialEndsAt?: Date | string | null
@@ -472,6 +594,9 @@ export type ProfessionalSubscriptionUpdateToOneWithWhereWithoutProfileInput = {
 
 export type ProfessionalSubscriptionUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  plan?: Prisma.StringFieldUpdateOperationsInput | string
+  maxCategories?: Prisma.IntFieldUpdateOperationsInput | number
+  maxDisciplines?: Prisma.IntFieldUpdateOperationsInput | number
   stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -483,6 +608,9 @@ export type ProfessionalSubscriptionUpdateWithoutProfileInput = {
 
 export type ProfessionalSubscriptionUncheckedUpdateWithoutProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  plan?: Prisma.StringFieldUpdateOperationsInput | string
+  maxCategories?: Prisma.IntFieldUpdateOperationsInput | number
+  maxDisciplines?: Prisma.IntFieldUpdateOperationsInput | number
   stripeSubscriptionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   trialEndsAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -497,6 +625,9 @@ export type ProfessionalSubscriptionUncheckedUpdateWithoutProfileInput = {
 export type ProfessionalSubscriptionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  plan?: boolean
+  maxCategories?: boolean
+  maxDisciplines?: boolean
   stripeSubscriptionId?: boolean
   status?: boolean
   trialEndsAt?: boolean
@@ -510,6 +641,9 @@ export type ProfessionalSubscriptionSelect<ExtArgs extends runtime.Types.Extensi
 export type ProfessionalSubscriptionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  plan?: boolean
+  maxCategories?: boolean
+  maxDisciplines?: boolean
   stripeSubscriptionId?: boolean
   status?: boolean
   trialEndsAt?: boolean
@@ -523,6 +657,9 @@ export type ProfessionalSubscriptionSelectCreateManyAndReturn<ExtArgs extends ru
 export type ProfessionalSubscriptionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   profileId?: boolean
+  plan?: boolean
+  maxCategories?: boolean
+  maxDisciplines?: boolean
   stripeSubscriptionId?: boolean
   status?: boolean
   trialEndsAt?: boolean
@@ -536,6 +673,9 @@ export type ProfessionalSubscriptionSelectUpdateManyAndReturn<ExtArgs extends ru
 export type ProfessionalSubscriptionSelectScalar = {
   id?: boolean
   profileId?: boolean
+  plan?: boolean
+  maxCategories?: boolean
+  maxDisciplines?: boolean
   stripeSubscriptionId?: boolean
   status?: boolean
   trialEndsAt?: boolean
@@ -545,7 +685,7 @@ export type ProfessionalSubscriptionSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ProfessionalSubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "stripeSubscriptionId" | "status" | "trialEndsAt" | "currentPeriodStart" | "currentPeriodEnd" | "createdAt" | "updatedAt", ExtArgs["result"]["professionalSubscription"]>
+export type ProfessionalSubscriptionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "profileId" | "plan" | "maxCategories" | "maxDisciplines" | "stripeSubscriptionId" | "status" | "trialEndsAt" | "currentPeriodStart" | "currentPeriodEnd" | "createdAt" | "updatedAt", ExtArgs["result"]["professionalSubscription"]>
 export type ProfessionalSubscriptionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   profile?: boolean | Prisma.ProfessionalProfileDefaultArgs<ExtArgs>
 }
@@ -564,6 +704,9 @@ export type $ProfessionalSubscriptionPayload<ExtArgs extends runtime.Types.Exten
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     profileId: string
+    plan: string
+    maxCategories: number
+    maxDisciplines: number
     stripeSubscriptionId: string | null
     status: string
     trialEndsAt: Date | null
@@ -997,6 +1140,9 @@ export interface Prisma__ProfessionalSubscriptionClient<T, Null = never, ExtArgs
 export interface ProfessionalSubscriptionFieldRefs {
   readonly id: Prisma.FieldRef<"ProfessionalSubscription", 'String'>
   readonly profileId: Prisma.FieldRef<"ProfessionalSubscription", 'String'>
+  readonly plan: Prisma.FieldRef<"ProfessionalSubscription", 'String'>
+  readonly maxCategories: Prisma.FieldRef<"ProfessionalSubscription", 'Int'>
+  readonly maxDisciplines: Prisma.FieldRef<"ProfessionalSubscription", 'Int'>
   readonly stripeSubscriptionId: Prisma.FieldRef<"ProfessionalSubscription", 'String'>
   readonly status: Prisma.FieldRef<"ProfessionalSubscription", 'String'>
   readonly trialEndsAt: Prisma.FieldRef<"ProfessionalSubscription", 'DateTime'>

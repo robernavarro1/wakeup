@@ -2,3 +2,6 @@ node_modules
 .next
 *.db-journal
 .vercel
+.env
+.env.local
+*.db

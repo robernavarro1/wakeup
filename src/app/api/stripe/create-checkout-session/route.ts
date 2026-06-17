@@ -2,8 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { stripe } from "@/lib/stripe"
 import { prisma } from "@/lib/prisma"
-import { calculateFee, generateZoomLink } from "@/lib/utils"
-import { PLATFORM_FEE_PERCENT } from "@/lib/stripe"
+import { generateZoomLink } from "@/lib/utils"
 
 export async function POST(request: Request) {
   const session = await auth()
@@ -57,9 +56,6 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "El profesional ya tiene una reserva en ese horario" }, { status: 409 })
       }
 
-      const platformFee = calculateFee(actualPrice)
-      const professionalPayout = actualPrice - platformFee
-
       const booking = await prisma.booking.create({
         data: {
           clientId: session.user.id,
@@ -69,8 +65,8 @@ export async function POST(request: Request) {
           date: bookingDate,
           durationMinutes,
           price: actualPrice,
-          platformFee,
-          professionalPayout,
+          platformFee: 0,
+          professionalPayout: actualPrice,
           zoomLink: generateZoomLink(),
           notes: notes || undefined,
           status: "PENDING",
@@ -101,7 +97,7 @@ export async function POST(request: Request) {
         sessionParams.payment_intent_data = {
           transfer_data: {
             destination: profile.stripeAccountId,
-            amount: professionalPayout,
+            amount: actualPrice,
           },
         }
       }
@@ -122,17 +118,15 @@ export async function POST(request: Request) {
       }
 
       const total = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
-      const platformFee = calculateFee(total)
 
       const orderItemsData = cartItems.map((item) => {
         const itemTotal = item.product.price * item.quantity
-        const itemFee = Math.round(itemTotal * (PLATFORM_FEE_PERCENT / 100))
         return {
           productId: item.productId,
           profileId: item.product.profileId,
           quantity: item.quantity,
           price: item.product.price,
-          professionalPayout: itemTotal - itemFee,
+          professionalPayout: itemTotal,
         }
       })
 
@@ -140,7 +134,7 @@ export async function POST(request: Request) {
         data: {
           userId: session.user.id,
           total,
-          platformFee,
+          platformFee: 0,
           status: "PENDING",
           orderItems: { create: orderItemsData },
         },

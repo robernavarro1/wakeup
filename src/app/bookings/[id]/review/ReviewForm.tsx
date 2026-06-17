@@ -35,13 +35,13 @@ export function ReviewForm({ bookingId }: { bookingId: string }) {
   return (
     <form onSubmit={handleSubmit} className="mt-8 space-y-6">
       {error && (
-        <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
+        <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-sm text-red-300">
           {error}
         </div>
       )}
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-purple-300/70">
           Puntuación
         </label>
         <div className="mt-2 flex gap-1">
@@ -50,9 +50,10 @@ export function ReviewForm({ bookingId }: { bookingId: string }) {
               key={star}
               type="button"
               onClick={() => setRating(star)}
-              className={`text-2xl ${
-                star <= rating ? "text-amber-400" : "text-gray-300"
+              className={`text-3xl transition ${
+                star <= rating ? "text-amber-400" : "text-purple-600/40"
               } hover:text-amber-400`}
+              aria-label={`${star} de 5 estrellas`}
             >
               ★
             </button>
@@ -61,14 +62,14 @@ export function ReviewForm({ bookingId }: { bookingId: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">
+        <label className="block text-sm font-medium text-purple-300/70">
           Comentario (opcional)
         </label>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows={3}
-          className="mt-1 block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+          className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/60 px-3 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
           placeholder="Cuenta tu experiencia..."
         />
       </div>
@@ -76,7 +77,7 @@ export function ReviewForm({ bookingId }: { bookingId: string }) {
       <button
         type="submit"
         disabled={loading || rating === 0}
-        className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-50"
+        className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-600/25 transition hover:shadow-purple-600/40 disabled:opacity-50"
       >
         {loading ? "Enviando..." : "Enviar valoración"}
       </button>

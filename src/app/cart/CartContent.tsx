@@ -32,28 +32,36 @@ export function CartContent({
 
   async function handleRemove(productId: string) {
     setRemoving(productId)
-    await fetch("/api/cart", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId }),
-    })
-    setItems((prev) => prev.filter((i) => i.product.id !== productId))
+    try {
+      const res = await fetch("/api/cart", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId }),
+      })
+      if (!res.ok) throw new Error("Error al eliminar")
+      setItems((prev) => prev.filter((i) => i.product.id !== productId))
+    } catch (e) {
+      console.error("Error removing item:", e)
+    }
     setRemoving(null)
   }
 
   async function handleCheckout() {
     setCheckingOut(true)
-    const res = await fetch("/api/stripe/create-checkout-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "cart" }),
-    })
-    const data = await res.json()
-    if (data.url) {
-      window.open(data.url, "_blank")
-    } else {
-      setCheckingOut(false)
+    try {
+      const res = await fetch("/api/stripe/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "cart" }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      }
+    } catch (e) {
+      console.error("Checkout error:", e)
     }
+    setCheckingOut(false)
   }
 
   if (items.length === 0) {

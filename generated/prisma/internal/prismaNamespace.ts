@@ -397,6 +397,7 @@ export const ModelName = {
   TwoFactorCode: 'TwoFactorCode',
   TrustedDevice: 'TrustedDevice',
   ProfessionalSubscription: 'ProfessionalSubscription',
+  AdCampaign: 'AdCampaign',
   Product: 'Product',
   CartItem: 'CartItem',
   Order: 'Order',
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "account" | "session" | "verificationToken" | "userProfile" | "professionalProfile" | "service" | "availability" | "booking" | "review" | "twoFactorCode" | "trustedDevice" | "professionalSubscription" | "product" | "cartItem" | "order" | "orderItem"
+    modelProps: "user" | "account" | "session" | "verificationToken" | "userProfile" | "professionalProfile" | "service" | "availability" | "booking" | "review" | "twoFactorCode" | "trustedDevice" | "professionalSubscription" | "adCampaign" | "product" | "cartItem" | "order" | "orderItem"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1382,6 +1383,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AdCampaign: {
+      payload: Prisma.$AdCampaignPayload<ExtArgs>
+      fields: Prisma.AdCampaignFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AdCampaignFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AdCampaignFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload>
+        }
+        findFirst: {
+          args: Prisma.AdCampaignFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AdCampaignFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload>
+        }
+        findMany: {
+          args: Prisma.AdCampaignFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload>[]
+        }
+        create: {
+          args: Prisma.AdCampaignCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload>
+        }
+        createMany: {
+          args: Prisma.AdCampaignCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AdCampaignCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload>[]
+        }
+        delete: {
+          args: Prisma.AdCampaignDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload>
+        }
+        update: {
+          args: Prisma.AdCampaignUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload>
+        }
+        deleteMany: {
+          args: Prisma.AdCampaignDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AdCampaignUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AdCampaignUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload>[]
+        }
+        upsert: {
+          args: Prisma.AdCampaignUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdCampaignPayload>
+        }
+        aggregate: {
+          args: Prisma.AdCampaignAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAdCampaign>
+        }
+        groupBy: {
+          args: Prisma.AdCampaignGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdCampaignGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AdCampaignCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdCampaignCountAggregateOutputType> | number
+        }
+      }
+    }
     Product: {
       payload: Prisma.$ProductPayload<ExtArgs>
       fields: Prisma.ProductFieldRefs
@@ -1725,6 +1800,7 @@ export const UserScalarFieldEnum = {
   image: 'image',
   role: 'role',
   emailVerified: 'emailVerified',
+  termsAcceptedAt: 'termsAcceptedAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1888,6 +1964,9 @@ export type TrustedDeviceScalarFieldEnum = (typeof TrustedDeviceScalarFieldEnum)
 export const ProfessionalSubscriptionScalarFieldEnum = {
   id: 'id',
   profileId: 'profileId',
+  plan: 'plan',
+  maxCategories: 'maxCategories',
+  maxDisciplines: 'maxDisciplines',
   stripeSubscriptionId: 'stripeSubscriptionId',
   status: 'status',
   trialEndsAt: 'trialEndsAt',
@@ -1898,6 +1977,21 @@ export const ProfessionalSubscriptionScalarFieldEnum = {
 } as const
 
 export type ProfessionalSubscriptionScalarFieldEnum = (typeof ProfessionalSubscriptionScalarFieldEnum)[keyof typeof ProfessionalSubscriptionScalarFieldEnum]
+
+
+export const AdCampaignScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  plan: 'plan',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  price: 'price',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AdCampaignScalarFieldEnum = (typeof AdCampaignScalarFieldEnum)[keyof typeof AdCampaignScalarFieldEnum]
 
 
 export const ProductScalarFieldEnum = {
@@ -2171,6 +2265,7 @@ export type GlobalOmitConfig = {
   twoFactorCode?: Prisma.TwoFactorCodeOmit
   trustedDevice?: Prisma.TrustedDeviceOmit
   professionalSubscription?: Prisma.ProfessionalSubscriptionOmit
+  adCampaign?: Prisma.AdCampaignOmit
   product?: Prisma.ProductOmit
   cartItem?: Prisma.CartItemOmit
   order?: Prisma.OrderOmit

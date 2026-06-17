@@ -1,4 +1,4 @@
-export const PLATFORM_FEE_PERCENT = 15
+import { PLATFORM_FEE_PERCENT } from "./stripe"
 
 export function formatPrice(cents: number): string {
   return new Intl.NumberFormat("es-ES", {

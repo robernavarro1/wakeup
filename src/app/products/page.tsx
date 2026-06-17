@@ -1,8 +1,15 @@
 import { prisma } from "@/lib/prisma"
 import { formatPrice, amazonAffiliateUrl } from "@/lib/utils"
 import { AddToCartButton } from "./AddToCartButton"
+import type { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  title: "Tienda — Wakeup",
+  description: "Productos para tu despertar espiritual: esterillas de yoga, cojines de meditación, cuencos tibetanos, tarot, incienso y más.",
+  openGraph: { title: "Tienda — Wakeup", description: "Productos para el bienestar holístico y espiritual" },
+}
 
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({

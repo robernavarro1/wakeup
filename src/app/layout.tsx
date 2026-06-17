@@ -4,6 +4,7 @@ import "./globals.css"
 import { AuthProvider } from "@/providers/AuthProvider"
 import { Navbar } from "@/components/Navbar"
 import { AIAdvisorWrapper } from "@/components/AIAdvisorWrapper"
+import { CookieConsentBanner } from "@/components/CookieConsentBanner"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <AIAdvisorWrapper />
+          <CookieConsentBanner />
         </AuthProvider>
       </body>
     </html>

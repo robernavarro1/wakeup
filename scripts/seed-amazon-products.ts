@@ -107,21 +107,28 @@ const AMAZON_PRODUCTS = [
 ]
 
 async function main() {
+  const STORE_EMAIL = "tienda@wakeup-app.com"
+
   let profile = await prisma.professionalProfile.findFirst({
-    where: { title: { contains: "Wakeup" } },
+    where: { title: "Wakeup Store" },
   })
 
   if (!profile) {
-    const user = await prisma.user.findFirst()
-    if (!user) { console.log("❌ No hay usuarios en la base de datos"); return }
+    let user = await prisma.user.findUnique({ where: { email: STORE_EMAIL } })
+    if (!user) {
+      user = await prisma.user.create({
+        data: { email: STORE_EMAIL, name: "Wakeup Tienda", role: "PROFESSIONAL" },
+      })
+      console.log("👤 Usuario de tienda creado:", user.email)
+    }
     profile = await prisma.professionalProfile.upsert({
       where: { userId: user.id },
       update: {},
       create: { userId: user.id, title: "Wakeup Store", published: true },
     })
-    console.log("✅ Perfil Wakeup creado para:", user.email)
+    console.log("✅ Perfil Wakeup Store creado")
   } else {
-    console.log("✅ Perfil Wakeup encontrado")
+    console.log("✅ Perfil Wakeup Store encontrado")
   }
 
   const confirmed = await confirmDestructive(

@@ -2,6 +2,28 @@ import { notFound } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { formatPrice, amazonAffiliateUrl } from "@/lib/utils"
+import type { Metadata } from "next"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+  const user = await prisma.user.findUnique({
+    where: { id },
+    select: { name: true, professionalProfile: { select: { title: true, bio: true } } },
+  })
+  if (!user) return { title: "Profesional no encontrado — Wakeup" }
+  return {
+    title: `${user.name} — Wakeup`,
+    description: user.professionalProfile?.bio || user.professionalProfile?.title || `Perfil de ${user.name} en Wakeup`,
+    openGraph: {
+      title: `${user.name} — Wakeup`,
+      description: user.professionalProfile?.title || `Perfil profesional de ${user.name}`,
+    },
+  }
+}
 
 export default async function ProfessionalPage({
   params,
@@ -42,12 +64,21 @@ export default async function ProfessionalPage({
 
   const reviews = profile.bookings
     .filter((b) => b.review)
-    .map((b) => b.review!)
+    .map((b) => ({ review: b.review!, serviceId: b.serviceId }))
 
   const avgRating =
     reviews.length > 0
-      ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+      ? reviews.reduce((acc, r) => acc + r.review.rating, 0) / reviews.length
       : null
+
+  const serviceRatings: Record<string, { avg: number; count: number }> = {}
+  for (const { review, serviceId } of reviews) {
+    if (!serviceId) continue
+    if (!serviceRatings[serviceId]) serviceRatings[serviceId] = { avg: 0, count: 0 }
+    const s = serviceRatings[serviceId]
+    s.avg = (s.avg * s.count + review.rating) / (s.count + 1)
+    s.count++
+  }
 
   const DAYS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
 
@@ -129,25 +160,41 @@ export default async function ProfessionalPage({
         <div className="mt-6 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl shadow-purple-950/40">
           <div className="mb-4 flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/20 text-lg">✨</span>
-            <h2 className="text-lg font-semibold text-white">Servicios</h2>
+            <h2 className="text-lg font-semibold text-white">Servicios y cursos</h2>
           </div>
           <div className="space-y-3">
-            {profile.services.map((service) => (
-              <div
-                key={service.id}
-                className="flex items-center justify-between rounded-xl border border-white/5 bg-purple-950/40 p-4 transition hover:border-purple-500/20"
-              >
-                <div>
-                  <p className="font-medium text-white">{service.name}</p>
-                  <p className="text-sm text-purple-300/50">
-                    {service.durationMinutes} min
-                  </p>
+            {profile.services.map((service) => {
+              const rating = serviceRatings[service.id]
+              return (
+                <div
+                  key={service.id}
+                  className="rounded-xl border border-white/5 bg-purple-950/40 p-4 transition hover:border-purple-500/20"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="font-medium text-white">{service.name}</p>
+                    <p className="text-lg font-semibold text-amber-300">
+                      {service.price / 100} €
+                    </p>
+                  </div>
+                  <div className="mt-1 flex items-center gap-3 text-sm text-purple-300/50">
+                    <span>{service.durationMinutes} min</span>
+                    {rating && (
+                      <span className="text-amber-400">
+                        {"★".repeat(Math.round(rating.avg))}
+                        {"☆".repeat(5 - Math.round(rating.avg))}
+                        <span className="text-purple-300/50 ml-1">({rating.count})</span>
+                      </span>
+                    )}
+                    {!rating && reviews.length > 0 && (
+                      <span className="text-purple-300/30">Sin valoraciones</span>
+                    )}
+                  </div>
+                  {service.description && (
+                    <p className="mt-2 text-sm text-purple-200/60">{service.description}</p>
+                  )}
                 </div>
-                <p className="text-lg font-semibold text-amber-300">
-                  {service.price / 100} €
-                </p>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       )}
@@ -223,7 +270,7 @@ export default async function ProfessionalPage({
             </h2>
           </div>
           <div className="space-y-4">
-            {reviews.map((review) => {
+            {reviews.map(({ review }) => {
               const booking = profile.bookings.find(
                 (b) => b.review?.id === review.id
               )

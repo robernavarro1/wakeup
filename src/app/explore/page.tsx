@@ -1,14 +1,13 @@
 import Link from "next/link"
-import { auth } from "@/lib/auth"
 import MapComponent from "@/components/MapComponent"
 import {
   CATEGORIES,
   DEMO_PROFESSIONALS,
   DEMO_PODCASTS,
-  DEMO_ACTIVITIES,
   DEMO_EVENTS,
   getDailyPhrase,
 } from "@/lib/demo-data"
+import { FeaturedCarousel } from "@/components/FeaturedCarousel"
 
 type CategoryGroup = {
   id: string
@@ -300,12 +299,82 @@ export default async function ExplorePage({
           </p>
           <div className="mt-4 border-t border-white/5 pt-3 text-center text-[10px] text-purple-300/30">
             <p>hola@wakeup-app.com</p>
+            <div className="mt-2 flex flex-wrap justify-center gap-3">
+              <Link href="/privacy" className="hover:text-purple-300/50 transition">Privacidad</Link>
+              <Link href="/cookies" className="hover:text-purple-300/50 transition">Cookies</Link>
+              <Link href="/terms" className="hover:text-purple-300/50 transition">Términos</Link>
+              <Link href="/data" className="hover:text-purple-300/50 transition">Tus datos</Link>
+            </div>
           </div>
         </div>
       </aside>
 
+      {/* Mobile category nav */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-white/10 bg-[#0a0515]/95 backdrop-blur-xl lg:hidden">
+        <div className="flex gap-1 overflow-x-auto px-2 py-2">
+          <Link
+            href="/explore"
+            scroll={false}
+            className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
+              !activeId && !activeGroup
+                ? "bg-purple-500/20 text-purple-200"
+                : "text-purple-300/60"
+            }`}
+          >
+            ☥ Todo
+          </Link>
+          <Link
+            href="/explore?c=zona"
+            scroll={false}
+            className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
+              activeId === "zona" ? "bg-purple-500/20 text-purple-200" : "text-purple-300/60"
+            }`}
+          >
+            ⊙ Zona
+          </Link>
+          <Link
+            href="/explore?c=podcasts"
+            scroll={false}
+            className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
+              activeId === "podcasts" ? "bg-purple-500/20 text-purple-200" : "text-purple-300/60"
+            }`}
+          >
+            ◈ Podcasts
+          </Link>
+          {CATEGORY_GROUPS.map((group) => (
+            <Link
+              key={group.id}
+              href={`/explore?g=${group.id}`}
+              scroll={false}
+              className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
+                isActiveGroup(group.id)
+                  ? "bg-purple-500/20 text-purple-200"
+                  : "text-purple-300/60"
+              }`}
+            >
+              {group.icon} {group.name}
+            </Link>
+          ))}
+          <Link
+            href="/explore?c=materiales"
+            scroll={false}
+            className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
+              activeId === "materiales" ? "bg-purple-500/20 text-purple-200" : "text-purple-300/60"
+            }`}
+          >
+            ⚘ Materiales
+          </Link>
+          <Link
+            href="/products"
+            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-purple-300/60"
+          >
+            ⊞ Tienda
+          </Link>
+        </div>
+      </div>
+
       {/* Main content */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+      <div className="flex-1 overflow-y-auto p-4 pb-20 sm:p-6 lg:p-8">
         {activeGroupDef ? (
           <GroupView group={activeGroupDef} />
         ) : activeId === "podcasts" ? (
@@ -331,6 +400,7 @@ function AllView() {
 
   return (
     <div className="space-y-8">
+      <FeaturedCarousel />
       <DailyPhrase />
 
       <SectionCard title="Top Podcasts Espirituales" icon="◈">
@@ -486,45 +556,7 @@ function GroupView({ group }: { group: CategoryGroup }) {
   )
 }
 
-function CategoryPreview({
-  category,
-  professionals,
-}: {
-  category: (typeof CATEGORIES)[0]
-  professionals: (typeof DEMO_PROFESSIONALS)
-}) {
-  return (
-    <section>
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="flex items-center gap-2 text-xl font-bold text-white">
-          <span>{category.icon}</span> {category.name}
-        </h2>
-        <Link
-          href={`/explore?c=${category.id}`}
-          className="text-sm text-purple-400 hover:text-purple-300"
-        >
-          Ver todo &rarr;
-        </Link>
-      </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {professionals.length > 0 ? (
-          professionals.map((pro) => (
-            <ProfessionalCard
-              key={pro.id}
-              pro={pro}
-              categoryId={category.id}
-            />
-          ))
-        ) : (
-          <p className="col-span-full py-6 text-center text-sm text-purple-300/40">
-            Próximamente profesionales en esta categoría
-          </p>
-        )}
-      </div>
-    </section>
-  )
-}
 
 function CategoryView({
   category,
@@ -771,120 +803,7 @@ function OcultismoPodcastsView() {
   )
 }
 
-function ActivitiesView() {
-  const instructors = DEMO_PROFESSIONALS.filter(
-    (p) => p.category === "actividades"
-  )
 
-  return (
-    <div className="space-y-8">
-      <div className="mb-8">
-        <Link
-          href="/explore"
-          className="mb-4 inline-block text-sm text-purple-300/60 hover:text-purple-200"
-        >
-          &larr; Todas las categorías
-        </Link>
-        <h1 className="text-3xl font-bold text-white">
-          ◈ Actividades Físicas Espirituales
-        </h1>
-        <p className="mt-2 text-purple-200/60">
-          Grupos de yoga, Tai Chi, Bio-danza, Chi Kung y movimiento consciente para
-          conectar cuerpo y espíritu
-        </p>
-      </div>
-
-      {/* Grupos y actividades */}
-      <SectionCard title="Grupos y Clases" icon="◇">
-        {DEMO_ACTIVITIES.map((act) => {
-          const typeIcon =
-            act.type === "Tai Chi"
-              ? "☯️"
-              : act.type === "Bio-danza"
-                ? "💃"
-                : act.type === "Chi Kung"
-                  ? "🌊"
-                  : act.type === "Danza Consciente" || act.type === "Danza Circular"
-                    ? "🔄"
-                    : act.type.includes("Yoga")
-                      ? "🧘"
-                      : "✨"
-
-          return (
-            <GlassCard key={act.id}>
-              <div className="mb-2 flex items-center justify-between">
-                <span className="rounded-md bg-teal-500/20 px-2 py-0.5 text-xs text-teal-300">
-                  {typeIcon} {act.type}
-                </span>
-                <span className="font-semibold text-amber-300">
-                  {act.price / 100} &euro;
-                </span>
-              </div>
-              <h3 className="font-semibold text-white">{act.name}</h3>
-              <p className="mt-1 text-xs text-purple-300/60">
-                por {act.instructor}
-              </p>
-              <p className="mt-2 line-clamp-2 text-sm text-purple-200/70">
-                {act.description}
-              </p>
-              <div className="mt-3 space-y-1 text-xs text-purple-300/50">
-                <p>🕐 {act.schedule}</p>
-                <p>📍 {act.location}</p>
-              </div>
-            </GlassCard>
-          )
-        })}
-      </SectionCard>
-
-      {/* Profesores de actividades físicas */}
-      <SectionCard title="Profesores" icon="♁">
-        {instructors.map((pro) => (
-          <ProfessionalCard
-            key={pro.id}
-            pro={pro}
-            categoryId="actividades"
-          />
-        ))}
-      </SectionCard>
-
-      {/* Eventos de actividades */}
-      <SectionCard title="Eventos y Encuentros" icon="▲">
-        {DEMO_EVENTS.filter((e) => e.category === "actividades").map((ev) => {
-          const typeIcon =
-            ev.type === "taller"
-              ? "🔧"
-              : ev.type === "ceremonia"
-                ? "🌙"
-                : "📜"
-
-          return (
-            <GlassCard key={ev.id}>
-              <div className="mb-2 flex items-center justify-between">
-                <span className="rounded-md bg-orange-500/20 px-2 py-0.5 text-xs text-orange-300">
-                  {typeIcon} {ev.type.charAt(0).toUpperCase() + ev.type.slice(1)}
-                </span>
-                <span className="font-semibold text-amber-300">
-                  {ev.price > 0 ? `${ev.price / 100} €` : "Gratuito"}
-                </span>
-              </div>
-              <h3 className="font-semibold text-white">{ev.title}</h3>
-              <p className="mt-1 text-xs text-purple-300/60">
-                por {ev.organizer}
-              </p>
-              <div className="mt-2 flex items-center gap-3 text-xs text-purple-300/50">
-                <span>📅 {ev.date}</span>
-                <span>📍 {ev.location}</span>
-              </div>
-              <p className="mt-2 line-clamp-2 text-sm text-purple-200/70">
-                {ev.description}
-              </p>
-            </GlassCard>
-          )
-        })}
-      </SectionCard>
-    </div>
-  )
-}
 
 function LocalEventsView() {
   const localEvents = DEMO_EVENTS.filter((e) => e.category === "zona")

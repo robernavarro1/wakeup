@@ -83,6 +83,11 @@ export type TrustedDevice = Prisma.TrustedDeviceModel
  */
 export type ProfessionalSubscription = Prisma.ProfessionalSubscriptionModel
 /**
+ * Model AdCampaign
+ * 
+ */
+export type AdCampaign = Prisma.AdCampaignModel
+/**
  * Model Product
  * 
  */

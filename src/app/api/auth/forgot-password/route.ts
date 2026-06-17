@@ -18,7 +18,8 @@ export async function POST(request: Request) {
       data: { identifier: email, token, expires: expiresAt },
     })
 
-    const resetUrl = `https://wakeup-app.com/auth/reset-password?token=${token}&email=${encodeURIComponent(email)}`
+    const appUrl = process.env.AUTH_URL || process.env.NEXTAUTH_URL || "https://wakeup-app.com"
+    const resetUrl = `${appUrl}/auth/reset-password?token=${token}&email=${encodeURIComponent(email)}`
 
     try {
       await getResend().emails.send({

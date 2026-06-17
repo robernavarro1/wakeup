@@ -1,22 +1,26 @@
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
-import { notFound } from "next/navigation"
+import { redirect, notFound } from "next/navigation"
+import { auth } from "@/lib/auth"
 
 export default async function BookingSuccessPage({
   searchParams,
 }: {
   searchParams: Promise<{ bookingId: string }>
 }) {
-  const { bookingId } = await searchParams
+  const session = await auth()
+  if (!session?.user) redirect("/auth/login")
 
+  const { bookingId } = await searchParams
   if (!bookingId) notFound()
 
   const booking = await prisma.booking.findUnique({
     where: { id: bookingId },
-    select: { id: true, status: true },
+    select: { id: true, status: true, clientId: true },
   })
 
   if (!booking) notFound()
+  if (booking.clientId !== session.user.id) notFound()
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">

@@ -13,10 +13,11 @@ model User {
   name          String?
   password      String?
   image         String?
-  role          String   @default("STUDENT")
-  emailVerified DateTime?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  role             String    @default("STUDENT")
+  emailVerified    DateTime?
+  termsAcceptedAt  DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   accounts             Account[]
   sessions             Session[]
@@ -100,6 +101,7 @@ model ProfessionalProfile {
   bookings      Booking[]      @relation("ProfessionalProfileBookings")
   subscription  ProfessionalSubscription?
   products      Product[]
+  adCampaigns   AdCampaign[]
 }
 
 model Service {
@@ -196,6 +198,9 @@ model TrustedDevice {
 model ProfessionalSubscription {
   id            String   @id @default(cuid())
   profileId     String   @unique
+  plan          String   @default("SEMILLA")
+  maxCategories Int      @default(1)
+  maxDisciplines Int     @default(1)
   stripeSubscriptionId String?
   status        String   @default("TRIALING")
   trialEndsAt   DateTime?
@@ -205,6 +210,22 @@ model ProfessionalSubscription {
   updatedAt     DateTime @updatedAt
 
   profile ProfessionalProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+}
+
+model AdCampaign {
+  id            String   @id @default(cuid())
+  profileId     String
+  plan          String   // DESTELLO, BRILLO, RESPLANDOR, LUZ
+  startDate     DateTime
+  endDate       DateTime
+  price         Int
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  profile ProfessionalProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([active, endDate])
 }
 
 model Product {

@@ -46,14 +46,14 @@ export async function POST(request: Request) {
               from: "Wakeup <hola@wakeup-app.com>",
               to: booking.client.email,
               subject: "Reserva confirmada — Wakeup",
-              html: `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"><table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 20px"><tr><td align="center"><table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%"><tr><td align="center" style="padding-bottom:24px;font-size:28px;font-weight:700;color:#7c3aed;letter-spacing:-0.5px">Wakeup</td></tr><tr><td style="background:#fff;border-radius:16px;padding:40px 32px;box-shadow:0 1px 3px rgba(0,0,0,0.08)"><h1 style="margin:0;font-size:22px;font-weight:600;color:#111827">Reserva confirmada</h1><p style="margin:16px 0 0;font-size:15px;color:#6b7280;line-height:1.5">Hola ${booking.client.name || ""},</p><p style="margin:8px 0 0;font-size:15px;color:#6b7280;line-height:1.5">Tu reserva con <strong>${booking.professional.name || booking.professional.email}</strong> ha sido confirmada.</p><table style="margin:24px 0;width:100%"><tr><td style="padding:16px;background:#f9fafb;border-radius:12px"><table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Fecha</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right">${dateStr}</td></tr><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Precio</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right">${priceStr}</td></tr>${zoomLink ? `<tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Enlace</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right"><a href="${zoomLink}" style="color:#7c3aed">Unirse a videollamada</a></td></tr>` : ""}</table></td></tr></table><a href="https://wakeup-app.com/dashboard" style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:600">Ir a mi dashboard</a><p style="margin:24px 0 0;font-size:13px;color:#9ca3af">Gracias por confiar en Wakeup.</p></td></tr></table></td></tr></table></body></html>`,
+              html: `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"><table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 20px"><tr><td align="center"><table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%"><tr><td align="center" style="padding-bottom:24px;font-size:28px;font-weight:700;color:#7c3aed;letter-spacing:-0.5px">Wakeup</td></tr><tr><td style="background:#fff;border-radius:16px;padding:40px 32px;box-shadow:0 1px 3px rgba(0,0,0,0.08)"><h1 style="margin:0;font-size:22px;font-weight:600;color:#111827">Reserva confirmada</h1><p style="margin:16px 0 0;font-size:15px;color:#6b7280;line-height:1.5">Hola ${booking.client.name || ""},</p><p style="margin:8px 0 0;font-size:15px;color:#6b7280;line-height:1.5">Tu reserva con <strong>${booking.professional.name || booking.professional.email}</strong> ha sido confirmada.</p><table style="margin:24px 0;width:100%"><tr><td style="padding:16px;background:#f9fafb;border-radius:12px"><table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Fecha</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right">${dateStr}</td></tr><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Precio</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right">${priceStr}</td></tr>${zoomLink ? `<tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Enlace</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right"><a href="${zoomLink}" style="color:#7c3aed">Unirse a videollamada</a></td></tr>` : ""}</table></td></tr></table><a href="${process.env.AUTH_URL || process.env.NEXTAUTH_URL || "https://wakeup-app.com"}/dashboard" style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:600">Ir a mi dashboard</a><p style="margin:24px 0 0;font-size:13px;color:#9ca3af">Gracias por confiar en Wakeup.</p></td></tr></table></td></tr></table></body></html>`,
             })
 
             await getResend().emails.send({
               from: "Wakeup <hola@wakeup-app.com>",
               to: booking.professional.email,
               subject: "Nueva reserva recibida — Wakeup",
-              html: `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"><table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 20px"><tr><td align="center"><table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%"><tr><td align="center" style="padding-bottom:24px;font-size:28px;font-weight:700;color:#7c3aed;letter-spacing:-0.5px">Wakeup</td></tr><tr><td style="background:#fff;border-radius:16px;padding:40px 32px;box-shadow:0 1px 3px rgba(0,0,0,0.08)"><h1 style="margin:0;font-size:22px;font-weight:600;color:#111827">Nueva reserva</h1><p style="margin:16px 0 0;font-size:15px;color:#6b7280;line-height:1.5">Hola ${booking.professional.name || ""},</p><p style="margin:8px 0 0;font-size:15px;color:#6b7280;line-height:1.5">Tienes una nueva reserva confirmada con <strong>${booking.client.name || booking.client.email}</strong>.</p><table style="margin:24px 0;width:100%"><tr><td style="padding:16px;background:#f9fafb;border-radius:12px"><table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Fecha</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right">${dateStr}</td></tr><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Precio</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right">${priceStr}</td></tr><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Tu ingreso</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#059669;text-align:right">${(booking.professionalPayout / 100).toFixed(2)} €</td></tr>${zoomLink ? `<tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Enlace</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right"><a href="${zoomLink}" style="color:#7c3aed">Unirse a videollamada</a></td></tr>` : ""}</table></td></tr></table><a href="https://wakeup-app.com/dashboard" style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:600">Ir a mi dashboard</a><p style="margin:24px 0 0;font-size:13px;color:#9ca3af">Gracias por usar Wakeup.</p></td></tr></table></td></tr></table></body></html>`,
+              html: `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif"><table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:40px 20px"><tr><td align="center"><table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%"><tr><td align="center" style="padding-bottom:24px;font-size:28px;font-weight:700;color:#7c3aed;letter-spacing:-0.5px">Wakeup</td></tr><tr><td style="background:#fff;border-radius:16px;padding:40px 32px;box-shadow:0 1px 3px rgba(0,0,0,0.08)"><h1 style="margin:0;font-size:22px;font-weight:600;color:#111827">Nueva reserva</h1><p style="margin:16px 0 0;font-size:15px;color:#6b7280;line-height:1.5">Hola ${booking.professional.name || ""},</p><p style="margin:8px 0 0;font-size:15px;color:#6b7280;line-height:1.5">Tienes una nueva reserva confirmada con <strong>${booking.client.name || booking.client.email}</strong>.</p><table style="margin:24px 0;width:100%"><tr><td style="padding:16px;background:#f9fafb;border-radius:12px"><table width="100%" cellpadding="0" cellspacing="0"><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Fecha</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right">${dateStr}</td></tr><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Precio</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right">${priceStr}</td></tr><tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Tu ingreso</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#059669;text-align:right">${(booking.professionalPayout / 100).toFixed(2)} €</td></tr>${zoomLink ? `<tr><td style="padding:4px 0;font-size:14px;color:#6b7280">Enlace</td><td style="padding:4px 0;font-size:14px;font-weight:600;color:#111827;text-align:right"><a href="${zoomLink}" style="color:#7c3aed">Unirse a videollamada</a></td></tr>` : ""}</table></td></tr></table><a href="${process.env.AUTH_URL || process.env.NEXTAUTH_URL || "https://wakeup-app.com"}/dashboard" style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 32px;border-radius:8px;text-decoration:none;font-size:15px;font-weight:600">Ir a mi dashboard</a><p style="margin:24px 0 0;font-size:13px;color:#9ca3af">Gracias por usar Wakeup.</p></td></tr></table></td></tr></table></body></html>`,
             })
           }
         }
@@ -97,10 +97,45 @@ export async function POST(request: Request) {
             where: { userId },
           })
           if (profile) {
+            const plan = (session.metadata?.plan as string) || "SEMILLA"
+            const { PLANS } = await import("@/lib/plans")
+            const planConfig = PLANS[plan as keyof typeof PLANS] || PLANS.SEMILLA
             await prisma.professionalSubscription.upsert({
               where: { profileId: profile.id },
-              update: { status: "ACTIVE" },
-              create: { profileId: profile.id, status: "ACTIVE" },
+              update: {
+                status: "ACTIVE",
+                plan,
+                maxCategories: planConfig.maxCategories,
+                maxDisciplines: planConfig.maxDisciplines,
+              },
+              create: {
+                profileId: profile.id,
+                plan,
+                maxCategories: planConfig.maxCategories,
+                maxDisciplines: planConfig.maxDisciplines,
+                status: "ACTIVE",
+              },
+            })
+          }
+        }
+
+        if (type === "ad_campaign" && userId) {
+          const profile = await prisma.professionalProfile.findUnique({ where: { userId } })
+          if (profile) {
+            const { AD_PLANS } = await import("@/lib/plans")
+            const adPlan = (session.metadata?.adPlan as string) || "DESTELLO"
+            const planConfig = AD_PLANS[adPlan as keyof typeof AD_PLANS] || AD_PLANS.DESTELLO
+            const startDate = new Date()
+            const endDate = new Date(startDate.getTime() + planConfig.months * 30 * 24 * 60 * 60 * 1000)
+            await prisma.adCampaign.create({
+              data: {
+                profileId: profile.id,
+                plan: adPlan,
+                startDate,
+                endDate,
+                price: planConfig.price,
+                active: true,
+              },
             })
           }
         }
