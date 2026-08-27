@@ -39,15 +39,15 @@ export default function Home() {
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/explore"
-                className="w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 border border-white/10 bg-white/5 hover:from-purple-600 hover:to-amber-600 hover:border-purple-500/20 hover:shadow-purple-600/40"
+                className="w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 border border-white/10 bg-white/5 hover:bg-gradient-to-r hover:from-purple-600 hover:to-amber-600 hover:border-purple-500/20 hover:shadow-purple-600/40"
               >
-                <span className="relative z-10">Comienza a explorar</span>
+                Comienza a explorar
               </Link>
               <Link
                 href="/auth/register?role=PROFESSIONAL"
-                className="w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 border border-white/10 bg-white/5 hover:from-purple-600 hover:to-amber-600 hover:border-purple-500/20 hover:shadow-purple-600/40"
+                className="w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 border border-white/10 bg-white/5 hover:bg-gradient-to-r hover:from-purple-600 hover:to-amber-600 hover:border-purple-500/20 hover:shadow-purple-600/40"
               >
-                <span className="relative z-10">Soy profesional</span>
+                Soy profesional
               </Link>
             </div>
           </div>
