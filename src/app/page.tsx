@@ -38,15 +38,15 @@ export default function Home() {
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/explore"
-                className="w-full sm:w-auto rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-purple-600/25 transition hover:shadow-purple-600/40"
+                className="group w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-purple-600/40 hover:scale-105 border border-purple-500/20 bg-gradient-to-r from-purple-600/80 to-amber-600/80 hover:from-purple-600 hover:to-amber-600"
               >
-                Comienza a explorar
+                <span className="relative z-10">Comienza a explorar</span>
               </Link>
               <Link
                 href="/auth/register?role=PROFESSIONAL"
-                className="w-full sm:w-auto rounded-xl border border-purple-500/30 px-8 py-4 text-base font-semibold text-purple-300 transition hover:bg-purple-500/10"
+                className="group w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-purple-600/40 hover:scale-105 border border-purple-500/20 bg-gradient-to-r from-purple-600/80 to-amber-600/80 hover:from-purple-600 hover:to-amber-600"
               >
-                Soy profesional
+                <span className="relative z-10">Soy profesional</span>
               </Link>
             </div>
           </div>

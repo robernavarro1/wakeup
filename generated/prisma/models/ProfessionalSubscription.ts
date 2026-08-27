@@ -1384,7 +1384,6 @@ export type ProfessionalSubscriptionCreateManyArgs<ExtArgs extends runtime.Types
    * The data used to create many ProfessionalSubscriptions.
    */
   data: Prisma.ProfessionalSubscriptionCreateManyInput | Prisma.ProfessionalSubscriptionCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1403,7 +1402,6 @@ export type ProfessionalSubscriptionCreateManyAndReturnArgs<ExtArgs extends runt
    * The data used to create many ProfessionalSubscriptions.
    */
   data: Prisma.ProfessionalSubscriptionCreateManyInput | Prisma.ProfessionalSubscriptionCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

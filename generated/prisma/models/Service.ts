@@ -532,7 +532,6 @@ export type ServiceCreateOrConnectWithoutProfileInput = {
 
 export type ServiceCreateManyProfileInputEnvelope = {
   data: Prisma.ServiceCreateManyProfileInput | Prisma.ServiceCreateManyProfileInput[]
-  skipDuplicates?: boolean
 }
 
 export type ServiceUpsertWithWhereUniqueWithoutProfileInput = {
@@ -1356,7 +1355,6 @@ export type ServiceCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data used to create many Services.
    */
   data: Prisma.ServiceCreateManyInput | Prisma.ServiceCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1375,7 +1373,6 @@ export type ServiceCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * The data used to create many Services.
    */
   data: Prisma.ServiceCreateManyInput | Prisma.ServiceCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

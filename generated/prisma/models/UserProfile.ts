@@ -1238,7 +1238,6 @@ export type UserProfileCreateManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * The data used to create many UserProfiles.
    */
   data: Prisma.UserProfileCreateManyInput | Prisma.UserProfileCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -1257,7 +1256,6 @@ export type UserProfileCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ext
    * The data used to create many UserProfiles.
    */
   data: Prisma.UserProfileCreateManyInput | Prisma.UserProfileCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

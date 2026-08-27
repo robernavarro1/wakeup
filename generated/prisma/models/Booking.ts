@@ -822,7 +822,6 @@ export type BookingCreateOrConnectWithoutClientInput = {
 
 export type BookingCreateManyClientInputEnvelope = {
   data: Prisma.BookingCreateManyClientInput | Prisma.BookingCreateManyClientInput[]
-  skipDuplicates?: boolean
 }
 
 export type BookingCreateWithoutProfessionalInput = {
@@ -870,7 +869,6 @@ export type BookingCreateOrConnectWithoutProfessionalInput = {
 
 export type BookingCreateManyProfessionalInputEnvelope = {
   data: Prisma.BookingCreateManyProfessionalInput | Prisma.BookingCreateManyProfessionalInput[]
-  skipDuplicates?: boolean
 }
 
 export type BookingUpsertWithWhereUniqueWithoutClientInput = {
@@ -972,7 +970,6 @@ export type BookingCreateOrConnectWithoutProfileInput = {
 
 export type BookingCreateManyProfileInputEnvelope = {
   data: Prisma.BookingCreateManyProfileInput | Prisma.BookingCreateManyProfileInput[]
-  skipDuplicates?: boolean
 }
 
 export type BookingUpsertWithWhereUniqueWithoutProfileInput = {
@@ -2113,7 +2110,6 @@ export type BookingCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * The data used to create many Bookings.
    */
   data: Prisma.BookingCreateManyInput | Prisma.BookingCreateManyInput[]
-  skipDuplicates?: boolean
 }
 
 /**
@@ -2132,7 +2128,6 @@ export type BookingCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * The data used to create many Bookings.
    */
   data: Prisma.BookingCreateManyInput | Prisma.BookingCreateManyInput[]
-  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
