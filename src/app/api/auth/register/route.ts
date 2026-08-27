@@ -3,14 +3,53 @@ import bcrypt from "bcryptjs"
 import crypto from "crypto"
 import { prisma } from "@/lib/prisma"
 import { getResend } from "@/lib/resend"
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request)
+  const { allowed } = checkRateLimit(`register:${ip}`, 5, 60000)
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Demasiados registros. Espera un minuto e intenta de nuevo." },
+      { status: 429 }
+    )
+  }
+
   try {
     const { name, email, password, role, acceptTerms } = await request.json()
 
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email y contraseña son requeridos" },
+        { status: 400 }
+      )
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: "El email no es válido" },
+        { status: 400 }
+      )
+    }
+
+    if (password.length < 8) {
+      return NextResponse.json(
+        { error: "La contraseña debe tener al menos 8 caracteres" },
+        { status: 400 }
+      )
+    }
+
+    if (password.length > 128) {
+      return NextResponse.json(
+        { error: "La contraseña es demasiado larga" },
+        { status: 400 }
+      )
+    }
+
+    if (name && name.length > 100) {
+      return NextResponse.json(
+        { error: "El nombre es demasiado largo" },
         { status: 400 }
       )
     }
@@ -22,10 +61,18 @@ export async function POST(request: Request) {
       )
     }
 
-    const existing = await prisma.user.findUnique({ where: { email } })
+    const validRoles = ["STUDENT", "PROFESSIONAL"]
+    if (role && !validRoles.includes(role)) {
+      return NextResponse.json(
+        { error: "Rol no válido" },
+        { status: 400 }
+      )
+    }
+
+    const existing = await prisma.user.findUnique({ where: { email: email.toLowerCase() } })
     if (existing) {
       return NextResponse.json(
-        { error: "Ya tienes una cuenta con este email. Inicia sesión y ve a Dashboard > Soy profesional para añadir el perfil profesional." },
+        { error: "Ya tienes una cuenta con este email. Inicia sesión." },
         { status: 400 }
       )
     }
@@ -34,8 +81,8 @@ export async function POST(request: Request) {
 
     const user = await prisma.user.create({
       data: {
-        name,
-        email,
+        name: name?.trim() || null,
+        email: email.toLowerCase().trim(),
         password: hashedPassword,
         role: role || "STUDENT",
         termsAcceptedAt: new Date(),
@@ -49,20 +96,21 @@ export async function POST(request: Request) {
     }
 
     const token = crypto.randomBytes(32).toString("hex")
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24h
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
 
     await prisma.verificationToken.create({
-      data: { identifier: email, token, expires: expiresAt },
+      data: { identifier: email.toLowerCase(), token, expires: expiresAt },
     })
 
     const appUrl = process.env.AUTH_URL || process.env.NEXTAUTH_URL || "https://wakeup-app.com"
     const verifyUrl = `${appUrl}/auth/verify-email?token=${token}&email=${encodeURIComponent(email)}`
 
-try { await getResend().emails.send({
-    from: "Wakeup <hola@wakeup-app.com>",
-    to: email,
-    subject: "Confirma tu email — Wakeup",
-    html: `<!DOCTYPE html>
+    try {
+      await getResend().emails.send({
+        from: "Wakeup <hola@wakeup-app.com>",
+        to: email,
+        subject: "Confirma tu email — Wakeup",
+        html: `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
 <body style="margin:0;padding:0;background-color:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
@@ -87,7 +135,10 @@ try { await getResend().emails.send({
   </table>
 </body>
 </html>`,
-      }) } catch (e) { console.log("Email not sent (Resend not configured)", e instanceof Error ? e.message : "") }
+      })
+    } catch (e) {
+      console.log("Email not sent (Resend not configured)", e instanceof Error ? e.message : "")
+    }
 
     return NextResponse.json({ success: true }, { status: 201 })
   } catch (error) {

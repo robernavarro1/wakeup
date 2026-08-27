@@ -3,8 +3,15 @@ import { auth } from "@/lib/auth"
 import { stripe } from "@/lib/stripe"
 import { prisma } from "@/lib/prisma"
 import { generateZoomLink } from "@/lib/utils"
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request)
+  const { allowed } = checkRateLimit(`checkout:${ip}`, 10, 60000)
+  if (!allowed) {
+    return NextResponse.json({ error: "Demasiadas peticiones. Espera un minuto." }, { status: 429 })
+  }
+
   const session = await auth()
   if (!session?.user?.id) return NextResponse.json({ error: "No autorizado" }, { status: 401 })
 
@@ -32,6 +39,15 @@ export async function POST(request: Request) {
       }
 
       const bookingDate = new Date(date)
+
+      if (bookingDate.getTime() < Date.now() - 60000) {
+        return NextResponse.json({ error: "No puedes reservar en el pasado" }, { status: 400 })
+      }
+
+      if (professionalId === session.user.id) {
+        return NextResponse.json({ error: "No puedes reservar contigo mismo" }, { status: 400 })
+      }
+
       const bookingEnd = new Date(bookingDate.getTime() + (durationMinutes || 60) * 60000)
 
       const dayStart = new Date(bookingDate)

@@ -22,6 +22,20 @@ export async function POST(request: Request) {
 
   try {
     const { productId, quantity = 1 } = await request.json()
+
+    if (!productId || typeof productId !== "string") {
+      return NextResponse.json({ error: "Producto no válido" }, { status: 400 })
+    }
+
+    if (quantity < 1 || quantity > 99 || !Number.isInteger(quantity)) {
+      return NextResponse.json({ error: "Cantidad no válida" }, { status: 400 })
+    }
+
+    const product = await prisma.product.findUnique({ where: { id: productId } })
+    if (!product || !product.active) {
+      return NextResponse.json({ error: "Producto no disponible" }, { status: 404 })
+    }
+
     const existing = await prisma.cartItem.findUnique({
       where: { userId_productId: { userId: session.user.id, productId } },
     })
@@ -50,6 +64,9 @@ export async function DELETE(request: Request) {
 
   try {
     const { productId } = await request.json()
+    if (!productId || typeof productId !== "string") {
+      return NextResponse.json({ error: "Producto no válido" }, { status: 400 })
+    }
     await prisma.cartItem.deleteMany({
       where: { userId: session.user.id, productId },
     })
