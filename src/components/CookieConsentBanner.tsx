@@ -36,8 +36,14 @@ export function CookieConsentBanner() {
             href="/cookies"
             className="text-xs text-purple-400 hover:text-purple-300 underline"
           >
-            Más información
+            Más info
           </Link>
+          <button
+            onClick={accept}
+            className="rounded-lg border border-white/10 px-4 py-2 text-xs font-medium text-purple-300/70 transition hover:bg-white/5 hover:text-purple-200"
+          >
+            Rechazar
+          </button>
           <button
             onClick={accept}
             className="rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-5 py-2 text-xs font-semibold text-white shadow-lg transition hover:opacity-90"

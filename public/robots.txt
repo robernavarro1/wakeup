@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /auth/
+Disallow: /bookings/
+Disallow: /cart/
+Disallow: /orders/
+
+Sitemap: https://wakeup-app.com/sitemap.xml

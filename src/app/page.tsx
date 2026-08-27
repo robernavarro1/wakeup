@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { FeaturedCarousel } from "@/components/FeaturedCarousel"
 
 const categories = [
   { name: "Todas", icon: "☥", href: "/explore" },
@@ -75,6 +76,13 @@ export default function Home() {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Featured Professionals */}
+      <section className="py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <FeaturedCarousel />
         </div>
       </section>
 

@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import { formatPrice, amazonAffiliateUrl } from "@/lib/utils"
 import { AddToCartButton } from "./AddToCartButton"
@@ -44,35 +45,29 @@ export default async function ProductsPage() {
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {amazonProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="group rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-950/30 to-purple-950/40 p-6 shadow-lg shadow-amber-950/20 transition hover:border-amber-500/40"
-                  >
-                    <div className="mb-3 inline-block rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-300">
-                      🛒 Amazon
+                  <Link key={product.id} href={`/products/${product.id}`}>
+                    <div className="group rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-950/30 to-purple-950/40 p-6 shadow-lg shadow-amber-950/20 transition hover:border-amber-500/40">
+                      <div className="mb-3 inline-block rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-300">
+                        🛒 Amazon
+                      </div>
+                      {product.image && (
+                        <img src={product.image} alt={product.name} className="mb-4 h-48 w-full rounded-xl object-cover" />
+                      )}
+                      <h3 className="text-lg font-semibold text-white">{product.name}</h3>
+                      <p className="mt-1 line-clamp-2 text-sm text-purple-300/50">{product.description}</p>
+                      <p className="mt-2 text-sm text-purple-300/30">
+                        por {product.profile.user.name}
+                      </p>
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-lg font-bold text-amber-300">
+                          {product.price > 0 ? formatPrice(product.price) : "Precio en Amazon"}
+                        </span>
+                        <span className="rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-amber-600/25 transition hover:shadow-amber-600/40">
+                          Comprar
+                        </span>
+                      </div>
                     </div>
-                    {product.image && (
-                      <img src={product.image} alt={product.name} className="mb-4 h-48 w-full rounded-xl object-cover" />
-                    )}
-                    <h3 className="text-lg font-semibold text-white">{product.name}</h3>
-                    <p className="mt-1 text-sm text-purple-300/50">{product.description}</p>
-                    <p className="mt-2 text-sm text-purple-300/30">
-                      por {product.profile.user.name}
-                    </p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-lg font-bold text-amber-300">
-                        {product.price > 0 ? formatPrice(product.price) : "Precio en Amazon"}
-                      </span>
-                      <a
-                        href={amazonAffiliateUrl(product.amazonUrl!)}
-                        target="_blank"
-                        rel="noopener noreferrer sponsored"
-                        className="rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-amber-600/25 transition hover:shadow-amber-600/40"
-                      >
-                        Comprar en Amazon
-                      </a>
-                    </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </section>
@@ -90,25 +85,24 @@ export default async function ProductsPage() {
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {localProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm transition hover:border-purple-500/30"
-                  >
-                    {product.image && (
-                      <img src={product.image} alt={product.name} className="mb-4 h-48 w-full rounded-xl object-cover" />
-                    )}
-                    <h3 className="text-lg font-semibold text-white">{product.name}</h3>
-                    <p className="mt-1 text-sm text-purple-300/50">{product.description}</p>
-                    <p className="mt-2 text-sm text-purple-300/30">
-                      por {product.profile.user.name}
-                    </p>
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-lg font-bold text-purple-200">
-                        {formatPrice(product.price)}
-                      </span>
-                      <AddToCartButton productId={product.id} />
+                  <Link key={product.id} href={`/products/${product.id}`}>
+                    <div className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm transition hover:border-purple-500/30">
+                      {product.image && (
+                        <img src={product.image} alt={product.name} className="mb-4 h-48 w-full rounded-xl object-cover" />
+                      )}
+                      <h3 className="text-lg font-semibold text-white">{product.name}</h3>
+                      <p className="mt-1 line-clamp-2 text-sm text-purple-300/50">{product.description}</p>
+                      <p className="mt-2 text-sm text-purple-300/30">
+                        por {product.profile.user.name}
+                      </p>
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-lg font-bold text-purple-200">
+                          {formatPrice(product.price)}
+                        </span>
+                        <AddToCartButton productId={product.id} />
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </section>

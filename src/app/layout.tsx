@@ -17,8 +17,30 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Wakeup - Conecta con profesionales",
-  description: "Encuentra profesionales, reserva sesiones, aprende y crece",
+  title: {
+    default: "Wakeup — Conecta con profesionales holísticos",
+    template: "%s — Wakeup",
+  },
+  description: "El lugar donde profesionales del mundo holístico y espiritual comparten su sabiduría. Yoga, Reiki, meditación, Tai Chi, constelaciones, hipnosis, tarot, retiros y mucho más.",
+  keywords: ["yoga", "reiki", "meditación", "holístico", "espiritual", "profesionales", "terapias", "bienestar", "constelaciones", "tarot", "retiros"],
+  authors: [{ name: "Wakeup" }],
+  openGraph: {
+    type: "website",
+    locale: "es_ES",
+    siteName: "Wakeup",
+    title: "Wakeup — Conecta con profesionales holísticos",
+    description: "El lugar donde profesionales del mundo holístico y espiritual comparten su sabiduría.",
+    url: "https://wakeup-app.com",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Wakeup — Conecta con profesionales holísticos",
+    description: "El lugar donde profesionales del mundo holístico y espiritual comparten su sabiduría.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
