@@ -36,16 +36,16 @@ export default function Home() {
               constelaciones, hipnosis, tarot, retiros y mucho más para
               elevar tu nivel de conciencia.
             </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row group/hero">
               <Link
                 href="/explore"
-                className="group w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-purple-600/40 hover:scale-105 border border-purple-500/20 bg-gradient-to-r from-purple-600/80 to-amber-600/80 hover:from-purple-600 hover:to-amber-600"
+                className="group/btn w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 border border-purple-500/20 bg-gradient-to-r from-purple-600/80 to-amber-600/80 hover:from-purple-600 hover:to-amber-600 group-hover/hero:from-white/10 group-hover/hero:to-white/10 group-hover/hero:border-white/10 group-hover/hero:shadow-none group-hover/hero:hover:from-purple-600 group-hover/hero:hover:to-amber-600 group-hover/hero:hover:border-purple-500/20 group-hover/hero:hover:shadow-purple-600/40"
               >
                 <span className="relative z-10">Comienza a explorar</span>
               </Link>
               <Link
                 href="/auth/register?role=PROFESSIONAL"
-                className="group w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-purple-600/40 hover:scale-105 border border-purple-500/20 bg-gradient-to-r from-purple-600/80 to-amber-600/80 hover:from-purple-600 hover:to-amber-600"
+                className="group/btn w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 border border-white/10 bg-white/5 hover:from-purple-600 hover:to-amber-600 hover:border-purple-500/20 hover:shadow-purple-600/40 group-hover/hero:from-purple-600/80 group-hover/hero:to-amber-600/80 group-hover/hero:border-purple-500/20 group-hover/hero:shadow-lg group-hover/hero:shadow-purple-600/30"
               >
                 <span className="relative z-10">Soy profesional</span>
               </Link>
