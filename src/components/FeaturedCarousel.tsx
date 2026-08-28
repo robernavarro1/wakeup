@@ -12,45 +12,35 @@ interface FeaturedProfile {
 }
 
 const DEMO_PROFILES: FeaturedProfile[] = [
-  {
-    id: "demo-1",
-    title: "Maestra de Yoga y Meditación",
-    city: "Madrid",
-    specialties: "Yoga Vinyasa, Meditación Mindfulness, Retiros de silencio, Pranayama",
-    user: { name: "Elena Ruiz", image: null },
-  },
-  {
-    id: "demo-2",
-    title: "Terapeuta de Reiki y Sanación Energética",
-    city: "Barcelona",
-    specialties: "Reiki Usui, Sanación cuántica, Cristaloterapia, Chakras",
-    user: { name: "Carlos Mendoza", image: null },
-  },
-  {
-    id: "demo-3",
-    title: "Coach Espiritual y Tarotista",
-    city: "Valencia",
-    specialties: "Tarot del alma, Constelaciones familiares, Canalización, Astrología",
-    user: { name: "Lucía Fernández", image: null },
-  },
+  { id: "demo-1", title: "Luna Fernández — Sanación Energética", city: "Barcelona", specialties: "Reiki Usui, Meditación guiada, Sanación con cuencos tibetanos, Limpieza de chakras", user: { name: "Luna Fernández", image: null } },
+  { id: "demo-2", title: "Centro de Yoga Samadhi", city: "Madrid", specialties: "Hatha Yoga, Vinyasa Flow, Meditación mindfulness, Cursos de formación", user: { name: "Centro Samadhi", image: null } },
+  { id: "demo-3", title: "Carlos Montoya — Astrólogo", city: "Valencia", specialties: "Astrología predictiva, Carta natal, Sinastría de pareja, Revolución solar", user: { name: "Carlos Montoya", image: null } },
+  { id: "demo-4", title: "Isabel Torres — Tarot Terapéutico", city: "Sevilla", specialties: "Tarot evolutivo, Registros akáshicos, Canalización, Péndulo hebreo", user: { name: "Isabel Torres", image: null } },
 ]
 
+function getInitials(name: string | null): string {
+  if (!name) return "P"
+  return name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2)
+}
+
 export function FeaturedCarousel() {
-  const [profiles, setProfiles] = useState<FeaturedProfile[]>([])
+  const [profiles, setProfiles] = useState<FeaturedProfile[]>(DEMO_PROFILES)
   const [current, setCurrent] = useState(0)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetch("/api/professionals/featured")
       .then((r) => r.json())
       .then((data) => {
         const real = data.profiles || []
-        setProfiles(real.length > 0 ? real : DEMO_PROFILES)
+        if (real.length > 0) setProfiles(real)
       })
-      .catch(() => setProfiles(DEMO_PROFILES))
+      .catch(() => {})
+      .finally(() => setLoading(false))
   }, [])
 
   const next = useCallback(() => {
-    setCurrent((c) => (c + 1) % Math.max(profiles.length, 1))
+    setCurrent((c) => (c + 1) % profiles.length)
   }, [profiles.length])
 
   useEffect(() => {
@@ -58,8 +48,6 @@ export function FeaturedCarousel() {
     const timer = setInterval(next, 5000)
     return () => clearInterval(timer)
   }, [profiles.length, next])
-
-  if (profiles.length === 0) return null
 
   const p = profiles[current]
 
@@ -81,21 +69,19 @@ export function FeaturedCarousel() {
               {p.user.image ? (
                 <img src={p.user.image} alt="" className="h-full w-full rounded-full object-cover" />
               ) : (
-                (p.user.name?.[0] || "P")
+                getInitials(p.user.name)
               )}
             </div>
           </div>
           <h3 className="text-2xl font-bold text-white group-hover:text-purple-300 transition">
-            {p.title || p.user.name || "Profesional destacado"}
+            {p.title}
           </h3>
           {p.city && (
             <p className="mt-2 text-sm text-purple-300/60">
               <span className="text-purple-400/50">📍</span> {p.city}
             </p>
           )}
-          {p.specialties && (
-            <p className="mt-3 text-sm text-purple-200/70 line-clamp-2">{p.specialties}</p>
-          )}
+          <p className="mt-3 text-sm text-purple-200/70 line-clamp-2">{p.specialties}</p>
           <span className="mt-6 inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-8 py-3 text-sm font-bold text-white shadow-xl shadow-purple-600/30 transition group-hover:shadow-purple-600/50 group-hover:scale-105">
             {p.id.startsWith("demo") ? "Únete como profesional" : "Ver perfil completo"}
             <span className="text-base">→</span>
