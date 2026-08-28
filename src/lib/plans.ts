@@ -2,6 +2,7 @@ export const PLANS = {
   SEMILLA: {
     name: "Semilla",
     price: 2000,
+    monthlyPrice: 2000,
     maxCategories: 1,
     maxDisciplines: 1,
     trialDays: 14,
@@ -10,6 +11,7 @@ export const PLANS = {
   ARBOL: {
     name: "Árbol",
     price: 4000,
+    monthlyPrice: 4000,
     maxCategories: 3,
     maxDisciplines: 3,
     trialDays: 14,
@@ -18,6 +20,7 @@ export const PLANS = {
   BOSQUE: {
     name: "Bosque",
     price: 7000,
+    monthlyPrice: 7000,
     maxCategories: 999,
     maxDisciplines: 999,
     trialDays: 30,

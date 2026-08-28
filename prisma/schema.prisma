@@ -29,6 +29,7 @@ model User {
   twoFactorCodes       TwoFactorCode[]
   cartItems            CartItem[]
   orders               Order[]
+  promoUsages          PromoCodeUsage[]
 }
 
 model Account {
@@ -292,4 +293,29 @@ model OrderItem {
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([profileId])
+}
+
+model PromoCode {
+  id            String   @id @default(cuid())
+  code          String   @unique
+  freeMonths    Int      @default(3)
+  maxUses       Int?     // null = unlimited
+  usedCount     Int      @default(0)
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  usages        PromoCodeUsage[]
+}
+
+model PromoCodeUsage {
+  id            String   @id @default(cuid())
+  promoCodeId   String
+  userId        String
+  createdAt     DateTime @default(now())
+
+  promoCode PromoCode @relation(fields: [promoCodeId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([promoCodeId, userId])
+  @@index([promoCodeId])
 }

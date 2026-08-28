@@ -159,6 +159,78 @@ export async function POST(request: Request) {
         }
         break
       }
+
+      case "customer.subscription.updated": {
+        const sub = event.data.object as any
+        const subMetadata = sub.metadata || {}
+        if (subMetadata.profileId || subMetadata.userId) {
+          const profile = subMetadata.profileId
+            ? await prisma.professionalProfile.findUnique({ where: { id: subMetadata.profileId } })
+            : await prisma.professionalProfile.findUnique({ where: { userId: subMetadata.userId } })
+          if (profile) {
+            const status = sub.status === "active" ? "ACTIVE"
+              : sub.status === "past_due" ? "PAST_DUE"
+              : sub.status === "canceled" ? "CANCELLED"
+              : "TRIALING"
+            await prisma.professionalSubscription.update({
+              where: { profileId: profile.id },
+              data: { status },
+            }).catch(() => {})
+          }
+        }
+        break
+      }
+
+      case "customer.subscription.deleted": {
+        const deletedSub = event.data.object as any
+        const delMeta = deletedSub.metadata || {}
+        if (delMeta.profileId || delMeta.userId) {
+          const profile = delMeta.profileId
+            ? await prisma.professionalProfile.findUnique({ where: { id: delMeta.profileId } })
+            : await prisma.professionalProfile.findUnique({ where: { userId: delMeta.userId } })
+          if (profile) {
+            await prisma.professionalSubscription.update({
+              where: { profileId: profile.id },
+              data: { status: "CANCELLED" },
+            }).catch(() => {})
+          }
+        }
+        break
+      }
+
+      case "invoice.payment_succeeded": {
+        const invoice = event.data.object as any
+        if (invoice.subscription) {
+          const subId = invoice.subscription
+          const existing = await prisma.professionalSubscription.findFirst({
+            where: { stripeSubscriptionId: subId },
+          })
+          if (existing) {
+            await prisma.professionalSubscription.update({
+              where: { id: existing.id },
+              data: { status: "ACTIVE" },
+            })
+          }
+        }
+        break
+      }
+
+      case "invoice.payment_failed": {
+        const failedInvoice = event.data.object as any
+        if (failedInvoice.subscription) {
+          const subId = failedInvoice.subscription
+          const existing = await prisma.professionalSubscription.findFirst({
+            where: { stripeSubscriptionId: subId },
+          })
+          if (existing) {
+            await prisma.professionalSubscription.update({
+              where: { id: existing.id },
+              data: { status: "PAST_DUE" },
+            })
+          }
+        }
+        break
+      }
     }
 
     return NextResponse.json({ received: true })

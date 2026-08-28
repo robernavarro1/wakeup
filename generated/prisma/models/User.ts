@@ -232,6 +232,7 @@ export type UserWhereInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeListRelationFilter
   cartItems?: Prisma.CartItemListRelationFilter
   orders?: Prisma.OrderListRelationFilter
+  promoUsages?: Prisma.PromoCodeUsageListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -255,6 +256,7 @@ export type UserOrderByWithRelationInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeOrderByRelationAggregateInput
   cartItems?: Prisma.CartItemOrderByRelationAggregateInput
   orders?: Prisma.OrderOrderByRelationAggregateInput
+  promoUsages?: Prisma.PromoCodeUsageOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -281,6 +283,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   twoFactorCodes?: Prisma.TwoFactorCodeListRelationFilter
   cartItems?: Prisma.CartItemListRelationFilter
   orders?: Prisma.OrderListRelationFilter
+  promoUsages?: Prisma.PromoCodeUsageListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -336,6 +339,7 @@ export type UserCreateInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -359,6 +363,7 @@ export type UserUncheckedCreateInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -382,6 +387,7 @@ export type UserUpdateInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -405,6 +411,7 @@ export type UserUncheckedUpdateInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -646,6 +653,20 @@ export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutOrdersInput, Prisma.UserUpdateWithoutOrdersInput>, Prisma.UserUncheckedUpdateWithoutOrdersInput>
 }
 
+export type UserCreateNestedOneWithoutPromoUsagesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPromoUsagesInput, Prisma.UserUncheckedCreateWithoutPromoUsagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPromoUsagesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPromoUsagesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPromoUsagesInput, Prisma.UserUncheckedCreateWithoutPromoUsagesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPromoUsagesInput
+  upsert?: Prisma.UserUpsertWithoutPromoUsagesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPromoUsagesInput, Prisma.UserUpdateWithoutPromoUsagesInput>, Prisma.UserUncheckedUpdateWithoutPromoUsagesInput>
+}
+
 export type UserCreateWithoutAccountsInput = {
   id?: string
   email: string
@@ -666,6 +687,7 @@ export type UserCreateWithoutAccountsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -688,6 +710,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -726,6 +749,7 @@ export type UserUpdateWithoutAccountsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -748,6 +772,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSessionsInput = {
@@ -770,6 +795,7 @@ export type UserCreateWithoutSessionsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -792,6 +818,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -830,6 +857,7 @@ export type UserUpdateWithoutSessionsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -852,6 +880,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUserProfileInput = {
@@ -874,6 +903,7 @@ export type UserCreateWithoutUserProfileInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUserProfileInput = {
@@ -896,6 +926,7 @@ export type UserUncheckedCreateWithoutUserProfileInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUserProfileInput = {
@@ -934,6 +965,7 @@ export type UserUpdateWithoutUserProfileInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUserProfileInput = {
@@ -956,6 +988,7 @@ export type UserUncheckedUpdateWithoutUserProfileInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProfessionalProfileInput = {
@@ -978,6 +1011,7 @@ export type UserCreateWithoutProfessionalProfileInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfessionalProfileInput = {
@@ -1000,6 +1034,7 @@ export type UserUncheckedCreateWithoutProfessionalProfileInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfessionalProfileInput = {
@@ -1038,6 +1073,7 @@ export type UserUpdateWithoutProfessionalProfileInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfessionalProfileInput = {
@@ -1060,6 +1096,7 @@ export type UserUncheckedUpdateWithoutProfessionalProfileInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutClientBookingsInput = {
@@ -1082,6 +1119,7 @@ export type UserCreateWithoutClientBookingsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutClientBookingsInput = {
@@ -1104,6 +1142,7 @@ export type UserUncheckedCreateWithoutClientBookingsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutClientBookingsInput = {
@@ -1131,6 +1170,7 @@ export type UserCreateWithoutProfessionalBookingsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProfessionalBookingsInput = {
@@ -1153,6 +1193,7 @@ export type UserUncheckedCreateWithoutProfessionalBookingsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProfessionalBookingsInput = {
@@ -1191,6 +1232,7 @@ export type UserUpdateWithoutClientBookingsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutClientBookingsInput = {
@@ -1213,6 +1255,7 @@ export type UserUncheckedUpdateWithoutClientBookingsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutProfessionalBookingsInput = {
@@ -1246,6 +1289,7 @@ export type UserUpdateWithoutProfessionalBookingsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProfessionalBookingsInput = {
@@ -1268,6 +1312,7 @@ export type UserUncheckedUpdateWithoutProfessionalBookingsInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTwoFactorCodesInput = {
@@ -1290,6 +1335,7 @@ export type UserCreateWithoutTwoFactorCodesInput = {
   trustedDevices?: Prisma.TrustedDeviceCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTwoFactorCodesInput = {
@@ -1312,6 +1358,7 @@ export type UserUncheckedCreateWithoutTwoFactorCodesInput = {
   trustedDevices?: Prisma.TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTwoFactorCodesInput = {
@@ -1350,6 +1397,7 @@ export type UserUpdateWithoutTwoFactorCodesInput = {
   trustedDevices?: Prisma.TrustedDeviceUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTwoFactorCodesInput = {
@@ -1372,6 +1420,7 @@ export type UserUncheckedUpdateWithoutTwoFactorCodesInput = {
   trustedDevices?: Prisma.TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTrustedDevicesInput = {
@@ -1394,6 +1443,7 @@ export type UserCreateWithoutTrustedDevicesInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTrustedDevicesInput = {
@@ -1416,6 +1466,7 @@ export type UserUncheckedCreateWithoutTrustedDevicesInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTrustedDevicesInput = {
@@ -1454,6 +1505,7 @@ export type UserUpdateWithoutTrustedDevicesInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTrustedDevicesInput = {
@@ -1476,6 +1528,7 @@ export type UserUncheckedUpdateWithoutTrustedDevicesInput = {
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCartItemsInput = {
@@ -1498,6 +1551,7 @@ export type UserCreateWithoutCartItemsInput = {
   trustedDevices?: Prisma.TrustedDeviceCreateNestedManyWithoutUserInput
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCartItemsInput = {
@@ -1520,6 +1574,7 @@ export type UserUncheckedCreateWithoutCartItemsInput = {
   trustedDevices?: Prisma.TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCartItemsInput = {
@@ -1558,6 +1613,7 @@ export type UserUpdateWithoutCartItemsInput = {
   trustedDevices?: Prisma.TrustedDeviceUpdateManyWithoutUserNestedInput
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCartItemsInput = {
@@ -1580,6 +1636,7 @@ export type UserUncheckedUpdateWithoutCartItemsInput = {
   trustedDevices?: Prisma.TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutOrdersInput = {
@@ -1602,6 +1659,7 @@ export type UserCreateWithoutOrdersInput = {
   trustedDevices?: Prisma.TrustedDeviceCreateNestedManyWithoutUserInput
   twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutOrdersInput = {
@@ -1624,6 +1682,7 @@ export type UserUncheckedCreateWithoutOrdersInput = {
   trustedDevices?: Prisma.TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
   cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutOrdersInput = {
@@ -1662,6 +1721,7 @@ export type UserUpdateWithoutOrdersInput = {
   trustedDevices?: Prisma.TrustedDeviceUpdateManyWithoutUserNestedInput
   twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -1684,6 +1744,115 @@ export type UserUncheckedUpdateWithoutOrdersInput = {
   trustedDevices?: Prisma.TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
   twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
   cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
+  promoUsages?: Prisma.PromoCodeUsageUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutPromoUsagesInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password?: string | null
+  image?: string | null
+  role?: string
+  emailVerified?: Date | string | null
+  termsAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalProfileCreateNestedOneWithoutUserInput
+  userProfile?: Prisma.UserProfileCreateNestedOneWithoutUserInput
+  clientBookings?: Prisma.BookingCreateNestedManyWithoutClientInput
+  professionalBookings?: Prisma.BookingCreateNestedManyWithoutProfessionalInput
+  trustedDevices?: Prisma.TrustedDeviceCreateNestedManyWithoutUserInput
+  twoFactorCodes?: Prisma.TwoFactorCodeCreateNestedManyWithoutUserInput
+  cartItems?: Prisma.CartItemCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPromoUsagesInput = {
+  id?: string
+  email: string
+  name?: string | null
+  password?: string | null
+  image?: string | null
+  role?: string
+  emailVerified?: Date | string | null
+  termsAcceptedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  professionalProfile?: Prisma.ProfessionalProfileUncheckedCreateNestedOneWithoutUserInput
+  userProfile?: Prisma.UserProfileUncheckedCreateNestedOneWithoutUserInput
+  clientBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutClientInput
+  professionalBookings?: Prisma.BookingUncheckedCreateNestedManyWithoutProfessionalInput
+  trustedDevices?: Prisma.TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
+  twoFactorCodes?: Prisma.TwoFactorCodeUncheckedCreateNestedManyWithoutUserInput
+  cartItems?: Prisma.CartItemUncheckedCreateNestedManyWithoutUserInput
+  orders?: Prisma.OrderUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPromoUsagesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPromoUsagesInput, Prisma.UserUncheckedCreateWithoutPromoUsagesInput>
+}
+
+export type UserUpsertWithoutPromoUsagesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPromoUsagesInput, Prisma.UserUncheckedUpdateWithoutPromoUsagesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPromoUsagesInput, Prisma.UserUncheckedCreateWithoutPromoUsagesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPromoUsagesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPromoUsagesInput, Prisma.UserUncheckedUpdateWithoutPromoUsagesInput>
+}
+
+export type UserUpdateWithoutPromoUsagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalProfileUpdateOneWithoutUserNestedInput
+  userProfile?: Prisma.UserProfileUpdateOneWithoutUserNestedInput
+  clientBookings?: Prisma.BookingUpdateManyWithoutClientNestedInput
+  professionalBookings?: Prisma.BookingUpdateManyWithoutProfessionalNestedInput
+  trustedDevices?: Prisma.TrustedDeviceUpdateManyWithoutUserNestedInput
+  twoFactorCodes?: Prisma.TwoFactorCodeUpdateManyWithoutUserNestedInput
+  cartItems?: Prisma.CartItemUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPromoUsagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  termsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  professionalProfile?: Prisma.ProfessionalProfileUncheckedUpdateOneWithoutUserNestedInput
+  userProfile?: Prisma.UserProfileUncheckedUpdateOneWithoutUserNestedInput
+  clientBookings?: Prisma.BookingUncheckedUpdateManyWithoutClientNestedInput
+  professionalBookings?: Prisma.BookingUncheckedUpdateManyWithoutProfessionalNestedInput
+  trustedDevices?: Prisma.TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
+  twoFactorCodes?: Prisma.TwoFactorCodeUncheckedUpdateManyWithoutUserNestedInput
+  cartItems?: Prisma.CartItemUncheckedUpdateManyWithoutUserNestedInput
+  orders?: Prisma.OrderUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -1700,6 +1869,7 @@ export type UserCountOutputType = {
   twoFactorCodes: number
   cartItems: number
   orders: number
+  promoUsages: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1711,6 +1881,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   twoFactorCodes?: boolean | UserCountOutputTypeCountTwoFactorCodesArgs
   cartItems?: boolean | UserCountOutputTypeCountCartItemsArgs
   orders?: boolean | UserCountOutputTypeCountOrdersArgs
+  promoUsages?: boolean | UserCountOutputTypeCountPromoUsagesArgs
 }
 
 /**
@@ -1779,6 +1950,13 @@ export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.OrderWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPromoUsagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PromoCodeUsageWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1801,6 +1979,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   twoFactorCodes?: boolean | Prisma.User$twoFactorCodesArgs<ExtArgs>
   cartItems?: boolean | Prisma.User$cartItemsArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
+  promoUsages?: boolean | Prisma.User$promoUsagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1855,6 +2034,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   twoFactorCodes?: boolean | Prisma.User$twoFactorCodesArgs<ExtArgs>
   cartItems?: boolean | Prisma.User$cartItemsArgs<ExtArgs>
   orders?: boolean | Prisma.User$ordersArgs<ExtArgs>
+  promoUsages?: boolean | Prisma.User$promoUsagesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1873,6 +2053,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     twoFactorCodes: Prisma.$TwoFactorCodePayload<ExtArgs>[]
     cartItems: Prisma.$CartItemPayload<ExtArgs>[]
     orders: Prisma.$OrderPayload<ExtArgs>[]
+    promoUsages: Prisma.$PromoCodeUsagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2289,6 +2470,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   twoFactorCodes<T extends Prisma.User$twoFactorCodesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$twoFactorCodesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TwoFactorCodePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   cartItems<T extends Prisma.User$cartItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$cartItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CartItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   orders<T extends Prisma.User$ordersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  promoUsages<T extends Prisma.User$promoUsagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$promoUsagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromoCodeUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2948,6 +3130,30 @@ export type User$ordersArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * User.promoUsages
+ */
+export type User$promoUsagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PromoCodeUsage
+   */
+  select?: Prisma.PromoCodeUsageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PromoCodeUsage
+   */
+  omit?: Prisma.PromoCodeUsageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PromoCodeUsageInclude<ExtArgs> | null
+  where?: Prisma.PromoCodeUsageWhereInput
+  orderBy?: Prisma.PromoCodeUsageOrderByWithRelationInput | Prisma.PromoCodeUsageOrderByWithRelationInput[]
+  cursor?: Prisma.PromoCodeUsageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PromoCodeUsageScalarFieldEnum | Prisma.PromoCodeUsageScalarFieldEnum[]
 }
 
 /**
