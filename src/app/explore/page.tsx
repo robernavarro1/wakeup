@@ -287,6 +287,32 @@ export default async function ExplorePage({
             <span className="text-lg">⊞</span>
             Tienda
           </Link>
+          <div className="my-3 border-t border-white/5" />
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-purple-300/60 transition hover:bg-white/5 hover:text-purple-200"
+          >
+            <span className="text-lg">📷</span>
+            Instagram
+          </a>
+          <a
+            href="https://tiktok.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-purple-300/60 transition hover:bg-white/5 hover:text-purple-200"
+          >
+            <span className="text-lg">🎵</span>
+            TikTok
+          </a>
+          <a
+            href="mailto:hola@wakeup-app.com"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-purple-300/60 transition hover:bg-white/5 hover:text-purple-200"
+          >
+            <span className="text-lg">✉</span>
+            Email
+          </a>
         </nav>
 
         <div className="mt-12 rounded-xl border border-white/5 bg-white/[0.02] p-4">
@@ -370,6 +396,28 @@ export default async function ExplorePage({
           >
             ⊞ Tienda
           </Link>
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-purple-300/60"
+          >
+            📷 Instagram
+          </a>
+          <a
+            href="https://tiktok.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-purple-300/60"
+          >
+            🎵 TikTok
+          </a>
+          <a
+            href="mailto:hola@wakeup-app.com"
+            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-purple-300/60"
+          >
+            ✉ Email
+          </a>
         </div>
       </div>
 
