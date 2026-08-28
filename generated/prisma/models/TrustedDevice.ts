@@ -380,6 +380,7 @@ export type TrustedDeviceCreateOrConnectWithoutUserInput = {
 
 export type TrustedDeviceCreateManyUserInputEnvelope = {
   data: Prisma.TrustedDeviceCreateManyUserInput | Prisma.TrustedDeviceCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type TrustedDeviceUpsertWithWhereUniqueWithoutUserInput = {
@@ -1159,6 +1160,7 @@ export type TrustedDeviceCreateManyArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many TrustedDevices.
    */
   data: Prisma.TrustedDeviceCreateManyInput | Prisma.TrustedDeviceCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1177,6 +1179,7 @@ export type TrustedDeviceCreateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    * The data used to create many TrustedDevices.
    */
   data: Prisma.TrustedDeviceCreateManyInput | Prisma.TrustedDeviceCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

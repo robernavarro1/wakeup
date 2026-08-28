@@ -474,6 +474,7 @@ export type CartItemCreateOrConnectWithoutUserInput = {
 
 export type CartItemCreateManyUserInputEnvelope = {
   data: Prisma.CartItemCreateManyUserInput | Prisma.CartItemCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type CartItemUpsertWithWhereUniqueWithoutUserInput = {
@@ -524,6 +525,7 @@ export type CartItemCreateOrConnectWithoutProductInput = {
 
 export type CartItemCreateManyProductInputEnvelope = {
   data: Prisma.CartItemCreateManyProductInput | Prisma.CartItemCreateManyProductInput[]
+  skipDuplicates?: boolean
 }
 
 export type CartItemUpsertWithWhereUniqueWithoutProductInput = {
@@ -1328,6 +1330,7 @@ export type CartItemCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * The data used to create many CartItems.
    */
   data: Prisma.CartItemCreateManyInput | Prisma.CartItemCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1346,6 +1349,7 @@ export type CartItemCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * The data used to create many CartItems.
    */
   data: Prisma.CartItemCreateManyInput | Prisma.CartItemCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

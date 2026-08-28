@@ -520,6 +520,7 @@ export type AdCampaignCreateOrConnectWithoutProfileInput = {
 
 export type AdCampaignCreateManyProfileInputEnvelope = {
   data: Prisma.AdCampaignCreateManyProfileInput | Prisma.AdCampaignCreateManyProfileInput[]
+  skipDuplicates?: boolean
 }
 
 export type AdCampaignUpsertWithWhereUniqueWithoutProfileInput = {
@@ -1343,6 +1344,7 @@ export type AdCampaignCreateManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * The data used to create many AdCampaigns.
    */
   data: Prisma.AdCampaignCreateManyInput | Prisma.AdCampaignCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1361,6 +1363,7 @@ export type AdCampaignCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many AdCampaigns.
    */
   data: Prisma.AdCampaignCreateManyInput | Prisma.AdCampaignCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

@@ -2214,6 +2214,7 @@ export type ProfessionalProfileCreateManyArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many ProfessionalProfiles.
    */
   data: Prisma.ProfessionalProfileCreateManyInput | Prisma.ProfessionalProfileCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -2232,6 +2233,7 @@ export type ProfessionalProfileCreateManyAndReturnArgs<ExtArgs extends runtime.T
    * The data used to create many ProfessionalProfiles.
    */
   data: Prisma.ProfessionalProfileCreateManyInput | Prisma.ProfessionalProfileCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

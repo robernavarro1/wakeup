@@ -404,6 +404,7 @@ export type TwoFactorCodeCreateOrConnectWithoutUserInput = {
 
 export type TwoFactorCodeCreateManyUserInputEnvelope = {
   data: Prisma.TwoFactorCodeCreateManyUserInput | Prisma.TwoFactorCodeCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type TwoFactorCodeUpsertWithWhereUniqueWithoutUserInput = {
@@ -1194,6 +1195,7 @@ export type TwoFactorCodeCreateManyArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many TwoFactorCodes.
    */
   data: Prisma.TwoFactorCodeCreateManyInput | Prisma.TwoFactorCodeCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1212,6 +1214,7 @@ export type TwoFactorCodeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    * The data used to create many TwoFactorCodes.
    */
   data: Prisma.TwoFactorCodeCreateManyInput | Prisma.TwoFactorCodeCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
