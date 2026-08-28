@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { FeaturedCarousel } from "@/components/FeaturedCarousel"
-import { SocialFooter } from "@/components/SocialLinks"
 
 const heroBtnStyle = `
   .hero-btn {
@@ -29,6 +28,9 @@ const categories = [
   { name: "Experiencias para Despertar", icon: "✦", href: "/explore?g=experiencias" },
   { name: "Materiales", icon: "◆", href: "/explore?c=materiales" },
   { name: "Tienda", icon: "⊞", href: "/products" },
+  { name: "Instagram", icon: "📷", href: "https://instagram.com", external: true },
+  { name: "TikTok", icon: "🎵", href: "https://tiktok.com", external: true },
+  { name: "Email", icon: "✉", href: "mailto:hola@wakeup-app.com", external: true },
 ]
 
 export default function Home() {
@@ -86,6 +88,7 @@ export default function Home() {
               <Link
                 key={cat.name}
                 href={cat.href}
+                {...((cat as any).external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="flex flex-col items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-4 text-center transition hover:border-purple-500/30 hover:bg-white/[0.05] sm:px-4 sm:py-5"
               >
                 <span className="text-2xl sm:text-3xl">{cat.icon}</span>
@@ -138,9 +141,6 @@ export default function Home() {
               <Link href="/cookies" className="hover:text-purple-300 transition">Cookies</Link>
               <Link href="/terms" className="hover:text-purple-300 transition">Términos</Link>
               <Link href="/data" className="hover:text-purple-300 transition">Tus datos</Link>
-            </div>
-            <div className="flex items-center justify-center">
-              <SocialFooter />
             </div>
             <p>Wakeup &copy; {new Date().getFullYear()} &mdash; Despierta tu conciencia</p>
           </div>
