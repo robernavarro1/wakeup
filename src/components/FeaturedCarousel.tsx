@@ -11,6 +11,30 @@ interface FeaturedProfile {
   user: { name: string | null; image: string | null }
 }
 
+const DEMO_PROFILES: FeaturedProfile[] = [
+  {
+    id: "demo-1",
+    title: "Maestra de Yoga y Meditación",
+    city: "Madrid",
+    specialties: "Yoga Vinyasa, Meditación Mindfulness, Retiros de silencio, Pranayama",
+    user: { name: "Elena Ruiz", image: null },
+  },
+  {
+    id: "demo-2",
+    title: "Terapeuta de Reiki y Sanación Energética",
+    city: "Barcelona",
+    specialties: "Reiki Usui, Sanación cuántica, Cristaloterapia, Chakras",
+    user: { name: "Carlos Mendoza", image: null },
+  },
+  {
+    id: "demo-3",
+    title: "Coach Espiritual y Tarotista",
+    city: "Valencia",
+    specialties: "Tarot del alma, Constelaciones familiares, Canalización, Astrología",
+    user: { name: "Lucía Fernández", image: null },
+  },
+]
+
 export function FeaturedCarousel() {
   const [profiles, setProfiles] = useState<FeaturedProfile[]>([])
   const [current, setCurrent] = useState(0)
@@ -18,8 +42,11 @@ export function FeaturedCarousel() {
   useEffect(() => {
     fetch("/api/professionals/featured")
       .then((r) => r.json())
-      .then((data) => setProfiles(data.profiles || []))
-      .catch((e) => console.error("Featured carousel error:", e))
+      .then((data) => {
+        const real = data.profiles || []
+        setProfiles(real.length > 0 ? real : DEMO_PROFILES)
+      })
+      .catch(() => setProfiles(DEMO_PROFILES))
   }, [])
 
   const next = useCallback(() => {
@@ -32,38 +59,7 @@ export function FeaturedCarousel() {
     return () => clearInterval(timer)
   }, [profiles.length, next])
 
-  if (profiles.length === 0) {
-    return (
-      <section className="relative overflow-hidden rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-900/60 via-purple-800/40 to-amber-900/50 py-16 shadow-xl shadow-purple-500/15">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.2),transparent_70%)]" />
-        <div className="absolute -left-20 -top-20 h-48 w-48 rounded-full bg-purple-500/15 blur-3xl" />
-        <div className="absolute -bottom-20 -right-20 h-48 w-48 rounded-full bg-amber-500/15 blur-3xl" />
-        <div className="relative mx-auto max-w-2xl text-center px-4">
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-500/20 px-5 py-2 text-xs font-bold uppercase tracking-wider text-amber-200">
-            <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-            Destacados de la semana
-          </div>
-          <p className="text-2xl font-bold text-white mb-2">Aún no hay profesionales destacados</p>
-          <p className="text-sm text-purple-300/60 mb-8">Sé el primero en aparecer en el carrusel principal y llega a miles de personas</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/auth/register?role=PROFESSIONAL"
-              className="inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-8 py-4 text-sm font-bold text-white shadow-xl shadow-purple-600/30 transition hover:shadow-purple-600/50 hover:scale-105"
-            >
-              Regístrate como profesional
-              <span className="text-lg">→</span>
-            </Link>
-            <Link
-              href="/advertise"
-              className="inline-flex items-center gap-2 rounded-xl border-2 border-amber-400/40 bg-amber-500/15 px-7 py-3.5 text-sm font-bold text-amber-200 transition hover:bg-amber-500/25 hover:border-amber-400/60"
-            >
-              ✦ Publicita tu perfil
-            </Link>
-          </div>
-        </div>
-      </section>
-    )
-  }
+  if (profiles.length === 0) return null
 
   const p = profiles[current]
 
@@ -71,15 +67,13 @@ export function FeaturedCarousel() {
     <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-900/60 via-purple-800/40 to-amber-900/50 py-14 shadow-xl shadow-purple-500/15">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(168,85,247,0.15),transparent_60%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(245,158,11,0.1),transparent_60%)]" />
-      {profiles.length > 2 && (
-        <div className="absolute right-4 top-4 z-10 flex items-center gap-1.5 rounded-full bg-amber-500/25 px-3.5 py-1.5 text-[11px] font-bold text-amber-200 border border-amber-400/40">
-          <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
-          DESTACADO
-        </div>
-      )}
+      <div className="absolute right-4 top-4 z-10 flex items-center gap-1.5 rounded-full bg-amber-500/25 px-3.5 py-1.5 text-[11px] font-bold text-amber-200 border border-amber-400/40">
+        <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />
+        DESTACADO
+      </div>
       <div className="relative mx-auto max-w-3xl px-4 text-center">
         <Link
-          href={`/professionals/${p.id}`}
+          href={p.id.startsWith("demo") ? "/auth/register?role=PROFESSIONAL" : `/professionals/${p.id}`}
           className="group block"
         >
           <div className="mb-5 flex items-center justify-center gap-3">
@@ -103,7 +97,7 @@ export function FeaturedCarousel() {
             <p className="mt-3 text-sm text-purple-200/70 line-clamp-2">{p.specialties}</p>
           )}
           <span className="mt-6 inline-flex items-center gap-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-8 py-3 text-sm font-bold text-white shadow-xl shadow-purple-600/30 transition group-hover:shadow-purple-600/50 group-hover:scale-105">
-            Ver perfil completo
+            {p.id.startsWith("demo") ? "Únete como profesional" : "Ver perfil completo"}
             <span className="text-base">→</span>
           </span>
         </Link>
