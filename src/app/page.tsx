@@ -1,6 +1,21 @@
 import Link from "next/link"
 import { FeaturedCarousel } from "@/components/FeaturedCarousel"
 
+const heroBtnStyle = `
+  .hero-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .hero-btn:hover {
+    background: linear-gradient(135deg, #7c3aed, #a855f7, #f59e0b);
+    border-color: rgba(168,85,247,0.4);
+    box-shadow: 0 0 30px rgba(124,58,237,0.45), 0 0 60px rgba(168,85,247,0.15);
+    transform: scale(1.05);
+  }
+`
+
 const categories = [
   { name: "Todas", icon: "☥", href: "/explore" },
   { name: "En tu Zona", icon: "⊙", href: "/explore?c=zona" },
@@ -18,6 +33,7 @@ const categories = [
 export default function Home() {
   return (
     <div>
+      <style dangerouslySetInnerHTML={{ __html: heroBtnStyle }} />
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-transparent to-transparent" />
@@ -39,13 +55,13 @@ export default function Home() {
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/explore"
-                className="w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 border border-white/10 bg-white/5 hover:bg-gradient-to-r hover:from-purple-600 hover:to-amber-600 hover:border-purple-500/20 hover:shadow-purple-600/40"
+                className="hero-btn w-full sm:w-auto rounded-xl px-8 py-4 text-base font-semibold text-white"
               >
                 Comienza a explorar
               </Link>
               <Link
                 href="/auth/register?role=PROFESSIONAL"
-                className="w-full sm:w-auto relative overflow-hidden rounded-xl px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 border border-white/10 bg-white/5 hover:bg-gradient-to-r hover:from-purple-600 hover:to-amber-600 hover:border-purple-500/20 hover:shadow-purple-600/40"
+                className="hero-btn w-full sm:w-auto rounded-xl px-8 py-4 text-base font-semibold text-white"
               >
                 Soy profesional
               </Link>
