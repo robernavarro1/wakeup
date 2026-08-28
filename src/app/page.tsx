@@ -127,25 +127,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Síguenos */}
-      <section className="relative py-16">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="text-4xl opacity-40">☥</span>
-            <h2 className="mt-4 text-2xl font-bold text-white">
-              Síguenos en redes
-            </h2>
-            <p className="mt-3 text-sm text-purple-200/50">
-              Contenido diario sobre meditación, yoga, Reiki, tarot y despertar espiritual.
-            </p>
-            <div className="mt-6 flex items-center justify-center">
-              <SocialFooter />
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="border-t border-white/5 py-8">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
@@ -157,6 +138,9 @@ export default function Home() {
               <Link href="/cookies" className="hover:text-purple-300 transition">Cookies</Link>
               <Link href="/terms" className="hover:text-purple-300 transition">Términos</Link>
               <Link href="/data" className="hover:text-purple-300 transition">Tus datos</Link>
+            </div>
+            <div className="flex items-center justify-center">
+              <SocialFooter />
             </div>
             <p>Wakeup &copy; {new Date().getFullYear()} &mdash; Despierta tu conciencia</p>
           </div>
