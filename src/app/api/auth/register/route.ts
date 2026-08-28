@@ -140,6 +140,41 @@ export async function POST(request: Request) {
       console.log("Email not sent (Resend not configured)", e instanceof Error ? e.message : "")
     }
 
+    const isPro = (role || "STUDENT") === "PROFESSIONAL"
+    try {
+      await getResend().emails.send({
+        from: "Wakeup <hola@wakeup-app.com>",
+        to: "hola@wakeup-app.com",
+        subject: isPro ? "Nuevo profesional registrado en Wakeup" : "Nuevo registro en Wakeup",
+        html: `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background-color:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f4f6;padding:40px 20px">
+    <tr><td align="center">
+      <table width="480" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.06)">
+        <tr><td align="center" style="background:linear-gradient(135deg,${isPro ? "#7c3aed,#f59e0b" : "#7c3aed,#a855f7"});padding:24px 20px">
+          <h1 style="margin:0;color:#ffffff;font-size:18px;font-weight:700">${isPro ? "Nuevo Profesional" : "Nuevo Registro"}</h1>
+        </td></tr>
+        <tr><td style="padding:24px">
+          <table style="width:100%;font-size:14px;color:#111827">
+            <tr><td style="padding:8px 0;color:#6b7280;width:100px">Nombre</td><td style="padding:8px 0;font-weight:600">${name || "Sin nombre"}</td></tr>
+            <tr><td style="padding:8px 0;color:#6b7280">Email</td><td style="padding:8px 0;font-weight:600">${email}</td></tr>
+            <tr><td style="padding:8px 0;color:#6b7280">Tipo</td><td style="padding:8px 0;font-weight:600;color:${isPro ? "#7c3aed" : "#6b7280"}">${isPro ? "Profesional" : "Cliente/Estudiante"}</td></tr>
+            <tr><td style="padding:8px 0;color:#6b7280">Fecha</td><td style="padding:8px 0">${new Date().toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}</td></tr>
+          </table>
+          ${isPro ? '<p style="margin:16px 0 0;padding:12px;background-color:#f5f3ff;border-radius:8px;font-size:13px;color:#7c3aed;font-weight:600">Este profesional necesita completar su perfil y activar su suscripcion.</p>' : ''}
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
+      })
+    } catch (e) {
+      console.log("Admin notification not sent", e instanceof Error ? e.message : "")
+    }
+
     return NextResponse.json({ success: true }, { status: 201 })
   } catch (error) {
     console.error("Register error:", error)
