@@ -28,7 +28,7 @@ const categories = [
   { name: "Experiencias para Despertar", icon: "✦", href: "/explore?g=experiencias" },
   { name: "Materiales", icon: "◆", href: "/explore?c=materiales" },
   { name: "Tienda", icon: "⊞", href: "/products" },
-  { name: "Instagram", icon: "📷", href: "https://instagram.com", external: true },
+  { name: "Instagram", icon: "📷", href: "https://instagram.com/eswakeup", external: true },
   { name: "TikTok", icon: "🎵", href: "https://tiktok.com", external: true },
   { name: "Email", icon: "✉", href: "mailto:hola@wakeup-app.com", external: true },
 ]

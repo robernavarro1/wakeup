@@ -3,7 +3,7 @@ import Link from "next/link"
 const socials = [
   {
     name: "Instagram",
-    href: "https://instagram.com",
+    href: "https://instagram.com/eswakeup",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
         <rect x="2" y="2" width="20" height="20" rx="5" />
