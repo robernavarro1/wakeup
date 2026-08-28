@@ -5,6 +5,7 @@ import { AuthProvider } from "@/providers/AuthProvider"
 import { Navbar } from "@/components/Navbar"
 import { AIAdvisorWrapper } from "@/components/AIAdvisorWrapper"
 import { CookieConsentBanner } from "@/components/CookieConsentBanner"
+import { SocialBar } from "@/components/SocialLinks"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -62,6 +63,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <AuthProvider>
           <Navbar />
+          <SocialBar />
           <main className="flex-1">{children}</main>
           <AIAdvisorWrapper />
           <CookieConsentBanner />

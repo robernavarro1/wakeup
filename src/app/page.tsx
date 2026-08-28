@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { FeaturedCarousel } from "@/components/FeaturedCarousel"
+import { SocialFooter } from "@/components/SocialLinks"
 
 const heroBtnStyle = `
   .hero-btn {
@@ -126,10 +127,29 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Síguenos */}
+      <section className="relative py-16">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-transparent" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="text-4xl opacity-40">☥</span>
+            <h2 className="mt-4 text-2xl font-bold text-white">
+              Síguenos en redes
+            </h2>
+            <p className="mt-3 text-sm text-purple-200/50">
+              Contenido diario sobre meditación, yoga, Reiki, tarot y despertar espiritual.
+            </p>
+            <div className="mt-6 flex items-center justify-center">
+              <SocialFooter />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="border-t border-white/5 py-8">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-2 text-xs text-purple-300/50">
+          <div className="flex flex-col items-center gap-3 text-xs text-purple-300/50">
             <span className="text-sm text-purple-300/30">☥</span>
             <p>Contacto: hola@wakeup-app.com</p>
             <div className="flex flex-wrap justify-center gap-4">
