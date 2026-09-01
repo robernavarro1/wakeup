@@ -174,6 +174,7 @@ export async function POST(request: Request) {
         userId: session.user.id,
         profileId: profile.id,
         plan,
+        type: "subscription",
         stripeSubscriptionId: stripeSub.id,
       },
     })
@@ -295,6 +296,7 @@ export async function PUT(request: Request) {
         userId: session.user.id,
         profileId: profile.id,
         plan,
+        type: "subscription",
         stripeSubscriptionId: stripeSub.id,
       },
     })

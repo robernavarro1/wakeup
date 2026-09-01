@@ -100,10 +100,18 @@ export async function POST(request: Request) {
             const plan = (session.metadata?.plan as string) || "SEMILLA"
             const { PLANS } = await import("@/lib/plans")
             const planConfig = PLANS[plan as keyof typeof PLANS] || PLANS.SEMILLA
+            const stripeSubId = session.metadata?.stripeSubscriptionId as string
+            let subStatus = "ACTIVE"
+            if (stripeSubId) {
+              try {
+                const stripeSub = await stripe.subscriptions.retrieve(stripeSubId)
+                if (stripeSub.status === "trialing") subStatus = "TRIALING"
+              } catch {}
+            }
             await prisma.professionalSubscription.upsert({
               where: { profileId: profile.id },
               update: {
-                status: "ACTIVE",
+                status: subStatus,
                 plan,
                 maxCategories: planConfig.maxCategories,
                 maxDisciplines: planConfig.maxDisciplines,
@@ -113,7 +121,7 @@ export async function POST(request: Request) {
                 plan,
                 maxCategories: planConfig.maxCategories,
                 maxDisciplines: planConfig.maxDisciplines,
-                status: "ACTIVE",
+                status: subStatus,
               },
             })
           }
