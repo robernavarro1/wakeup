@@ -101,7 +101,8 @@ export function ProfileForm({
       const text = await res.text()
       let data
       try { data = JSON.parse(text) } catch { alert("Error del servidor. Inténtalo de nuevo."); return }
-      if (data.error) { alert(data.error); return }
+      if (data.error) { alert(data.error); setSubLoading(null); return }
+      if (data.url) { window.location.href = data.url; return }
       alert(data.message || "Plan activado")
       window.location.reload()
     } catch { alert("Error de conexión") }
@@ -114,13 +115,15 @@ export function ProfileForm({
       const res = await fetch("/api/subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan }),
+        body: JSON.stringify({ plan, promoCode: "WAKEUP1" }),
       })
       const text = await res.text()
       let data
       try { data = JSON.parse(text) } catch { alert("Error del servidor. Inténtalo de nuevo."); return }
+      if (data.error) { alert(data.error); setSubLoading(null); return }
       if (data.url) { window.location.href = data.url; return }
-      alert(data.error || "Error")
+      alert(data.message || "Suscripción creada")
+      window.location.reload()
     } catch { alert("Error de conexión") }
     setSubLoading(null)
   }

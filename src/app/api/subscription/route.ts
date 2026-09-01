@@ -33,7 +33,7 @@ export async function POST(request: Request) {
   const { plan, promoCode } = await request.json()
 
   if (!plan || !PLANS[plan as keyof typeof PLANS]) {
-    return NextResponse.json({ error: "Plan no válido. Elige: SEMILLA, ARBOL o BOSQUE" }, { status: 400 })
+    return NextResponse.json({ error: "Plan no válido" }, { status: 400 })
   }
 
   const profile = await prisma.professionalProfile.findUnique({
@@ -88,6 +88,14 @@ export async function POST(request: Request) {
       })
     }
 
+    const existingSub = await prisma.professionalSubscription.findUnique({
+      where: { profileId: profile.id },
+    })
+
+    if (existingSub && existingSub.status === "ACTIVE" && existingSub.plan === plan) {
+      return NextResponse.json({ error: "Ya tienes este plan activo" }, { status: 400 })
+    }
+
     const product = await stripe.products.create({
       name: `Wakeup — Plan ${planConfig.name}`,
       metadata: { plan },
@@ -100,7 +108,7 @@ export async function POST(request: Request) {
       recurring: { interval: "month" },
     })
 
-    const subscription = await stripe.subscriptions.create({
+    const stripeSub = await stripe.subscriptions.create({
       customer: customerId,
       items: [{ price: price.id }],
       trial_period_days: trialDays,
@@ -115,6 +123,11 @@ export async function POST(request: Request) {
       },
     })
 
+    const intent = await stripe.setupIntents.create({
+      customer: customerId,
+      usage: "off_session",
+    })
+
     await prisma.professionalSubscription.upsert({
       where: { profileId: profile.id },
       update: {
@@ -123,7 +136,7 @@ export async function POST(request: Request) {
         maxDisciplines: planConfig.maxDisciplines,
         status: "TRIALING",
         trialEndsAt: new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000),
-        stripeSubscriptionId: subscription.id,
+        stripeSubscriptionId: stripeSub.id,
       },
       create: {
         profileId: profile.id,
@@ -132,7 +145,7 @@ export async function POST(request: Request) {
         maxDisciplines: planConfig.maxDisciplines,
         status: "TRIALING",
         trialEndsAt: new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000),
-        stripeSubscriptionId: subscription.id,
+        stripeSubscriptionId: stripeSub.id,
       },
     })
 
@@ -150,18 +163,151 @@ export async function POST(request: Request) {
       })
     }
 
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wakeup-app.com"
+
+    const checkoutSession = await stripe.checkout.sessions.create({
+      customer: customerId,
+      mode: "setup",
+      success_url: `${baseUrl}/dashboard/profile?subscription=success`,
+      cancel_url: `${baseUrl}/dashboard/profile?subscription=cancelled`,
+      metadata: {
+        userId: session.user.id,
+        profileId: profile.id,
+        plan,
+        stripeSubscriptionId: stripeSub.id,
+      },
+    })
+
     return NextResponse.json({
       success: true,
-      subscriptionId: subscription.id,
+      url: checkoutSession.url,
+      subscriptionId: stripeSub.id,
       trialDays,
       message: promoRecord
         ? `${promoRecord.freeMonths} meses gratis con código ${promoRecord.code}`
-        : `${trialDays} días de prueba gratis`,
+        : `${trialDays} días de prueba gratis — registra tu tarjeta para continuar`,
     })
   } catch (error) {
     console.error("Subscription error:", error)
     const msg = error instanceof Error ? error.message : "Error desconocido"
     return NextResponse.json({ error: `Error al crear suscripción: ${msg}` }, { status: 500 })
+  }
+}
+
+export async function PUT(request: Request) {
+  const session = await auth()
+  if (!session?.user?.id) return NextResponse.json({ error: "No autorizado" }, { status: 401 })
+
+  const { plan } = await request.json()
+
+  if (!plan || !PLANS[plan as keyof typeof PLANS]) {
+    return NextResponse.json({ error: "Plan no válido" }, { status: 400 })
+  }
+
+  const profile = await prisma.professionalProfile.findUnique({
+    where: { userId: session.user.id },
+  })
+
+  if (!profile) return NextResponse.json({ error: "Crea tu perfil profesional primero" }, { status: 400 })
+
+  const planConfig = PLANS[plan as keyof typeof PLANS]
+
+  try {
+    let customerId = profile.stripeAccountId
+
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: session.user.email || undefined,
+        name: session.user.name || undefined,
+        metadata: { userId: session.user.id },
+      })
+      customerId = customer.id
+
+      await prisma.professionalProfile.update({
+        where: { userId: session.user.id },
+        data: { stripeAccountId: customerId },
+      })
+    }
+
+    const existingSub = await prisma.professionalSubscription.findUnique({
+      where: { profileId: profile.id },
+    })
+
+    if (existingSub && (existingSub.status === "ACTIVE" || existingSub.status === "TRIALING")) {
+      return NextResponse.json({ error: "Ya tienes una suscripción activa. Cancela la actual primero." }, { status: 400 })
+    }
+
+    const product = await stripe.products.create({
+      name: `Wakeup — Plan ${planConfig.name}`,
+      metadata: { plan },
+    })
+
+    const price = await stripe.prices.create({
+      product: product.id,
+      unit_amount: planConfig.monthlyPrice,
+      currency: "eur",
+      recurring: { interval: "month" },
+    })
+
+    const stripeSub = await stripe.subscriptions.create({
+      customer: customerId,
+      items: [{ price: price.id }],
+      trial_period_days: planConfig.trialDays,
+      payment_settings: {
+        save_default_payment_method: "on_subscription",
+      },
+      metadata: {
+        userId: session.user.id,
+        profileId: profile.id,
+        plan,
+      },
+    })
+
+    await prisma.professionalSubscription.upsert({
+      where: { profileId: profile.id },
+      update: {
+        plan,
+        maxCategories: planConfig.maxCategories,
+        maxDisciplines: planConfig.maxDisciplines,
+        status: "TRIALING",
+        trialEndsAt: new Date(Date.now() + planConfig.trialDays * 24 * 60 * 60 * 1000),
+        stripeSubscriptionId: stripeSub.id,
+      },
+      create: {
+        profileId: profile.id,
+        plan,
+        maxCategories: planConfig.maxCategories,
+        maxDisciplines: planConfig.maxDisciplines,
+        status: "TRIALING",
+        trialEndsAt: new Date(Date.now() + planConfig.trialDays * 24 * 60 * 60 * 1000),
+        stripeSubscriptionId: stripeSub.id,
+      },
+    })
+
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wakeup-app.com"
+
+    const checkoutSession = await stripe.checkout.sessions.create({
+      customer: customerId,
+      mode: "setup",
+      success_url: `${baseUrl}/dashboard/profile?subscription=success`,
+      cancel_url: `${baseUrl}/dashboard/profile?subscription=cancelled`,
+      metadata: {
+        userId: session.user.id,
+        profileId: profile.id,
+        plan,
+        stripeSubscriptionId: stripeSub.id,
+      },
+    })
+
+    return NextResponse.json({
+      success: true,
+      url: checkoutSession.url,
+      message: `${planConfig.trialDays} días de prueba gratis — registra tu tarjeta para continuar después`,
+    })
+  } catch (error) {
+    console.error("Subscription PUT error:", error)
+    const msg = error instanceof Error ? error.message : "Error desconocido"
+    return NextResponse.json({ error: `Error: ${msg}` }, { status: 500 })
   }
 }
 
@@ -184,7 +330,7 @@ export async function DELETE() {
     if (sub.status === "CANCELLED") return NextResponse.json({ error: "Ya está cancelada" }, { status: 400 })
 
     if (sub.stripeSubscriptionId) {
-      await stripe.subscriptions.cancel(sub.stripeSubscriptionId)
+      await stripe.subscriptions.cancel(sub.stripeSubscriptionId, { prorate: false })
     }
 
     await prisma.professionalSubscription.update({
@@ -192,7 +338,7 @@ export async function DELETE() {
       data: { status: "CANCELLED" },
     })
 
-    return NextResponse.json({ success: true, message: "Suscripción cancelada" })
+    return NextResponse.json({ success: true, message: "Suscripción cancelada. Puedes contratar un nuevo plan cuando quieras." })
   } catch (error) {
     console.error("Subscription DELETE error:", error)
     const msg = error instanceof Error ? error.message : "Error desconocido"
