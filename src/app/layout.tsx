@@ -6,6 +6,7 @@ import { AuthProvider } from "@/providers/AuthProvider"
 import { Navbar } from "@/components/Navbar"
 import { AIAdvisorWrapper } from "@/components/AIAdvisorWrapper"
 import { CookieConsentBanner } from "@/components/CookieConsentBanner"
+import { ScrollToTop } from "@/components/ScrollToTop"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -80,6 +81,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <AIAdvisorWrapper />
           <CookieConsentBanner />
+          <ScrollToTop />
         </AuthProvider>
       </body>
     </html>
