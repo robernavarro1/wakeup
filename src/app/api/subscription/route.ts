@@ -199,7 +199,7 @@ export async function PUT(request: Request) {
   const session = await auth()
   if (!session?.user?.id) return NextResponse.json({ error: "No autorizado" }, { status: 401 })
 
-  const { plan } = await request.json()
+  const { plan, promoCode } = await request.json()
 
   if (!plan || !PLANS[plan as keyof typeof PLANS]) {
     return NextResponse.json({ error: "Plan no válido" }, { status: 400 })
@@ -212,6 +212,33 @@ export async function PUT(request: Request) {
   if (!profile) return NextResponse.json({ error: "Crea tu perfil profesional primero" }, { status: 400 })
 
   const planConfig = PLANS[plan as keyof typeof PLANS]
+
+  let trialDays = planConfig.trialDays
+  let promoRecord = null
+
+  if (promoCode) {
+    promoRecord = await prisma.promoCode.findUnique({
+      where: { code: promoCode.toUpperCase().trim() },
+    })
+
+    if (!promoRecord || !promoRecord.active) {
+      return NextResponse.json({ error: "Código promocional no válido" }, { status: 400 })
+    }
+
+    if (promoRecord.maxUses && promoRecord.usedCount >= promoRecord.maxUses) {
+      return NextResponse.json({ error: "Código agotado" }, { status: 400 })
+    }
+
+    const existingUsage = await prisma.promoCodeUsage.findUnique({
+      where: { promoCodeId_userId: { promoCodeId: promoRecord.id, userId: session.user.id } },
+    })
+
+    if (existingUsage) {
+      return NextResponse.json({ error: "Ya has usado este código" }, { status: 400 })
+    }
+
+    trialDays = promoRecord.freeMonths * 30
+  }
 
   try {
     let customerId = profile.stripeAccountId
@@ -238,6 +265,10 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "Ya tienes una suscripción activa. Cancela la actual primero." }, { status: 400 })
     }
 
+    if (existingSub && existingSub.status === "CANCELLED") {
+      await prisma.professionalSubscription.delete({ where: { profileId: profile.id } })
+    }
+
     const product = await stripe.products.create({
       name: `Wakeup — Plan ${planConfig.name}`,
       metadata: { plan },
@@ -253,7 +284,7 @@ export async function PUT(request: Request) {
     const stripeSub = await stripe.subscriptions.create({
       customer: customerId,
       items: [{ price: price.id }],
-      trial_period_days: planConfig.trialDays,
+      trial_period_days: trialDays,
       payment_settings: {
         save_default_payment_method: "on_subscription",
       },
@@ -261,6 +292,7 @@ export async function PUT(request: Request) {
         userId: session.user.id,
         profileId: profile.id,
         plan,
+        promoCode: promoRecord?.code || "",
       },
     })
 
@@ -271,7 +303,7 @@ export async function PUT(request: Request) {
         maxCategories: planConfig.maxCategories,
         maxDisciplines: planConfig.maxDisciplines,
         status: "TRIALING",
-        trialEndsAt: new Date(Date.now() + planConfig.trialDays * 24 * 60 * 60 * 1000),
+        trialEndsAt: new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000),
         stripeSubscriptionId: stripeSub.id,
       },
       create: {
@@ -280,7 +312,7 @@ export async function PUT(request: Request) {
         maxCategories: planConfig.maxCategories,
         maxDisciplines: planConfig.maxDisciplines,
         status: "TRIALING",
-        trialEndsAt: new Date(Date.now() + planConfig.trialDays * 24 * 60 * 60 * 1000),
+        trialEndsAt: new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000),
         stripeSubscriptionId: stripeSub.id,
       },
     })
@@ -301,10 +333,22 @@ export async function PUT(request: Request) {
       },
     })
 
+    if (promoRecord) {
+      await prisma.promoCodeUsage.create({
+        data: { promoCodeId: promoRecord.id, userId: session.user.id },
+      })
+      await prisma.promoCode.update({
+        where: { id: promoRecord.id },
+        data: { usedCount: { increment: 1 } },
+      })
+    }
+
     return NextResponse.json({
       success: true,
       url: checkoutSession.url,
-      message: `${planConfig.trialDays} días de prueba gratis — registra tu tarjeta para continuar después`,
+      message: promoRecord
+        ? `${promoRecord.freeMonths} meses gratis con código ${promoRecord.code} — registra tu tarjeta`
+        : `${trialDays} días de prueba gratis — registra tu tarjeta para continuar después`,
     })
   } catch (error) {
     console.error("Subscription PUT error:", error)

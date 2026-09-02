@@ -70,6 +70,8 @@ export function ProfileForm({
   const [subData, setSubData] = useState<any>(null)
   const [subFetching, setSubFetching] = useState(true)
   const [subLoading, setSubLoading] = useState<string | null>(null)
+  const [promoCode, setPromoCode] = useState("")
+  const [promoStatus, setPromoStatus] = useState<"idle" | "checking" | "valid" | "invalid">("idle")
 
   useEffect(() => {
     fetch("/api/subscription")
@@ -96,7 +98,7 @@ export function ProfileForm({
       const res = await fetch("/api/subscription", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan }),
+        body: JSON.stringify({ plan, promoCode: promoCode.toUpperCase().trim() || undefined }),
       })
       const text = await res.text()
       let data
@@ -115,7 +117,7 @@ export function ProfileForm({
       const res = await fetch("/api/subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan, promoCode: "WAKEUP1" }),
+        body: JSON.stringify({ plan, promoCode: promoCode.toUpperCase().trim() || undefined }),
       })
       const text = await res.text()
       let data
@@ -259,6 +261,10 @@ export function ProfileForm({
         onPay={payPlan}
         onSelect={selectPlan}
         onCancel={cancelSub}
+        promoCode={promoCode}
+        setPromoCode={setPromoCode}
+        promoStatus={promoStatus}
+        setPromoStatus={setPromoStatus}
       />
 
       {/* Disciplinas / Especialidades - controlado por plan */}
@@ -416,8 +422,8 @@ function PlanControlledSection({ title, icon, gradient, unlocked, planName, limi
   )
 }
 
-function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey, trialActive, trialUsed, trialEnds, subLoading, onPay, onSelect, onCancel }: {
-  subFetching: boolean; subData: any; plans: any; currentPlanKey: string | null; trialActive: boolean; trialUsed: boolean; trialEnds: Date | null; subLoading: string | null; onPay: (plan: string) => Promise<void>; onSelect: (plan: string) => Promise<void>; onCancel: () => Promise<void>
+function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey, trialActive, trialUsed, trialEnds, subLoading, onPay, onSelect, onCancel, promoCode, setPromoCode, promoStatus, setPromoStatus }: {
+  subFetching: boolean; subData: any; plans: any; currentPlanKey: string | null; trialActive: boolean; trialUsed: boolean; trialEnds: Date | null; subLoading: string | null; onPay: (plan: string) => Promise<void>; onSelect: (plan: string) => Promise<void>; onCancel: () => Promise<void>; promoCode: string; setPromoCode: (v: string) => void; promoStatus: "idle" | "checking" | "valid" | "invalid"; setPromoStatus: (v: "idle" | "checking" | "valid" | "invalid") => void
 }) {
   if (subFetching) return (
     <div className="rounded-2xl border border-purple-500/20 bg-purple-950/50 p-6">
@@ -446,6 +452,51 @@ function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey,
           Suscripción cancelada — puedes contratar un plan de pago
         </div>
       )}
+
+      <div className="mb-6 rounded-xl border border-amber-500/20 bg-amber-950/40 p-4">
+        <label className="mb-2 flex items-center gap-2 text-sm font-medium text-amber-300">
+          <span className="text-lg">🎫</span> ¿Tienes un código promocional?
+        </label>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={promoCode}
+            onChange={(e) => { setPromoCode(e.target.value.toUpperCase()); setPromoStatus("idle") }}
+            placeholder="Introduce tu código"
+            className="flex-1 rounded-lg border border-amber-500/20 bg-purple-950/60 px-4 py-2.5 text-sm text-white placeholder-purple-300/30 outline-none transition focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/30"
+          />
+          <button
+            type="button"
+            onClick={async () => {
+              if (!promoCode.trim()) return
+              setPromoStatus("checking")
+              try {
+                const res = await fetch("/api/promo", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ code: promoCode.trim() }),
+                })
+                const data = await res.json()
+                setPromoStatus(data.valid ? "valid" : "invalid")
+              } catch { setPromoStatus("invalid") }
+            }}
+            disabled={promoStatus === "checking" || !promoCode.trim()}
+            className="rounded-lg bg-amber-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-amber-500 disabled:opacity-50"
+          >
+            {promoStatus === "checking" ? "..." : "Aplicar"}
+          </button>
+        </div>
+        {promoStatus === "valid" && (
+          <p className="mt-2 flex items-center gap-1.5 text-xs text-emerald-400">
+            <span>✓</span> Código aplicado — {promoCode.toUpperCase()} activo para tu suscripción
+          </p>
+        )}
+        {promoStatus === "invalid" && (
+          <p className="mt-2 flex items-center gap-1.5 text-xs text-red-400">
+            <span>✕</span> Código no válido o ya utilizado
+          </p>
+        )}
+      </div>
 
       <div className="grid gap-6 sm:grid-cols-3">
         {(Object.entries(plans) as [string, any][]).map(([key, plan]) => {
