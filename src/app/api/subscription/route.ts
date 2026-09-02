@@ -96,6 +96,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Ya tienes este plan activo" }, { status: 400 })
     }
 
+    if (existingSub) {
+      await prisma.professionalSubscription.delete({ where: { profileId: profile.id } })
+    }
+
     const product = await stripe.products.create({
       name: `Wakeup — Plan ${planConfig.name}`,
       metadata: { plan },
@@ -265,7 +269,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "Ya tienes una suscripción activa. Cancela la actual primero." }, { status: 400 })
     }
 
-    if (existingSub && existingSub.status === "CANCELLED") {
+    if (existingSub) {
       await prisma.professionalSubscription.delete({ where: { profileId: profile.id } })
     }
 
