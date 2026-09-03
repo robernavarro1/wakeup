@@ -107,7 +107,7 @@ export async function POST(request: Request) {
 
     try {
       await getResend().emails.send({
-        from: "Wakeup <hola@wakeup-app.com>",
+        from: process.env.RESEND_FROM || "Wakeup <onboarding@resend.dev>",
         to: email,
         subject: "Confirma tu email — Wakeup",
         html: `<!DOCTYPE html>

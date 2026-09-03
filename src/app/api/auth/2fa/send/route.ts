@@ -19,8 +19,9 @@ export async function POST(request: Request) {
     })
 
     try {
+      const fromAddress = process.env.RESEND_FROM || "Wakeup <onboarding@resend.dev>"
       await getResend().emails.send({
-        from: "Wakeup <hola@wakeup-app.com>",
+        from: fromAddress,
         to: email,
         subject: "Tu código de verificación — Wakeup",
         html: `<!DOCTYPE html>
@@ -87,7 +88,14 @@ export async function POST(request: Request) {
 </html>`,
       })
       return NextResponse.json({ success: true, message: "Código enviado a tu email" })
-    } catch (e) { console.log("Email not sent (Resend not configured)", e instanceof Error ? e.message : "") }
+    } catch (e) {
+      console.error("2FA email send failed:", e instanceof Error ? e.message : e)
+      return NextResponse.json({
+        success: true,
+        message: "Código enviado",
+        ...(process.env.NODE_ENV === "development" ? { devCode: code } : {}),
+      })
+    }
 
     return NextResponse.json({
       success: true,
