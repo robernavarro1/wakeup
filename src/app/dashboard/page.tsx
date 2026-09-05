@@ -28,8 +28,8 @@ export default async function DashboardPage() {
 
   const hasProProfile = !!user.professionalProfile
   const isBosque = user.professionalProfile?.subscription?.plan === "BOSQUE" && (user.professionalProfile?.subscription?.status === "ACTIVE" || user.professionalProfile?.subscription?.status === "TRIALING")
-  // Solo mostramos el botón de WhatsApp si hay un número real configurado.
-  const vipWhatsapp = process.env.NEXT_PUBLIC_VIP_WHATSAPP?.replace(/\D/g, "") || ""
+  // Número de soporte VIP. Se puede sobreescribir con NEXT_PUBLIC_VIP_WHATSAPP.
+  const vipWhatsapp = (process.env.NEXT_PUBLIC_VIP_WHATSAPP || "34608818215").replace(/\D/g, "")
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

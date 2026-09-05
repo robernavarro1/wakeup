@@ -59,9 +59,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // Solo cargamos Analytics si hay un ID real configurado (evita una petición
-  // fallida a googletagmanager en cada carga de página).
-  const gaId = process.env.NEXT_PUBLIC_GA_ID
+  // Medición de Google Analytics. Se puede sobreescribir con NEXT_PUBLIC_GA_ID.
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-T3WFDPN6SN"
 
   return (
     <html lang="es" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
