@@ -13,6 +13,61 @@ import { NextResponse } from "next/server"
  */
 const DIAG_TOKEN = "wk-diag-7f3a91c4e8"
 
+/**
+ * Da de alta wakeup-app.com en Resend y devuelve los registros DNS que hay que
+ * publicar. Usa la clave que ya está en el entorno, así no hace falta manejar
+ * credenciales nuevas.
+ */
+export async function POST(request: Request) {
+  const { searchParams } = new URL(request.url)
+
+  if (searchParams.get("token") !== DIAG_TOKEN) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 })
+  }
+
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey || apiKey === "re_placeholder") {
+    return NextResponse.json({ error: "RESEND_API_KEY no configurada" }, { status: 400 })
+  }
+
+  try {
+    const res = await fetch("https://api.resend.com/domains", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: "wakeup-app.com", region: "eu-west-1" }),
+    })
+
+    const body = await res.json()
+
+    if (!res.ok) {
+      return NextResponse.json({
+        ok: false,
+        estadoHttp: res.status,
+        respuesta: body,
+        pista:
+          res.status === 401 || res.status === 403
+            ? "La clave de API no tiene permisos para gestionar dominios. Hace falta una clave con acceso completo (Full access)."
+            : "Revisa la respuesta de Resend.",
+      })
+    }
+
+    return NextResponse.json({
+      ok: true,
+      dominioId: body?.id,
+      estado: body?.status,
+      registrosDNS: body?.records,
+    })
+  } catch (e) {
+    return NextResponse.json(
+      { ok: false, error: e instanceof Error ? e.message : "Error" },
+      { status: 500 }
+    )
+  }
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
 
