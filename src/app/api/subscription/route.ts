@@ -60,14 +60,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Código agotado" }, { status: 400 })
     }
 
-    const existingUsage = await prisma.promoCodeUsage.findUnique({
-      where: { promoCodeId_userId: { promoCodeId: promoRecord.id, userId: session.user.id } },
-    })
-
-    if (existingUsage) {
-      return NextResponse.json({ error: "Ya has usado este código" }, { status: 400 })
-    }
-
     trialDays = promoRecord.freeMonths * 30
   }
 
@@ -231,14 +223,6 @@ export async function PUT(request: Request) {
 
     if (promoRecord.maxUses && promoRecord.usedCount >= promoRecord.maxUses) {
       return NextResponse.json({ error: "Código agotado" }, { status: 400 })
-    }
-
-    const existingUsage = await prisma.promoCodeUsage.findUnique({
-      where: { promoCodeId_userId: { promoCodeId: promoRecord.id, userId: session.user.id } },
-    })
-
-    if (existingUsage) {
-      return NextResponse.json({ error: "Ya has usado este código" }, { status: 400 })
     }
 
     trialDays = promoRecord.freeMonths * 30
