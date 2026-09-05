@@ -23,13 +23,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
 
-        const email = credentials.email as string
+        const email = (credentials.email as string).toLowerCase().trim()
         const password = credentials.password as string
 
-        const { allowed } = checkRateLimit(`login:${email}`, 5, 300000)
+        const { allowed } = checkRateLimit(`login:${email}`, 10, 300000)
         if (!allowed) return null
 
-        const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } })
+        const user = await prisma.user.findUnique({ where: { email } })
         if (!user || !user.password) return null
 
         const isValid = await bcrypt.compare(password, user.password)

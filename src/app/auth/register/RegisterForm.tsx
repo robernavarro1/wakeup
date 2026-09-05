@@ -19,27 +19,57 @@ export function RegisterForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+
+    const cleanName = name.trim()
+    const cleanEmail = email.trim().toLowerCase()
+
+    if (!cleanName) {
+      setError("Escribe tu nombre")
+      return
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      setError("Escribe un email válido (por ejemplo: nombre@correo.com)")
+      return
+    }
+    if (password.length < 8) {
+      setError("La contraseña debe tener al menos 8 caracteres")
+      return
+    }
     if (!acceptTerms) {
       setError("Debes aceptar los términos y condiciones")
       return
     }
+
     setLoading(true)
     setError("")
 
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, role, acceptTerms }),
-    })
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: cleanName, email: cleanEmail, password, role, acceptTerms }),
+      })
 
-    if (!res.ok) {
-      const data = await res.json()
-      setError(data.error || "Error al registrarse")
+      let data: { error?: string } = {}
+      try {
+        data = await res.json()
+      } catch {
+        setError("El servidor no ha respondido correctamente. Inténtalo de nuevo en unos segundos.")
+        setLoading(false)
+        return
+      }
+
+      if (!res.ok) {
+        setError(data.error || "No hemos podido crear tu cuenta. Inténtalo de nuevo.")
+        setLoading(false)
+        return
+      }
+
+      router.push("/auth/login?registered=true")
+    } catch {
+      setError("No hemos podido conectar. Revisa tu conexión a internet e inténtalo de nuevo.")
       setLoading(false)
-      return
     }
-
-    router.push("/auth/login?registered=true")
   }
 
   return (
@@ -96,6 +126,11 @@ export function RegisterForm() {
           <input
             type="email"
             required
+            autoComplete="email"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            inputMode="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mt-1 block w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder-purple-300/30 focus:border-purple-500/50 focus:outline-none focus:ring-1 focus:ring-purple-500/30"
@@ -108,12 +143,18 @@ export function RegisterForm() {
           <input
             type="password"
             required
-            minLength={6}
+            minLength={8}
+            autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="mt-1 block w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder-purple-300/30 focus:border-purple-500/50 focus:outline-none focus:ring-1 focus:ring-purple-500/30"
-            placeholder="Mínimo 6 caracteres"
+            placeholder="Mínimo 8 caracteres"
           />
+          {password.length > 0 && password.length < 8 && (
+            <p className="mt-1 text-xs text-amber-400/80">
+              Te faltan {8 - password.length} caracteres
+            </p>
+          )}
         </div>
 
         <label className="flex items-start gap-2 text-xs text-purple-300/50">

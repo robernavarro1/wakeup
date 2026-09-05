@@ -5,11 +5,11 @@ import crypto from "crypto"
 export async function POST(request: Request) {
   try {
     const { email, code, trustDevice } = await request.json()
-    if (!email || !code) {
+    if (!email || !code || typeof email !== "string") {
       return NextResponse.json({ error: "Email y código requeridos" }, { status: 400 })
     }
 
-    const user = await prisma.user.findUnique({ where: { email } })
+    const user = await prisma.user.findUnique({ where: { email: email.toLowerCase().trim() } })
     if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 })
 
     const validCode = await prisma.twoFactorCode.findFirst({

@@ -18,15 +18,17 @@ export async function POST(request: Request) {
   try {
     const { name, email, password, role, acceptTerms } = await request.json()
 
-    if (!email || !password) {
+    if (!email || !password || typeof email !== "string" || typeof password !== "string") {
       return NextResponse.json(
         { error: "Email y contraseña son requeridos" },
         { status: 400 }
       )
     }
 
+    const normalizedEmail = email.toLowerCase().trim()
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(normalizedEmail)) {
       return NextResponse.json(
         { error: "El email no es válido" },
         { status: 400 }
@@ -69,7 +71,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const existing = await prisma.user.findUnique({ where: { email: email.toLowerCase() } })
+    const existing = await prisma.user.findUnique({ where: { email: normalizedEmail } })
     if (existing) {
       return NextResponse.json(
         { error: "Ya tienes una cuenta con este email. Inicia sesión." },
@@ -82,7 +84,7 @@ export async function POST(request: Request) {
     const user = await prisma.user.create({
       data: {
         name: name?.trim() || null,
-        email: email.toLowerCase().trim(),
+        email: normalizedEmail,
         password: hashedPassword,
         role: role || "STUDENT",
         termsAcceptedAt: new Date(),
@@ -99,16 +101,16 @@ export async function POST(request: Request) {
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
 
     await prisma.verificationToken.create({
-      data: { identifier: email.toLowerCase(), token, expires: expiresAt },
+      data: { identifier: normalizedEmail, token, expires: expiresAt },
     })
 
     const appUrl = process.env.AUTH_URL || process.env.NEXTAUTH_URL || "https://wakeup-app.com"
-    const verifyUrl = `${appUrl}/auth/verify-email?token=${token}&email=${encodeURIComponent(email)}`
+    const verifyUrl = `${appUrl}/auth/verify-email?token=${token}&email=${encodeURIComponent(user.email!)}`
 
     try {
       await getResend().emails.send({
         from: process.env.RESEND_FROM || "Wakeup <onboarding@resend.dev>",
-        to: email,
+        to: user.email!,
         subject: "Confirma tu email — Wakeup",
         html: `<!DOCTYPE html>
 <html>

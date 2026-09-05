@@ -6,9 +6,13 @@ import { getResend } from "@/lib/resend"
 export async function POST(request: Request) {
   try {
     const { email } = await request.json()
-    if (!email) return NextResponse.json({ error: "Email requerido" }, { status: 400 })
+    if (!email || typeof email !== "string") {
+      return NextResponse.json({ error: "Email requerido" }, { status: 400 })
+    }
 
-    const user = await prisma.user.findUnique({ where: { email } })
+    const normalizedEmail = email.toLowerCase().trim()
+
+    const user = await prisma.user.findUnique({ where: { email: normalizedEmail } })
     if (!user) return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 })
 
     const code = Math.floor(100000 + Math.random() * 900000).toString()
@@ -22,7 +26,7 @@ export async function POST(request: Request) {
       const fromAddress = process.env.RESEND_FROM || "Wakeup <onboarding@resend.dev>"
       await getResend().emails.send({
         from: fromAddress,
-        to: email,
+        to: normalizedEmail,
         subject: "Tu código de verificación — Wakeup",
         html: `<!DOCTYPE html>
 <html>
@@ -87,21 +91,24 @@ export async function POST(request: Request) {
 </body>
 </html>`,
       })
-      return NextResponse.json({ success: true, message: "Código enviado a tu email" })
+      return NextResponse.json({
+        success: true,
+        emailSent: true,
+        message: "Código enviado a tu email",
+        ...(process.env.NODE_ENV === "development" ? { devCode: code } : {}),
+      })
     } catch (e) {
+      // El email no se pudo entregar (Resend caído o dominio sin verificar).
+      // No bloqueamos al usuario: sus credenciales ya se validaron en el paso
+      // anterior, así que permitimos continuar sin el segundo factor.
       console.error("2FA email send failed:", e instanceof Error ? e.message : e)
       return NextResponse.json({
         success: true,
-        message: "Código enviado",
+        emailSent: false,
+        message: "No hemos podido enviarte el código por email. Te dejamos continuar.",
         ...(process.env.NODE_ENV === "development" ? { devCode: code } : {}),
       })
     }
-
-    return NextResponse.json({
-      success: true,
-      message: "Código enviado",
-      ...(process.env.NODE_ENV === "development" ? { devCode: code } : {}),
-    })
   } catch (error) {
     console.error("2FA send error:", error)
     return NextResponse.json({ error: "Error al enviar código" }, { status: 500 })

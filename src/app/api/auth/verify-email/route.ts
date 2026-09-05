@@ -11,16 +11,23 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: "Token y email requeridos" }, { status: 400 })
     }
 
+    const normalizedEmail = email.toLowerCase().trim()
+
     const stored = await prisma.verificationToken.findUnique({
       where: { token },
     })
 
-    if (!stored || stored.identifier !== email || stored.expires < new Date()) {
+    if (!stored || stored.identifier.toLowerCase() !== normalizedEmail || stored.expires < new Date()) {
+      return NextResponse.json({ error: "Token inválido o expirado" }, { status: 400 })
+    }
+
+    const user = await prisma.user.findUnique({ where: { email: normalizedEmail } })
+    if (!user) {
       return NextResponse.json({ error: "Token inválido o expirado" }, { status: 400 })
     }
 
     await prisma.user.update({
-      where: { email },
+      where: { email: normalizedEmail },
       data: { emailVerified: new Date() },
     })
 

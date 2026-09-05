@@ -29,46 +29,15 @@ export function LoginForm() {
     }
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
-
-    const credRes = await fetch("/api/auth/check-credentials", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    })
-
-    if (!credRes.ok) {
-      setError("Email o contraseña incorrectos")
-      setLoading(false)
-      return
-    }
-
-    const twofaRes = await fetch("/api/auth/2fa/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    })
-
-    if (twofaRes.ok) {
-      const twofaData = await twofaRes.json()
-      setDevCode(twofaData.devCode || "")
-      setStep2fa(true)
-      setCodeSent(true)
-      setLoading(false)
-      return
-    }
-
+  async function completeSignIn(cleanEmail: string) {
     const result = await signIn("credentials", {
-      email,
+      email: cleanEmail,
       password,
       redirect: false,
     })
 
     if (result?.error) {
-      setError("Error al iniciar sesión")
+      setError("No hemos podido iniciar tu sesión. Inténtalo de nuevo.")
       setLoading(false)
       return
     }
@@ -78,39 +47,106 @@ export function LoginForm() {
     router.refresh()
   }
 
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+
+    const cleanEmail = email.trim().toLowerCase()
+    if (!cleanEmail || !password) {
+      setError("Escribe tu email y tu contraseña")
+      return
+    }
+
+    setLoading(true)
+    setError("")
+
+    try {
+      const credRes = await fetch("/api/auth/check-credentials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: cleanEmail, password }),
+      })
+
+      if (credRes.status === 429) {
+        setError("Demasiados intentos. Espera unos minutos e inténtalo de nuevo.")
+        setLoading(false)
+        return
+      }
+
+      if (!credRes.ok) {
+        setError("Email o contraseña incorrectos")
+        setLoading(false)
+        return
+      }
+
+      const twofaRes = await fetch("/api/auth/2fa/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: cleanEmail }),
+      })
+
+      if (twofaRes.ok) {
+        let twofaData: { devCode?: string; emailSent?: boolean } = {}
+        try {
+          twofaData = await twofaRes.json()
+        } catch {
+          twofaData = {}
+        }
+
+        // Si el email de verificación no se pudo entregar, no dejamos al
+        // usuario atrapado: sus credenciales ya son válidas, entramos directo.
+        if (twofaData.emailSent === false && !twofaData.devCode) {
+          await completeSignIn(cleanEmail)
+          return
+        }
+
+        setDevCode(twofaData.devCode || "")
+        setStep2fa(true)
+        setCodeSent(true)
+        setLoading(false)
+        return
+      }
+
+      await completeSignIn(cleanEmail)
+    } catch {
+      setError("No hemos podido conectar. Revisa tu conexión a internet e inténtalo de nuevo.")
+      setLoading(false)
+    }
+  }
+
   async function handleVerifyCode(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError("")
 
-    const res = await fetch("/api/auth/2fa/verify", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, code, trustDevice }),
-    })
+    const cleanEmail = email.trim().toLowerCase()
 
-    const data = await res.json()
-    if (!data.verified) {
-      setError("Código inválido o expirado")
+    try {
+      const res = await fetch("/api/auth/2fa/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: cleanEmail, code, trustDevice }),
+      })
+
+      let data: { verified?: boolean; error?: string } = {}
+      try {
+        data = await res.json()
+      } catch {
+        setError("El servidor no ha respondido correctamente. Inténtalo de nuevo.")
+        setLoading(false)
+        return
+      }
+
+      if (!data.verified) {
+        setError(data.error || "El código no es correcto o ha caducado")
+        setLoading(false)
+        return
+      }
+
+      await completeSignIn(cleanEmail)
+    } catch {
+      setError("No hemos podido conectar. Revisa tu conexión a internet e inténtalo de nuevo.")
       setLoading(false)
-      return
     }
-
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    })
-
-    if (result?.error) {
-      setError("Error al iniciar sesión")
-      setLoading(false)
-      return
-    }
-
-    const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"))
-    router.push(callbackUrl)
-    router.refresh()
   }
 
   if (step2fa) {
@@ -173,14 +209,23 @@ export function LoginForm() {
             onClick={async () => {
               setCode("")
               setDevCode("")
-              const res = await fetch("/api/auth/2fa/send", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email }),
-              })
-              const data = await res.json()
-              setDevCode(data.devCode || "")
-              setCodeSent(true)
+              setError("")
+              try {
+                const res = await fetch("/api/auth/2fa/send", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ email: email.trim().toLowerCase() }),
+                })
+                const data = await res.json()
+                setDevCode(data.devCode || "")
+                if (data.emailSent === false) {
+                  setError("No hemos podido enviarte el email. Vuelve atrás e inicia sesión de nuevo.")
+                } else {
+                  setCodeSent(true)
+                }
+              } catch {
+                setError("No hemos podido reenviar el código. Revisa tu conexión.")
+              }
             }}
             className="text-sm text-purple-400 hover:text-purple-300"
           >
@@ -191,9 +236,20 @@ export function LoginForm() {
     )
   }
 
+  const justRegistered = searchParams.get("registered") === "true"
+
   return (
     <>
       <form onSubmit={handleSubmit} className="space-y-4">
+        {justRegistered && !error && (
+          <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-3 text-sm text-emerald-300">
+            <p className="font-medium">¡Cuenta creada correctamente!</p>
+            <p className="mt-1 text-emerald-300/70">
+              Te hemos enviado un email de confirmación. Ya puedes iniciar sesión.
+            </p>
+          </div>
+        )}
+
         {error && (
           <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-sm text-red-300">
             {error}
@@ -208,6 +264,11 @@ export function LoginForm() {
             id="email"
             type="email"
             required
+            autoComplete="email"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
+            inputMode="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="mt-1 block w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder-purple-300/30 focus:border-purple-500/50 focus:outline-none focus:ring-1 focus:ring-purple-500/30"
@@ -228,6 +289,7 @@ export function LoginForm() {
             id="password"
             type="password"
             required
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="mt-1 block w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white placeholder-purple-300/30 focus:border-purple-500/50 focus:outline-none focus:ring-1 focus:ring-purple-500/30"

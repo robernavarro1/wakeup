@@ -6,25 +6,29 @@ import crypto from "crypto"
 export async function POST(request: Request) {
   try {
     const { email } = await request.json()
-    if (!email) return NextResponse.json({ error: "Email requerido" }, { status: 400 })
+    if (!email || typeof email !== "string") {
+      return NextResponse.json({ error: "Email requerido" }, { status: 400 })
+    }
 
-    const user = await prisma.user.findUnique({ where: { email } })
+    const normalizedEmail = email.toLowerCase().trim()
+
+    const user = await prisma.user.findUnique({ where: { email: normalizedEmail } })
     if (!user) return NextResponse.json({ success: true, message: "Si el email existe, recibirás un enlace" })
 
     const token = crypto.randomBytes(32).toString("hex")
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
 
     await prisma.verificationToken.create({
-      data: { identifier: email, token, expires: expiresAt },
+      data: { identifier: normalizedEmail, token, expires: expiresAt },
     })
 
     const appUrl = process.env.AUTH_URL || process.env.NEXTAUTH_URL || "https://wakeup-app.com"
-    const resetUrl = `${appUrl}/auth/reset-password?token=${token}&email=${encodeURIComponent(email)}`
+    const resetUrl = `${appUrl}/auth/reset-password?token=${token}&email=${encodeURIComponent(normalizedEmail)}`
 
     try {
       await getResend().emails.send({
         from: process.env.RESEND_FROM || "Wakeup <onboarding@resend.dev>",
-        to: email,
+        to: normalizedEmail,
         subject: "Restablece tu contraseña — Wakeup",
         html: `<!DOCTYPE html>
 <html>

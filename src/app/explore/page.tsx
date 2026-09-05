@@ -589,7 +589,7 @@ function GroupView({ group }: { group: CategoryGroup }) {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {pros.length > 0 ? (
                 pros.slice(0, 3).map((pro) => (
-                  <ProfessionalCard key={pro.id} pro={pro} categoryId={cat.id} />
+                  <ProfessionalCard key={pro.id} pro={pro} />
                 ))
               ) : (
                 <p className="col-span-full py-4 text-center text-sm text-purple-300/40">
@@ -645,11 +645,7 @@ function CategoryView({
       <SectionCard title="Profesores" icon="♁">
         {pros.length > 0 ? (
           pros.map((pro) => (
-            <ProfessionalCard
-              key={pro.id}
-              pro={pro}
-              categoryId={category.id}
-            />
+            <ProfessionalCard key={pro.id} pro={pro} />
           ))
         ) : (
           <p className="col-span-full py-8 text-center text-sm text-purple-300/40">
@@ -663,13 +659,18 @@ function CategoryView({
 
 function ProfessionalCard({
   pro,
-  categoryId,
 }: {
   pro: (typeof DEMO_PROFESSIONALS)[0]
-  categoryId?: string
 }) {
+  // Los perfiles de demostración no existen en la base de datos: enlazarlos a
+  // /professionals/<id> devuelve un 404. Llevamos al registro, igual que hace
+  // FeaturedCarousel.
+  const href = pro.id.startsWith("demo")
+    ? "/auth/register?role=PROFESSIONAL"
+    : `/professionals/${pro.id}`
+
   return (
-    <Link href={categoryId ? `/professionals/${pro.id}` : "#"}>
+    <Link href={href}>
       <GlassCard>
         <div className="flex items-start gap-3">
           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-amber-500 text-sm font-bold text-white shadow-lg">
