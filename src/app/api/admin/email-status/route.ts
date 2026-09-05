@@ -14,9 +14,11 @@ import { NextResponse } from "next/server"
 const DIAG_TOKEN = "wk-diag-7f3a91c4e8"
 
 /**
- * Da de alta wakeup-app.com en Resend y devuelve los registros DNS que hay que
- * publicar. Usa la clave que ya está en el entorno, así no hace falta manejar
- * credenciales nuevas.
+ * Envía un email de prueba a la dirección indicada.
+ *
+ * Sirve para confirmar que Resend acepta destinatarios que no son el titular
+ * de la cuenta. Si el dominio no estuviese verificado, la API respondería con
+ * un 403 en lugar de aceptar el envío.
  */
 export async function POST(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -25,44 +27,60 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 })
   }
 
+  const to = searchParams.get("to")
+  if (!to) {
+    return NextResponse.json({ error: "Falta el parámetro 'to'" }, { status: 400 })
+  }
+
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey || apiKey === "re_placeholder") {
     return NextResponse.json({ error: "RESEND_API_KEY no configurada" }, { status: 400 })
   }
 
+  const mailFrom = process.env.RESEND_FROM || "Wakeup <hola@wakeup-app.com>"
+
   try {
-    const res = await fetch("https://api.resend.com/domains", {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name: "wakeup-app.com", region: "eu-west-1" }),
+      body: JSON.stringify({
+        from: mailFrom,
+        to,
+        subject: "Prueba de entrega — Wakeup",
+        html: "<p>Si has recibido este mensaje, el envío de emails funciona correctamente.</p>",
+      }),
     })
 
     const body = await res.json()
 
     if (!res.ok) {
       return NextResponse.json({
-        ok: false,
+        entregaAceptada: false,
+        remitente: mailFrom,
+        destinatario: to,
         estadoHttp: res.status,
         respuesta: body,
-        pista:
-          res.status === 401 || res.status === 403
-            ? "La clave de API no tiene permisos para gestionar dominios. Hace falta una clave con acceso completo (Full access)."
-            : "Revisa la respuesta de Resend.",
+        diagnostico:
+          res.status === 403
+            ? "Resend rechaza el destinatario. El dominio no está verificado y solo permite enviar al titular de la cuenta."
+            : "Resend ha rechazado el envío. Revisa la respuesta.",
       })
     }
 
     return NextResponse.json({
-      ok: true,
-      dominioId: body?.id,
-      estado: body?.status,
-      registrosDNS: body?.records,
+      entregaAceptada: true,
+      remitente: mailFrom,
+      destinatario: to,
+      idMensaje: body?.id,
+      diagnostico:
+        "Resend ha aceptado el envío a un destinatario externo. El dominio está verificado y los emails llegan a cualquier persona.",
     })
   } catch (e) {
     return NextResponse.json(
-      { ok: false, error: e instanceof Error ? e.message : "Error" },
+      { entregaAceptada: false, error: e instanceof Error ? e.message : "Error" },
       { status: 500 }
     )
   }
