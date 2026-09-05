@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { getResend } from "@/lib/resend"
+import { getResend, MAIL_FROM } from "@/lib/resend"
 import crypto from "crypto"
 
 export async function POST(request: Request) {
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
     try {
       await getResend().emails.send({
-        from: process.env.RESEND_FROM || "Wakeup <onboarding@resend.dev>",
+        from: MAIL_FROM,
         to: normalizedEmail,
         subject: "Restablece tu contraseña — Wakeup",
         html: `<!DOCTYPE html>
