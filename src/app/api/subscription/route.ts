@@ -4,6 +4,41 @@ import { prisma } from "@/lib/prisma"
 import { stripe } from "@/lib/stripe"
 import { PLANS, AD_PLANS } from "@/lib/plans"
 
+/**
+ * Devuelve la tarifa mensual del plan en Stripe, reutilizándola si ya existe.
+ *
+ * Antes se creaba un producto y una tarifa nuevos en cada intento de
+ * suscripción, lo que llenaba la cuenta de Stripe de duplicados y hacía
+ * ilegible el panel de ingresos.
+ */
+async function getOrCreatePrice(
+  plan: string,
+  planConfig: { name: string; monthlyPrice: number }
+) {
+  const lookupKey = `wakeup_${plan.toLowerCase()}_mensual`
+
+  const existing = await stripe.prices.list({
+    lookup_keys: [lookupKey],
+    active: true,
+    limit: 1,
+  })
+
+  if (existing.data.length > 0) return existing.data[0]
+
+  const product = await stripe.products.create({
+    name: `Wakeup — Plan ${planConfig.name}`,
+    metadata: { plan },
+  })
+
+  return stripe.prices.create({
+    product: product.id,
+    unit_amount: planConfig.monthlyPrice,
+    currency: "eur",
+    recurring: { interval: "month" },
+    lookup_key: lookupKey,
+  })
+}
+
 export async function GET() {
   const session = await auth()
   if (!session?.user?.id) return NextResponse.json({ error: "No autorizado" }, { status: 401 })
@@ -60,6 +95,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Código agotado" }, { status: 400 })
     }
 
+    // Un solo uso por usuario. El registro se crea en el webhook, cuando la
+    // suscripción se confirma de verdad, así que un intento abandonado no
+    // consume el código.
+    const yaUsado = await prisma.promoCodeUsage.findUnique({
+      where: {
+        promoCodeId_userId: { promoCodeId: promoRecord.id, userId: session.user.id },
+      },
+    })
+
+    if (yaUsado) {
+      return NextResponse.json(
+        { error: "Ya has usado este código promocional" },
+        { status: 400 }
+      )
+    }
+
     trialDays = promoRecord.freeMonths * 30
   }
 
@@ -92,17 +143,7 @@ export async function POST(request: Request) {
       await prisma.professionalSubscription.delete({ where: { profileId: profile.id } })
     }
 
-    const product = await stripe.products.create({
-      name: `Wakeup — Plan ${planConfig.name}`,
-      metadata: { plan },
-    })
-
-    const price = await stripe.prices.create({
-      product: product.id,
-      unit_amount: planConfig.monthlyPrice,
-      currency: "eur",
-      recurring: { interval: "month" },
-    })
+    const price = await getOrCreatePrice(plan, planConfig)
 
     const stripeSub = await stripe.subscriptions.create({
       customer: customerId,
@@ -117,11 +158,6 @@ export async function POST(request: Request) {
         plan,
         promoCode: promoRecord?.code || "",
       },
-    })
-
-    const intent = await stripe.setupIntents.create({
-      customer: customerId,
-      usage: "off_session",
     })
 
     await prisma.professionalSubscription.upsert({
@@ -145,25 +181,12 @@ export async function POST(request: Request) {
       },
     })
 
-    if (promoRecord) {
-      await prisma.promoCodeUsage.create({
-        data: {
-          promoCodeId: promoRecord.id,
-          userId: session.user.id,
-        },
-      })
-
-      await prisma.promoCode.update({
-        where: { id: promoRecord.id },
-        data: { usedCount: { increment: 1 } },
-      })
-    }
-
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wakeup-app.com"
 
     const checkoutSession = await stripe.checkout.sessions.create({
       customer: customerId,
       mode: "setup",
+      payment_method_types: ["card"],
       success_url: `${baseUrl}/dashboard/profile?subscription=success`,
       cancel_url: `${baseUrl}/dashboard/profile?subscription=cancelled`,
       metadata: {
@@ -172,6 +195,7 @@ export async function POST(request: Request) {
         plan,
         type: "subscription",
         stripeSubscriptionId: stripeSub.id,
+        promoCode: promoRecord?.code || "",
       },
     })
 
@@ -225,6 +249,19 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "Código agotado" }, { status: 400 })
     }
 
+    const yaUsado = await prisma.promoCodeUsage.findUnique({
+      where: {
+        promoCodeId_userId: { promoCodeId: promoRecord.id, userId: session.user.id },
+      },
+    })
+
+    if (yaUsado) {
+      return NextResponse.json(
+        { error: "Ya has usado este código promocional" },
+        { status: 400 }
+      )
+    }
+
     trialDays = promoRecord.freeMonths * 30
   }
 
@@ -257,17 +294,7 @@ export async function PUT(request: Request) {
       await prisma.professionalSubscription.delete({ where: { profileId: profile.id } })
     }
 
-    const product = await stripe.products.create({
-      name: `Wakeup — Plan ${planConfig.name}`,
-      metadata: { plan },
-    })
-
-    const price = await stripe.prices.create({
-      product: product.id,
-      unit_amount: planConfig.monthlyPrice,
-      currency: "eur",
-      recurring: { interval: "month" },
-    })
+    const price = await getOrCreatePrice(plan, planConfig)
 
     const stripeSub = await stripe.subscriptions.create({
       customer: customerId,
@@ -310,6 +337,7 @@ export async function PUT(request: Request) {
     const checkoutSession = await stripe.checkout.sessions.create({
       customer: customerId,
       mode: "setup",
+      payment_method_types: ["card"],
       success_url: `${baseUrl}/dashboard/profile?subscription=success`,
       cancel_url: `${baseUrl}/dashboard/profile?subscription=cancelled`,
       metadata: {
@@ -318,18 +346,9 @@ export async function PUT(request: Request) {
         plan,
         type: "subscription",
         stripeSubscriptionId: stripeSub.id,
+        promoCode: promoRecord?.code || "",
       },
     })
-
-    if (promoRecord) {
-      await prisma.promoCodeUsage.create({
-        data: { promoCodeId: promoRecord.id, userId: session.user.id },
-      })
-      await prisma.promoCode.update({
-        where: { id: promoRecord.id },
-        data: { usedCount: { increment: 1 } },
-      })
-    }
 
     return NextResponse.json({
       success: true,

@@ -101,13 +101,54 @@ export async function POST(request: Request) {
             const { PLANS } = await import("@/lib/plans")
             const planConfig = PLANS[plan as keyof typeof PLANS] || PLANS.SEMILLA
             const stripeSubId = session.metadata?.stripeSubscriptionId as string
+
+            // La sesión de checkout en modo "setup" solo guarda la tarjeta en el
+            // cliente. Hay que asignarla explícitamente como método de pago por
+            // defecto de la suscripción; de lo contrario, al terminar la prueba
+            // gratuita la factura falla y el cobro nunca se llega a realizar.
+            let paymentMethodId: string | null = null
+            try {
+              const setupIntentId = session.setup_intent as string | null
+              if (setupIntentId) {
+                const setupIntent = await stripe.setupIntents.retrieve(setupIntentId)
+                paymentMethodId = (setupIntent.payment_method as string) || null
+              }
+
+              if (paymentMethodId && session.customer) {
+                const customerId = session.customer as string
+
+                await stripe.paymentMethods
+                  .attach(paymentMethodId, { customer: customerId })
+                  .catch(() => {
+                    // Ya estaba asociada a este cliente: no es un error.
+                  })
+
+                await stripe.customers.update(customerId, {
+                  invoice_settings: { default_payment_method: paymentMethodId },
+                })
+
+                if (stripeSubId) {
+                  await stripe.subscriptions.update(stripeSubId, {
+                    default_payment_method: paymentMethodId,
+                  })
+                }
+              }
+            } catch (e) {
+              console.error("No se pudo asignar la tarjeta a la suscripción:", e)
+            }
+
             let subStatus = "ACTIVE"
+            let trialEndsAt: Date | null = null
             if (stripeSubId) {
               try {
                 const stripeSub = await stripe.subscriptions.retrieve(stripeSubId)
                 if (stripeSub.status === "trialing") subStatus = "TRIALING"
+                if (stripeSub.trial_end) {
+                  trialEndsAt = new Date(stripeSub.trial_end * 1000)
+                }
               } catch {}
             }
+
             await prisma.professionalSubscription.upsert({
               where: { profileId: profile.id },
               update: {
@@ -115,6 +156,7 @@ export async function POST(request: Request) {
                 plan,
                 maxCategories: planConfig.maxCategories,
                 maxDisciplines: planConfig.maxDisciplines,
+                ...(trialEndsAt ? { trialEndsAt } : {}),
               },
               create: {
                 profileId: profile.id,
@@ -122,8 +164,35 @@ export async function POST(request: Request) {
                 maxCategories: planConfig.maxCategories,
                 maxDisciplines: planConfig.maxDisciplines,
                 status: subStatus,
+                stripeSubscriptionId: stripeSubId || null,
+                ...(trialEndsAt ? { trialEndsAt } : {}),
               },
             })
+
+            // El código promocional se contabiliza aquí y no al iniciar el pago:
+            // así, si alguien abandona el checkout, no gasta su único uso.
+            const usedPromo = (session.metadata?.promoCode as string) || ""
+            if (usedPromo) {
+              const promo = await prisma.promoCode.findUnique({
+                where: { code: usedPromo.toUpperCase().trim() },
+              })
+              if (promo) {
+                const yaRegistrado = await prisma.promoCodeUsage.findUnique({
+                  where: {
+                    promoCodeId_userId: { promoCodeId: promo.id, userId },
+                  },
+                })
+                if (!yaRegistrado) {
+                  await prisma.promoCodeUsage.create({
+                    data: { promoCodeId: promo.id, userId },
+                  })
+                  await prisma.promoCode.update({
+                    where: { id: promo.id },
+                    data: { usedCount: { increment: 1 } },
+                  })
+                }
+              }
+            }
           }
         }
 
