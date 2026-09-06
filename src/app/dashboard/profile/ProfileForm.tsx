@@ -37,6 +37,12 @@ const DAYS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "
 
 const planIcons: Record<string, string> = { SEMILLA: "🌱", ARBOL: "🌳", BOSQUE: "🌲" }
 
+/**
+ * Comisión que retiene Wakeup por reserva. Se muestra al profesional junto al
+ * precio para que sepa desde el principio cuánto va a cobrar realmente.
+ */
+const COMISION_WAKEUP = 10
+
 export function ProfileForm({
   profile,
   userId,
@@ -87,6 +93,12 @@ export function ProfileForm({
   const trialActive = subData?.trialActive
   const trialUsed = subData?.trialUsed
   const isSubActive = subData?.isActive
+
+  const precioNum = parseFloat(pricePerSession)
+  const netoPorSesion =
+    Number.isFinite(precioNum) && precioNum > 0
+      ? precioNum * (1 - COMISION_WAKEUP / 100)
+      : null
 
   const maxCategories = currentPlan?.maxCategories ?? 0
   const maxDisciplines = currentPlan?.maxDisciplines ?? 0
@@ -243,6 +255,22 @@ export function ProfileForm({
                 className="mt-1.5 block w-full rounded-xl border border-purple-500/20 bg-purple-950/60 px-4 py-3 text-sm text-white placeholder-purple-300/30 focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
                 placeholder="50"
               />
+              {netoPorSesion !== null && (
+                <p className="mt-2 text-xs text-purple-300/60">
+                  El cliente paga{" "}
+                  <span className="font-semibold text-white">
+                    {Number(pricePerSession).toFixed(2)} €
+                  </span>{" "}
+                  y tú recibes{" "}
+                  <span className="font-semibold text-emerald-400">
+                    {netoPorSesion.toFixed(2)} €
+                  </span>
+                  <span className="text-purple-300/40">
+                    {" "}
+                    (Wakeup retiene un {COMISION_WAKEUP} % por reserva)
+                  </span>
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -296,6 +324,14 @@ export function ProfileForm({
         currentCount={services.filter(s => s.name).length}
       >
         <div className="space-y-4">
+          <div className="rounded-xl border border-amber-500/20 bg-amber-950/30 p-4 text-xs text-amber-200/80">
+            <span className="font-semibold text-amber-300">Cómo funciona el cobro:</span>{" "}
+            el cliente paga el precio que indiques y Wakeup retiene un{" "}
+            <span className="font-semibold text-amber-300">{COMISION_WAKEUP} %</span> en
+            concepto de comisión por reserva. El resto se transfiere a tu cuenta
+            de Stripe. Debajo de cada precio verás el importe exacto que recibirás.
+          </div>
+
           {services.map((service, i) => (
             <div key={i} className="rounded-xl border border-white/5 bg-purple-950/40 p-5">
               <div className="grid gap-4 sm:grid-cols-4">
@@ -317,6 +353,11 @@ export function ProfileForm({
                 <div>
                   <label className="block text-xs font-medium text-purple-300/50">Precio (€)</label>
                   <input type="number" value={service.price || ""} onChange={(e) => { const s = [...services]; s[i].price = parseInt(e.target.value); setServices(s) }} disabled={!isSubActive} className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15 disabled:opacity-40" />
+                  {service.price > 0 && (
+                    <p className="mt-1 text-xs text-emerald-400/70">
+                      Recibes {(service.price * (1 - COMISION_WAKEUP / 100)).toFixed(2)} €
+                    </p>
+                  )}
                 </div>
               </div>
               {services.length > 1 && (

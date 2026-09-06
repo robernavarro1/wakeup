@@ -84,7 +84,17 @@ export default function TermsPage() {
           <h2 className="mb-3 text-lg font-semibold text-white">6. Reservas y pagos</h2>
           <ul className="list-disc pl-5 space-y-1">
             <li>Las reservas se pagan por adelantado a través de Stripe.</li>
-            <li>Wakeup no cobra comisión sobre las reservas — el profesional recibe el 100% del importe.</li>
+            <li>
+              Wakeup retiene una comisión del 10% sobre el importe de cada reserva
+              y de cada venta de la tienda. El 90% restante se transfiere al
+              profesional a través de su cuenta de Stripe. El cliente abona el
+              precio publicado, sin ningún recargo adicional.
+            </li>
+            <li>
+              El profesional puede consultar en todo momento el importe neto que
+              recibirá por cada servicio desde su panel de control, junto al precio
+              que fija.
+            </li>
             <li>Las políticas de cancelación son establecidas por cada profesional.</li>
             <li>Los reembolsos se gestionan caso por caso. Contacta con hola@wakeup-app.com.</li>
           </ul>

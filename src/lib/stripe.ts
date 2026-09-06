@@ -13,4 +13,4 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? "", {
  *
  * Se configura con PLATFORM_FEE_PERCENT para poder ajustarla sin desplegar.
  */
-export const PLATFORM_FEE_PERCENT = Number(process.env.PLATFORM_FEE_PERCENT ?? 0)
+export const PLATFORM_FEE_PERCENT = Number(process.env.PLATFORM_FEE_PERCENT ?? 10)
