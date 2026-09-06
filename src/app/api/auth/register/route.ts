@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
 import { prisma } from "@/lib/prisma"
-import { getResend, MAIL_FROM } from "@/lib/resend"
+import { getResend, MAIL_FROM, MAIL_REPLY_TO } from "@/lib/resend"
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(request: Request) {
@@ -110,6 +110,7 @@ export async function POST(request: Request) {
     try {
       await getResend().emails.send({
         from: MAIL_FROM,
+        replyTo: MAIL_REPLY_TO,
         to: user.email!,
         subject: "Confirma tu email — Wakeup",
         html: `<!DOCTYPE html>

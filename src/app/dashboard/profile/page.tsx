@@ -30,7 +30,7 @@ export default async function EditProfilePage() {
         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-500/20 to-amber-500/20 text-2xl">🪷</span>
         <div>
           <h1 className="text-2xl font-bold text-white">Mi perfil</h1>
-          <p className="text-sm text-purple-300/50">
+          <p className="text-sm text-white/60">
             Tu espacio personal en Wakeup
           </p>
         </div>
@@ -39,6 +39,7 @@ export default async function EditProfilePage() {
         userProfile={user.userProfile}
         professionalProfile={user.professionalProfile}
         userId={user.id}
+        userName={user.name}
       />
     </div>
   )

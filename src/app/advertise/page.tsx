@@ -36,7 +36,7 @@ export default function AdvertisePage() {
         <div className="text-center">
           <span className="text-5xl opacity-40">☥</span>
           <h1 className="mt-6 text-4xl font-bold text-white">Publicita tu perfil</h1>
-          <p className="mx-auto mt-4 max-w-xl text-purple-200/60">
+          <p className="mx-auto mt-4 max-w-xl text-white/70">
             Aparece en el carrusel del explorador de Wakeup y haz que cientos de personas descubran tus servicios.
           </p>
         </div>
@@ -46,7 +46,7 @@ export default function AdvertisePage() {
             <div key={key} className="rounded-2xl border border-purple-500/20 bg-gradient-to-b from-purple-950/50 to-transparent p-6 shadow-xl shadow-purple-950/20">
               <div className="text-4xl mb-3 text-center">{adPlanIcons[key] || "📢"}</div>
               <h3 className="text-center text-xl font-bold text-white">{plan.name}</h3>
-              <p className="text-center mt-1 text-sm text-purple-300/50">{plan.label}</p>
+              <p className="text-center mt-1 text-sm text-white/60">{plan.label}</p>
               <p className="text-center mt-4 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-amber-400">
                 {new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(plan.price / 100)}
               </p>
@@ -55,7 +55,7 @@ export default function AdvertisePage() {
               </p>
               <ul className="mt-4 space-y-1.5">
                 {(plan.benefits || []).map((b: string, i: number) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-purple-300/60">
+                  <li key={i} className="flex items-start gap-2 text-xs text-white/70">
                     <span className="mt-0.5 text-emerald-400">✦</span>
                     {b}
                   </li>
@@ -74,7 +74,7 @@ export default function AdvertisePage() {
 
         <div className="mt-12 rounded-xl border border-purple-500/10 bg-purple-950/30 p-6">
           <h2 className="text-lg font-semibold text-white">¿Cómo funciona?</h2>
-          <ul className="mt-4 space-y-2 text-sm text-purple-200/60">
+          <ul className="mt-4 space-y-2 text-sm text-white/70">
             <li>✦ Contrata un plan y tu perfil aparecerá en el carrusel del explorador</li>
             <li>✦ Los usuarios verán tu nombre, ciudad y especialidades destacadas</li>
             <li>✦ Al hacer clic irán directamente a tu perfil profesional</li>

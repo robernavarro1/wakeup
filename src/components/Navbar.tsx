@@ -54,13 +54,13 @@ export function Navbar() {
         <div className="hidden items-center gap-4 sm:flex">
           <Link
             href="/explore"
-            className="text-sm font-medium text-purple-300/70 transition hover:text-purple-200"
+            className="text-sm font-medium text-white/80 transition hover:text-purple-200"
           >
             Explorar
           </Link>
           <Link
             href="/products"
-            className="text-sm font-medium text-purple-300/70 transition hover:text-purple-200"
+            className="text-sm font-medium text-white/80 transition hover:text-purple-200"
           >
             Productos
           </Link>
@@ -69,26 +69,26 @@ export function Navbar() {
             <>
               <Link
                 href="/dashboard"
-                className="text-sm font-medium text-purple-300/70 transition hover:text-purple-200"
+                className="text-sm font-medium text-white/80 transition hover:text-purple-200"
               >
                 Dashboard
               </Link>
               <Link
                 href="/dashboard/profile"
-                className="text-sm font-medium text-purple-300/70 transition hover:text-purple-200"
+                className="text-sm font-medium text-white/80 transition hover:text-purple-200"
               >
                 Mi Perfil
               </Link>
-              <Link href="/cart" className="relative text-purple-300/70 transition hover:text-purple-200">
+              <Link href="/cart" className="relative text-white/80 transition hover:text-purple-200">
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
                 </svg>
                 <CartBadge />
               </Link>
-              <span className="hidden text-sm text-purple-300/40 lg:inline">{session.user.name}</span>
+              <span className="hidden text-sm text-white/60 lg:inline">{session.user.name}</span>
               <button
                 onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "/" })}
-                className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70 transition hover:bg-white/5 hover:text-purple-200"
+                className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/80 transition hover:bg-white/5 hover:text-purple-200"
               >
                 Salir
               </button>
@@ -97,7 +97,7 @@ export function Navbar() {
             <>
               <Link
                 href="/auth/login"
-                className="text-sm font-medium text-purple-300/70 transition hover:text-purple-200"
+                className="text-sm font-medium text-white/80 transition hover:text-purple-200"
               >
                 Entrar
               </Link>
@@ -121,7 +121,7 @@ export function Navbar() {
               Registrarse
             </Link>
           ) : (
-            <Link href="/cart" className="relative text-purple-300/70 transition hover:text-purple-200">
+            <Link href="/cart" className="relative text-white/80 transition hover:text-purple-200">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
               </svg>
@@ -130,7 +130,7 @@ export function Navbar() {
           )}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex items-center justify-center rounded-lg p-3 text-purple-300/70 hover:bg-white/5 min-h-[44px] min-w-[44px]"
+            className="flex items-center justify-center rounded-lg p-3 text-white/80 hover:bg-white/5 min-h-[44px] min-w-[44px]"
             aria-label="Menú"
           >
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -148,25 +148,25 @@ export function Navbar() {
       {menuOpen && (
         <div className="border-t border-white/10 bg-[#0a0515]/95 px-4 pb-6 pt-4 sm:hidden">
           <div className="flex flex-col gap-3">
-            <Link href="/explore" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-purple-300/70 hover:text-purple-200 hover:bg-white/5">
+            <Link href="/explore" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-white/80 hover:text-purple-200 hover:bg-white/5">
               Explorar
             </Link>
-            <Link href="/products" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-purple-300/70 hover:text-purple-200 hover:bg-white/5">
+            <Link href="/products" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-white/80 hover:text-purple-200 hover:bg-white/5">
               Productos
             </Link>
             {isLoggedIn && session?.user ? (
               <>
-                <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-purple-300/70 hover:text-purple-200 hover:bg-white/5">
+                <Link href="/dashboard" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-white/80 hover:text-purple-200 hover:bg-white/5">
                   Dashboard
                 </Link>
-                <Link href="/dashboard/profile" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-purple-300/70 hover:text-purple-200 hover:bg-white/5">
+                <Link href="/dashboard/profile" onClick={() => setMenuOpen(false)} className="flex items-center min-h-[44px] rounded-lg px-3 text-sm font-medium text-white/80 hover:text-purple-200 hover:bg-white/5">
                   Mi Perfil
                 </Link>
                 <div className="flex items-center justify-between border-t border-white/5 pt-3">
-                  <span className="text-sm text-purple-300/40">{session.user.name}</span>
+                  <span className="text-sm text-white/60">{session.user.name}</span>
                   <button
                     onClick={() => signOut({ redirect: false }).then(() => { window.location.href = "/" })}
-                    className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-purple-300/70"
+                    className="rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-white/80"
                   >
                     Salir
                   </button>
@@ -174,11 +174,11 @@ export function Navbar() {
               </>
             ) : (
               <>
-                <Link href="/cart" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-purple-300/70 hover:text-purple-200">
+                <Link href="/cart" onClick={() => setMenuOpen(false)} className="text-sm font-medium text-white/80 hover:text-purple-200">
                   Carrito
                 </Link>
                 <div className="flex gap-3 border-t border-white/5 pt-3">
-                  <Link href="/auth/login" onClick={() => setMenuOpen(false)} className="flex-1 rounded-lg border border-white/10 px-4 py-2.5 text-center text-sm font-medium text-purple-300/70">
+                  <Link href="/auth/login" onClick={() => setMenuOpen(false)} className="flex-1 rounded-lg border border-white/10 px-4 py-2.5 text-center text-sm font-medium text-white/80">
                     Entrar
                   </Link>
                   <Link href="/auth/register" onClick={() => setMenuOpen(false)} className="flex-1 rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-4 py-2.5 text-center text-sm font-semibold text-white">

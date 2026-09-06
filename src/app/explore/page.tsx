@@ -8,6 +8,7 @@ import {
   getDailyPhrase,
 } from "@/lib/demo-data"
 import { FeaturedCarousel } from "@/components/FeaturedCarousel"
+import { prisma } from "@/lib/prisma"
 
 type CategoryGroup = {
   id: string
@@ -147,6 +148,48 @@ function DailyPhrase() {
   )
 }
 
+async function fetchRealProfessionals() {
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        role: "PROFESSIONAL",
+        professionalProfile: { published: true },
+      },
+      include: { professionalProfile: true },
+    })
+
+    return users
+      .filter((u) => u.professionalProfile)
+      .map((u) => {
+        const p = u.professionalProfile!
+        const specialties = p.specialties
+          ? p.specialties.split(",").map((s) => s.trim()).filter(Boolean)
+          : []
+        // Buscar la categoría más cercana entre las que el profesional tiene en specialties
+        const matchedCat = CATEGORIES.find((cat) =>
+          specialties.some((s) =>
+            s.toLowerCase().includes(cat.id.replace("-", " "))
+          )
+        )
+        return {
+          id: u.id,
+          name: u.name || "Profesional",
+          title: p.title || "",
+          bio: p.bio || "",
+          specialties,
+          pricePerSession: p.pricePerSession,
+          city: p.city || "",
+          rating: 0,
+          reviews: 0,
+          category: matchedCat?.id || "crecimiento",
+          image: u.image || undefined,
+        }
+      })
+  } catch {
+    return []
+  }
+}
+
 export default async function ExplorePage({
   searchParams,
 }: {
@@ -161,6 +204,14 @@ export default async function ExplorePage({
   const activeGroupDef = activeGroup
     ? CATEGORY_GROUPS.find((grp) => grp.id === activeGroup)
     : null
+
+  // Mezclar profesionales reales de la BD con los de demostración.
+  // Los reales van los primeros; se eliminan duplicados por id.
+  const realPros = await fetchRealProfessionals()
+  const ALL_PROS = [
+    ...realPros,
+    ...DEMO_PROFESSIONALS.filter((d) => !realPros.some((r) => r.id === d.id)),
+  ]
 
   function isActiveGroup(groupId: string) {
     if (activeGroup === groupId) return true
@@ -188,7 +239,7 @@ export default async function ExplorePage({
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
               !activeId && !activeGroup
                 ? "bg-purple-500/20 text-purple-200"
-                : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
+                : "text-white/70 hover:bg-white/5 hover:text-purple-200"
             }`}
           >
             <span className="text-lg">☥</span>
@@ -202,7 +253,7 @@ export default async function ExplorePage({
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
               activeId === "zona"
                 ? "bg-purple-500/20 text-purple-200"
-                : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
+                : "text-white/70 hover:bg-white/5 hover:text-purple-200"
             }`}
           >
             <span className="text-lg">⊙</span>
@@ -214,7 +265,7 @@ export default async function ExplorePage({
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
               activeId === "podcasts"
                 ? "bg-purple-500/20 text-purple-200"
-                : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
+                : "text-white/70 hover:bg-white/5 hover:text-purple-200"
             }`}
           >
             <span className="text-lg">◈</span>
@@ -233,7 +284,7 @@ export default async function ExplorePage({
                   className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
                     groupActive
                       ? "bg-purple-500/20 text-purple-200"
-                      : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
+                      : "text-white/70 hover:bg-white/5 hover:text-purple-200"
                   }`}
                 >
                   <span className="text-lg">{group.icon}</span>
@@ -252,7 +303,7 @@ export default async function ExplorePage({
                           className={`flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs transition ${
                             activeId === childId
                               ? "bg-purple-500/15 text-purple-200"
-                              : "text-purple-300/40 hover:bg-white/5 hover:text-purple-200"
+                              : "text-white/50 hover:bg-white/5 hover:text-purple-200"
                           }`}
                         >
                           <span>{childCat.icon}</span>
@@ -274,7 +325,7 @@ export default async function ExplorePage({
             className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition ${
               activeId === "materiales"
                 ? "bg-purple-500/20 text-purple-200"
-                : "text-purple-300/60 hover:bg-white/5 hover:text-purple-200"
+                : "text-white/70 hover:bg-white/5 hover:text-purple-200"
             }`}
           >
             <span className="text-lg">⚘</span>
@@ -282,7 +333,7 @@ export default async function ExplorePage({
           </Link>
           <Link
             href="/products"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-purple-300/60 transition hover:bg-white/5 hover:text-purple-200"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-white/70 transition hover:bg-white/5 hover:text-purple-200"
           >
             <span className="text-lg">⊞</span>
             Tienda
@@ -292,7 +343,7 @@ export default async function ExplorePage({
             href="https://instagram.com/eswakeup"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-purple-300/60 transition hover:bg-white/5 hover:text-purple-200"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-white/70 transition hover:bg-white/5 hover:text-purple-200"
           >
             <span className="text-lg">📷</span>
             Instagram
@@ -301,14 +352,14 @@ export default async function ExplorePage({
             href="https://www.tiktok.com/@eswakeup"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-purple-300/60 transition hover:bg-white/5 hover:text-purple-200"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-white/70 transition hover:bg-white/5 hover:text-purple-200"
           >
             <span className="text-lg">🎵</span>
             TikTok
           </a>
           <a
             href="mailto:hola@wakeup-app.com"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-purple-300/60 transition hover:bg-white/5 hover:text-purple-200"
+            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-white/70 transition hover:bg-white/5 hover:text-purple-200"
           >
             <span className="text-lg">✉</span>
             Email
@@ -316,7 +367,7 @@ export default async function ExplorePage({
         </nav>
 
         <div className="mt-12 rounded-xl border border-white/5 bg-white/[0.02] p-4">
-          <p className="text-center text-xs italic leading-relaxed text-purple-300/40">
+          <p className="text-center text-xs italic leading-relaxed text-white/50">
             &ldquo;El universo no es más que
             <br />
             un gran eco.
@@ -326,10 +377,10 @@ export default async function ExplorePage({
           <div className="mt-4 border-t border-white/5 pt-3 text-center text-[10px] text-purple-300/30">
             <p>hola@wakeup-app.com</p>
             <div className="mt-2 flex flex-wrap justify-center gap-3">
-              <Link href="/privacy" className="hover:text-purple-300/50 transition">Privacidad</Link>
-              <Link href="/cookies" className="hover:text-purple-300/50 transition">Cookies</Link>
-              <Link href="/terms" className="hover:text-purple-300/50 transition">Términos</Link>
-              <Link href="/data" className="hover:text-purple-300/50 transition">Tus datos</Link>
+              <Link href="/privacy" className="hover:text-white/60 transition">Privacidad</Link>
+              <Link href="/cookies" className="hover:text-white/60 transition">Cookies</Link>
+              <Link href="/terms" className="hover:text-white/60 transition">Términos</Link>
+              <Link href="/data" className="hover:text-white/60 transition">Tus datos</Link>
             </div>
           </div>
         </div>
@@ -344,7 +395,7 @@ export default async function ExplorePage({
             className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
               !activeId && !activeGroup
                 ? "bg-purple-500/20 text-purple-200"
-                : "text-purple-300/60"
+                : "text-white/70"
             }`}
           >
             ☥ Todo
@@ -353,7 +404,7 @@ export default async function ExplorePage({
             href="/explore?c=zona"
             scroll={false}
             className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
-              activeId === "zona" ? "bg-purple-500/20 text-purple-200" : "text-purple-300/60"
+              activeId === "zona" ? "bg-purple-500/20 text-purple-200" : "text-white/70"
             }`}
           >
             ⊙ Zona
@@ -362,7 +413,7 @@ export default async function ExplorePage({
             href="/explore?c=podcasts"
             scroll={false}
             className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
-              activeId === "podcasts" ? "bg-purple-500/20 text-purple-200" : "text-purple-300/60"
+              activeId === "podcasts" ? "bg-purple-500/20 text-purple-200" : "text-white/70"
             }`}
           >
             ◈ Podcasts
@@ -375,7 +426,7 @@ export default async function ExplorePage({
               className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
                 isActiveGroup(group.id)
                   ? "bg-purple-500/20 text-purple-200"
-                  : "text-purple-300/60"
+                  : "text-white/70"
               }`}
             >
               {group.icon} {group.name}
@@ -385,14 +436,14 @@ export default async function ExplorePage({
             href="/explore?c=materiales"
             scroll={false}
             className={`flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition ${
-              activeId === "materiales" ? "bg-purple-500/20 text-purple-200" : "text-purple-300/60"
+              activeId === "materiales" ? "bg-purple-500/20 text-purple-200" : "text-white/70"
             }`}
           >
             ⚘ Materiales
           </Link>
           <Link
             href="/products"
-            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-purple-300/60"
+            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-white/70"
           >
             ⊞ Tienda
           </Link>
@@ -400,7 +451,7 @@ export default async function ExplorePage({
             href="https://instagram.com/eswakeup"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-purple-300/60"
+            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-white/70"
           >
             📷 Instagram
           </a>
@@ -408,13 +459,13 @@ export default async function ExplorePage({
             href="https://www.tiktok.com/@eswakeup"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-purple-300/60"
+            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-white/70"
           >
             🎵 TikTok
           </a>
           <a
             href="mailto:hola@wakeup-app.com"
-            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-purple-300/60"
+            className="flex-shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-white/70"
           >
             ✉ Email
           </a>
@@ -424,26 +475,26 @@ export default async function ExplorePage({
       {/* Main content */}
       <div className="flex-1 overflow-y-auto p-4 pb-20 sm:p-6 lg:p-8">
         {activeGroupDef ? (
-          <GroupView group={activeGroupDef} />
+          <GroupView group={activeGroupDef} allPros={ALL_PROS} />
         ) : activeId === "podcasts" ? (
           <PodcastsView />
         ) : activeId === "ocultismo" ? (
           <OcultismoPodcastsView />
         ) : activeId === "zona" ? (
-          <LocalEventsView />
+          <LocalEventsView allPros={ALL_PROS} />
         ) : activeId === "materiales" ? (
-          <MaterialesView />
+          <MaterialesView allPros={ALL_PROS} />
         ) : activeCat ? (
-          <CategoryView category={activeCat} />
+          <CategoryView category={activeCat} allPros={ALL_PROS} />
         ) : (
-          <AllView />
+          <AllView allPros={ALL_PROS} />
         )}
       </div>
     </div>
   )
 }
 
-function AllView() {
+function AllView({ allPros }: { allPros: typeof DEMO_PROFESSIONALS }) {
   const topPodcasts = DEMO_PODCASTS.filter((p) => p.isTop && p.category !== "ocultismo").slice(0, 3)
 
   return (
@@ -458,13 +509,13 @@ function AllView() {
               <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-xs text-amber-300">
                 Top
               </span>
-              <span className="text-xs text-purple-300/50">
+              <span className="text-xs text-white/60">
                 {pod.episodes} episodios
               </span>
             </div>
             <h3 className="font-semibold text-white">{pod.title}</h3>
-            <p className="mt-1 text-sm text-purple-300/60">por {pod.host}</p>
-            <p className="mt-2 text-xs text-purple-300/50">{pod.duration}</p>
+            <p className="mt-1 text-sm text-white/70">por {pod.host}</p>
+            <p className="mt-2 text-xs text-white/60">{pod.duration}</p>
             <p className="mt-1 line-clamp-2 text-sm text-purple-200/70">
               {pod.description}
             </p>
@@ -477,7 +528,7 @@ function AllView() {
         const childrenCats = group.children
           .map((id) => CATEGORIES.find((c) => c.id === id))
           .filter((c): c is (typeof CATEGORIES)[0] => c !== undefined)
-        return <GroupPreview key={group.id} group={group} categories={childrenCats} />
+        return <GroupPreview key={group.id} group={group} categories={childrenCats} allPros={allPros} />
       })}
 
       {/* Standalone previews */}
@@ -494,7 +545,7 @@ function AllView() {
                 <div className="rounded-xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-xl transition hover:border-white/20 hover:bg-white/[0.07]">
                   <span className="text-2xl">{cat.icon}</span>
                   <h3 className="mt-2 font-semibold text-white">{cat.name}</h3>
-                  <p className="mt-1 text-xs text-purple-300/50">{cat.description}</p>
+                  <p className="mt-1 text-xs text-white/60">{cat.description}</p>
                 </div>
               </Link>
             )
@@ -508,12 +559,14 @@ function AllView() {
 function GroupPreview({
   group,
   categories,
+  allPros,
 }: {
   group: CategoryGroup
   categories: (typeof CATEGORIES)[0][]
+  allPros: typeof DEMO_PROFESSIONALS
 }) {
-  const allPros = categories.flatMap((cat) =>
-    DEMO_PROFESSIONALS.filter((p) => p.category === cat.id).slice(0, 2)
+  const pros = categories.flatMap((cat) =>
+    allPros.filter((p) => p.category === cat.id).slice(0, 2)
   )
 
   return (
@@ -538,16 +591,16 @@ function GroupPreview({
           <Link
             key={cat.id}
             href={`/explore?c=${cat.id}`}
-            className="rounded-full bg-white/5 px-3 py-1 text-xs text-purple-300/60 transition hover:bg-white/10 hover:text-purple-200"
+            className="rounded-full bg-white/5 px-3 py-1 text-xs text-white/70 transition hover:bg-white/10 hover:text-purple-200"
           >
             {cat.icon} {cat.name}
           </Link>
         ))}
       </div>
 
-      {allPros.length > 0 && (
+      {pros.length > 0 && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {allPros.slice(0, 4).map((pro) => (
+          {pros.slice(0, 4).map((pro) => (
             <ProfessionalCard key={pro.id} pro={pro} />
           ))}
         </div>
@@ -556,7 +609,7 @@ function GroupPreview({
   )
 }
 
-function GroupView({ group }: { group: CategoryGroup }) {
+function GroupView({ group, allPros }: { group: CategoryGroup; allPros: typeof DEMO_PROFESSIONALS }) {
   const childrenCats = group.children
     .map((id) => CATEGORIES.find((c) => c.id === id))
     .filter((c): c is (typeof CATEGORIES)[0] => c !== undefined)
@@ -565,17 +618,17 @@ function GroupView({ group }: { group: CategoryGroup }) {
     <div className="space-y-8">
       <div className={`relative mb-8 overflow-hidden rounded-2xl bg-gradient-to-r ${group.gradient} p-8`}>
         <div className="absolute right-4 top-4 text-6xl opacity-20">{group.icon}</div>
-        <Link href="/explore" className="relative mb-4 inline-block text-sm text-purple-300/60 hover:text-purple-200">
+        <Link href="/explore" className="relative mb-4 inline-block text-sm text-white/70 hover:text-purple-200">
           &larr; Todas las categorías
         </Link>
         <h1 className="relative text-3xl font-bold text-white">
           {group.icon} {group.name}
         </h1>
-        <p className="relative mt-2 text-purple-200/60">{group.description}</p>
+        <p className="relative mt-2 text-white/70">{group.description}</p>
       </div>
 
       {childrenCats.map((cat) => {
-        const pros = DEMO_PROFESSIONALS.filter((p) => p.category === cat.id)
+        const pros = allPros.filter((p) => p.category === cat.id)
         return (
           <section key={cat.id}>
             <div className="mb-4 flex items-center justify-between">
@@ -592,7 +645,7 @@ function GroupView({ group }: { group: CategoryGroup }) {
                   <ProfessionalCard key={pro.id} pro={pro} />
                 ))
               ) : (
-                <p className="col-span-full py-4 text-center text-sm text-purple-300/40">
+                <p className="col-span-full py-4 text-center text-sm text-white/50">
                   No hay profesionales en esta categoría todavía
                 </p>
               )}
@@ -608,10 +661,12 @@ function GroupView({ group }: { group: CategoryGroup }) {
 
 function CategoryView({
   category,
+  allPros,
 }: {
   category: (typeof CATEGORIES)[0]
+  allPros: typeof DEMO_PROFESSIONALS
 }) {
-  const pros = DEMO_PROFESSIONALS.filter(
+  const pros = allPros.filter(
     (p) => p.category === category.id
   )
 
@@ -625,18 +680,18 @@ function CategoryView({
         </div>
         <Link
           href="/explore"
-          className="relative mb-4 inline-block text-sm text-purple-300/60 hover:text-purple-200"
+          className="relative mb-4 inline-block text-sm text-white/70 hover:text-purple-200"
         >
           &larr; Todas las categorías
         </Link>
         <h1 className="relative text-3xl font-bold text-white">
           {category.icon} {category.name}
         </h1>
-        <p className="relative mt-2 text-purple-200/60">
+        <p className="relative mt-2 text-white/70">
           {category.description}
         </p>
         {"longDescription" in category && category.longDescription && (
-          <p className="relative mt-3 max-w-2xl text-sm leading-relaxed text-purple-300/50">
+          <p className="relative mt-3 max-w-2xl text-sm leading-relaxed text-white/60">
             {category.longDescription}
           </p>
         )}
@@ -648,7 +703,7 @@ function CategoryView({
             <ProfessionalCard key={pro.id} pro={pro} />
           ))
         ) : (
-          <p className="col-span-full py-8 text-center text-sm text-purple-300/40">
+          <p className="col-span-full py-8 text-center text-sm text-white/50">
             No hay profesionales en esta categoría todavía
           </p>
         )}
@@ -696,7 +751,7 @@ function ProfessionalCard({
           ))}
         </div>
         <div className="mt-4 flex items-center justify-between">
-          <span className="text-sm text-purple-300/60">{pro.city}</span>
+          <span className="text-sm text-white/70">{pro.city}</span>
           {pro.pricePerSession > 0 && (
             <span className="font-semibold text-amber-300">
               {pro.pricePerSession / 100} &euro;
@@ -717,14 +772,14 @@ function PodcastsView() {
       <div className="mb-8">
         <Link
           href="/explore"
-          className="mb-4 inline-block text-sm text-purple-300/60 hover:text-purple-200"
+          className="mb-4 inline-block text-sm text-white/70 hover:text-purple-200"
         >
           &larr; Todas las categorías
         </Link>
         <h1 className="text-3xl font-bold text-white">
           ◈ Podcasts Espirituales
         </h1>
-        <p className="mt-2 text-purple-200/60">
+        <p className="mt-2 text-white/70">
           Los mejores podcasts sobre espiritualidad, yoga, meditación y crecimiento
           personal
         </p>
@@ -737,12 +792,12 @@ function PodcastsView() {
               <span className="rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-2.5 py-0.5 text-xs font-semibold text-white">
                 Top Podcast
               </span>
-              <span className="text-xs text-purple-300/50">
+              <span className="text-xs text-white/60">
                 {pod.episodes} ep.
               </span>
             </div>
             <h3 className="text-lg font-bold text-white">{pod.title}</h3>
-            <p className="mt-1 text-sm text-purple-300/60">
+            <p className="mt-1 text-sm text-white/70">
               por {pod.host} &middot; {pod.duration}
             </p>
             <p className="mt-3 line-clamp-2 text-sm text-purple-200/70">
@@ -764,14 +819,14 @@ function PodcastsView() {
         {otherPodcasts.map((pod) => (
           <GlassCard key={pod.id}>
             <h3 className="font-semibold text-white">{pod.title}</h3>
-            <p className="mt-1 text-sm text-purple-300/60">
+            <p className="mt-1 text-sm text-white/70">
               por {pod.host} &middot; {pod.duration}
             </p>
             <p className="mt-2 line-clamp-2 text-sm text-purple-200/70">
               {pod.description}
             </p>
             <div className="mt-3 flex items-center gap-2">
-              <span className="text-xs text-purple-300/50">
+              <span className="text-xs text-white/60">
                 {pod.episodes} episodios
               </span>
             </div>
@@ -795,14 +850,14 @@ function OcultismoPodcastsView() {
       <div className="mb-8">
         <Link
           href="/explore"
-          className="mb-4 inline-block text-sm text-purple-300/60 hover:text-purple-200"
+          className="mb-4 inline-block text-sm text-white/70 hover:text-purple-200"
         >
           &larr; Todas las categorías
         </Link>
         <h1 className="text-3xl font-bold text-white">
           ◐ Ocultismo
         </h1>
-        <p className="mt-2 text-purple-200/60">
+        <p className="mt-2 text-white/70">
           Podcasts sobre ocultismo, satanismo, demonología, brujería, grimorios y
           las tradiciones esotéricas de la sombra
         </p>
@@ -815,12 +870,12 @@ function OcultismoPodcastsView() {
               <span className="rounded-full bg-gradient-to-r from-gray-700 to-zinc-700 px-2.5 py-0.5 text-xs font-semibold text-gray-200">
                 Top Ocultismo
               </span>
-              <span className="text-xs text-purple-300/50">
+              <span className="text-xs text-white/60">
                 {pod.episodes} ep.
               </span>
             </div>
             <h3 className="text-lg font-bold text-white">{pod.title}</h3>
-            <p className="mt-1 text-sm text-purple-300/60">
+            <p className="mt-1 text-sm text-white/70">
               por {pod.host} &middot; {pod.duration}
             </p>
             <p className="mt-3 line-clamp-2 text-sm text-purple-200/70">
@@ -834,14 +889,14 @@ function OcultismoPodcastsView() {
         {otherOculto.map((pod) => (
           <GlassCard key={pod.id}>
             <h3 className="font-semibold text-white">{pod.title}</h3>
-            <p className="mt-1 text-sm text-purple-300/60">
+            <p className="mt-1 text-sm text-white/70">
               por {pod.host} &middot; {pod.duration}
             </p>
             <p className="mt-2 line-clamp-2 text-sm text-purple-200/70">
               {pod.description}
             </p>
             <div className="mt-3 flex items-center gap-2">
-              <span className="text-xs text-purple-300/50">
+              <span className="text-xs text-white/60">
                 {pod.episodes} episodios
               </span>
             </div>
@@ -854,9 +909,9 @@ function OcultismoPodcastsView() {
 
 
 
-function LocalEventsView() {
+function LocalEventsView({ allPros }: { allPros: typeof DEMO_PROFESSIONALS }) {
   const localEvents = DEMO_EVENTS.filter((e) => e.category === "zona")
-  const cities = [...new Set(DEMO_PROFESSIONALS.map((p) => p.city).filter(Boolean))].sort()
+  const cities = [...new Set(allPros.map((p) => p.city).filter(Boolean))].sort()
 
   const eventTypeIcon: Record<string, string> = {
     feria: "🏪",
@@ -882,14 +937,14 @@ function LocalEventsView() {
       <div className="mb-8">
         <Link
           href="/explore"
-          className="mb-4 inline-block text-sm text-purple-300/60 hover:text-purple-200"
+          className="mb-4 inline-block text-sm text-white/70 hover:text-purple-200"
         >
           &larr; Todas las categorías
         </Link>
         <h1 className="text-3xl font-bold text-white">
           ⊙ En tu Zona
         </h1>
-        <p className="mt-2 text-purple-200/60">
+        <p className="mt-2 text-white/70">
           Ferias holísticas, mercados esotéricos, charlas, círculos y encuentros
           espirituales. Además, descubre los profesionales de la app que están
           cerca de ti.
@@ -900,7 +955,7 @@ function LocalEventsView() {
       <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
         <MapComponent
           items={[
-            ...DEMO_PROFESSIONALS.filter((p) => p.city && p.city !== "Online").map((p) => ({
+            ...allPros.filter((p) => p.city && p.city !== "Online").map((p) => ({
               id: p.id,
               name: p.name,
               subtitle: p.title,
@@ -939,10 +994,10 @@ function LocalEventsView() {
                 </span>
               </div>
               <h3 className="font-semibold text-white">{ev.title}</h3>
-              <p className="mt-1 text-xs text-purple-300/60">
+              <p className="mt-1 text-xs text-white/70">
                 por {ev.organizer}
               </p>
-              <div className="mt-2 flex items-center gap-3 text-xs text-purple-300/50">
+              <div className="mt-2 flex items-center gap-3 text-xs text-white/60">
                 <span>📅 {ev.date}</span>
                 <span>📍 {ev.location}</span>
               </div>
@@ -953,7 +1008,7 @@ function LocalEventsView() {
           ))
         ) : (
           <GlassCard>
-            <p className="text-center text-sm text-purple-300/40">
+            <p className="text-center text-sm text-white/50">
               No hay eventos programados para esta semana
             </p>
           </GlassCard>
@@ -975,10 +1030,10 @@ function LocalEventsView() {
               </span>
             </div>
             <h3 className="font-semibold text-white">{ev.title}</h3>
-            <p className="mt-1 text-xs text-purple-300/60">
+            <p className="mt-1 text-xs text-white/70">
               por {ev.organizer}
             </p>
-            <div className="mt-2 flex items-center gap-3 text-xs text-purple-300/50">
+            <div className="mt-2 flex items-center gap-3 text-xs text-white/60">
               <span>📅 {ev.date}</span>
               <span>📍 {ev.location}</span>
             </div>
@@ -991,7 +1046,7 @@ function LocalEventsView() {
 
       <SectionCard title="Profesionales Cerca de Ti" icon="⊙">
         {cities.slice(0, 6).map((city) => {
-          const prosInCity = DEMO_PROFESSIONALS.filter(
+          const prosInCity = allPros.filter(
             (p) => p.city === city
           ).slice(0, 3)
           if (prosInCity.length === 0) return null
@@ -1015,7 +1070,7 @@ function LocalEventsView() {
                         <p className="truncate text-sm font-semibold text-white">
                           {pro.name}
                         </p>
-                        <p className="truncate text-xs text-purple-300/60">
+                        <p className="truncate text-xs text-white/70">
                           {pro.title}
                         </p>
                       </div>
@@ -1031,8 +1086,8 @@ function LocalEventsView() {
   )
 }
 
-function MaterialesView() {
-  const sellers = DEMO_PROFESSIONALS.filter(
+function MaterialesView({ allPros }: { allPros: typeof DEMO_PROFESSIONALS }) {
+  const sellers = allPros.filter(
     (p) => p.category === "materiales"
   )
 
@@ -1058,14 +1113,14 @@ function MaterialesView() {
       <div className="mb-8">
         <Link
           href="/explore"
-          className="mb-4 inline-block text-sm text-purple-300/60 hover:text-purple-200"
+          className="mb-4 inline-block text-sm text-white/70 hover:text-purple-200"
         >
           &larr; Todas las categorías
         </Link>
         <h1 className="text-3xl font-bold text-white">
           ◆ Materiales Espirituales
         </h1>
-        <p className="mt-2 text-purple-200/60">
+        <p className="mt-2 text-white/70">
           Cristales, cuencos, inciensos, velas, libros, herbolaria y todo lo
           necesario para tu práctica y tu altar espiritual
         </p>
@@ -1084,7 +1139,7 @@ function MaterialesView() {
                 <div className="min-w-0 flex-1">
                   <h3 className="font-semibold text-white">{pro.name}</h3>
                   <p className="text-sm text-purple-300/80">{pro.title}</p>
-                  <p className="mt-1 text-xs text-purple-300/50">{pro.city}</p>
+                  <p className="mt-1 text-xs text-white/60">{pro.city}</p>
                 </div>
               </div>
               <p className="mt-3 line-clamp-2 text-sm text-purple-200/70">

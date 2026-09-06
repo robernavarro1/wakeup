@@ -94,7 +94,7 @@ export function UserProfileForm({ profile }: { profile: UserProfileData | null }
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-amber-500/20 text-xl shadow-lg shadow-purple-500/20">🧘</span>
           <div>
             <h2 className="text-lg font-semibold text-white">Sobre ti</h2>
-            <p className="text-sm text-purple-300/50">Comparte tu camino espiritual</p>
+            <p className="text-sm text-white/60">Comparte tu camino espiritual</p>
           </div>
         </div>
         <div className="space-y-5">
@@ -112,13 +112,13 @@ export function UserProfileForm({ profile }: { profile: UserProfileData | null }
           {/* Disciplines */}
           <div>
             <label className="block text-sm font-medium text-purple-300/70">Disciplinas que practicas</label>
-            <p className="mt-0.5 text-xs text-purple-300/40">Añade cada disciplina con su nivel</p>
+            <p className="mt-0.5 text-xs text-white/50">Añade cada disciplina con su nivel</p>
             <div className="mt-3 space-y-3">
               {disciplines.map((d, i) => (
                 <div key={i} className="rounded-xl border border-white/5 bg-purple-950/40 p-4">
                   <div className="grid gap-3 sm:grid-cols-3">
                     <div className="sm:col-span-2">
-                      <label className="block text-xs font-medium text-purple-300/50">Disciplina</label>
+                      <label className="block text-xs font-medium text-white/60">Disciplina</label>
                       <input
                         type="text"
                         value={d.name}
@@ -128,7 +128,7 @@ export function UserProfileForm({ profile }: { profile: UserProfileData | null }
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-purple-300/50">Nivel</label>
+                      <label className="block text-xs font-medium text-white/60">Nivel</label>
                       <select
                         value={d.level}
                         onChange={(e) => updateDiscipline(i, "level", e.target.value)}

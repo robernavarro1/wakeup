@@ -102,13 +102,13 @@ export default async function ProfessionalPage({
                 <p className="mt-1 text-sm text-amber-400">
                   {"★".repeat(Math.round(avgRating))}
                   {"☆".repeat(5 - Math.round(avgRating))}{" "}
-                  <span className="text-purple-300/50">
+                  <span className="text-white/60">
                     ({reviews.length} valoraciones)
                   </span>
                 </p>
               )}
               {profile.city && (
-                <p className="mt-1 text-sm text-purple-300/50">📍 {profile.city}</p>
+                <p className="mt-1 text-sm text-white/60">📍 {profile.city}</p>
               )}
             </div>
           </div>
@@ -176,13 +176,13 @@ export default async function ProfessionalPage({
                       {service.price / 100} €
                     </p>
                   </div>
-                  <div className="mt-1 flex items-center gap-3 text-sm text-purple-300/50">
+                  <div className="mt-1 flex items-center gap-3 text-sm text-white/60">
                     <span>{service.durationMinutes} min</span>
                     {rating && (
                       <span className="text-amber-400">
                         {"★".repeat(Math.round(rating.avg))}
                         {"☆".repeat(5 - Math.round(rating.avg))}
-                        <span className="text-purple-300/50 ml-1">({rating.count})</span>
+                        <span className="text-white/60 ml-1">({rating.count})</span>
                       </span>
                     )}
                     {!rating && reviews.length > 0 && (
@@ -190,7 +190,7 @@ export default async function ProfessionalPage({
                     )}
                   </div>
                   {service.description && (
-                    <p className="mt-2 text-sm text-purple-200/60">{service.description}</p>
+                    <p className="mt-2 text-sm text-white/70">{service.description}</p>
                   )}
                 </div>
               )
@@ -212,7 +212,7 @@ export default async function ProfessionalPage({
                 <span className="w-28 rounded-lg border border-white/5 bg-purple-950/40 px-3 py-1.5 font-medium text-purple-200">
                   {DAYS[avail.dayOfWeek]}
                 </span>
-                <span className="text-purple-300/60">
+                <span className="text-white/70">
                   {avail.startTime} - {avail.endTime}
                 </span>
               </div>
@@ -238,7 +238,7 @@ export default async function ProfessionalPage({
                   <img src={product.image} alt={product.name} className="mb-3 h-32 w-full rounded-lg object-cover" />
                 )}
                 <h3 className="font-medium text-white text-sm">{product.name}</h3>
-                <p className="mt-1 text-xs text-purple-300/50">{product.description}</p>
+                <p className="mt-1 text-xs text-white/60">{product.description}</p>
                 <div className="mt-3 flex items-center justify-between">
                   <span className="text-sm font-bold text-amber-300">
                     {product.price > 0 ? formatPrice(product.price) : ""}
@@ -286,7 +286,7 @@ export default async function ProfessionalPage({
                     </p>
                   </div>
                   {review.comment && (
-                    <p className="mt-2 text-sm text-purple-200/60">
+                    <p className="mt-2 text-sm text-white/70">
                       {review.comment}
                     </p>
                   )}

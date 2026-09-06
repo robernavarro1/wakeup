@@ -46,11 +46,14 @@ const COMISION_WAKEUP = 10
 export function ProfileForm({
   profile,
   userId,
+  userName,
 }: {
   profile: ProfileData | null
   userId: string
+  userName?: string | null
 }) {
   const router = useRouter()
+  const [name, setName] = useState(userName || "")
   const [title, setTitle] = useState(profile?.title || "")
   const [bio, setBio] = useState(profile?.bio || "")
   const [phone, setPhone] = useState(profile?.phone || "")
@@ -166,6 +169,7 @@ export function ProfileForm({
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
+        name,
         title,
         bio,
         phone,
@@ -180,6 +184,8 @@ export function ProfileForm({
 
     if (res.ok) {
       setSuccess(true)
+      // Ocultar el toast automáticamente después de 3 segundos
+      setTimeout(() => setSuccess(false), 3000)
       router.refresh()
     }
     setLoading(false)
@@ -188,7 +194,7 @@ export function ProfileForm({
   return (
     <form onSubmit={handleSubmit} className="mt-6 space-y-6">
       {success && (
-        <div className="rounded-xl border border-emerald-500/20 bg-emerald-950/60 p-4 text-sm text-emerald-300">
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 animate-in fade-in slide-in-from-bottom-4 rounded-xl border border-emerald-500/30 bg-emerald-950/90 px-6 py-3 text-sm font-medium text-emerald-300 shadow-2xl shadow-emerald-500/20 backdrop-blur-xl">
           ✨ Perfil actualizado correctamente
         </div>
       )}
@@ -199,10 +205,21 @@ export function ProfileForm({
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-amber-500/20 text-xl shadow-lg shadow-purple-500/20">🕊️</span>
           <div>
             <h2 className="text-lg font-semibold text-white">Información básica</h2>
-            <p className="text-sm text-purple-300/50">Preséntate a la comunidad</p>
+            <p className="text-sm text-white/60">Preséntate a la comunidad</p>
           </div>
         </div>
         <div className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-purple-300/70">Tu nombre</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1.5 block w-full rounded-xl border border-purple-500/20 bg-purple-950/60 px-4 py-3 text-sm text-white placeholder-purple-300/30 focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+              placeholder="Ej: Maestra Kuang Lin"
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-purple-300/70">Título profesional</label>
             <input
@@ -256,7 +273,7 @@ export function ProfileForm({
                 placeholder="50"
               />
               {netoPorSesion !== null && (
-                <p className="mt-2 text-xs text-purple-300/60">
+                <p className="mt-2 text-xs text-white/70">
                   El cliente paga{" "}
                   <span className="font-semibold text-white">
                     {Number(pricePerSession).toFixed(2)} €
@@ -265,7 +282,7 @@ export function ProfileForm({
                   <span className="font-semibold text-emerald-400">
                     {netoPorSesion.toFixed(2)} €
                   </span>
-                  <span className="text-purple-300/40">
+                  <span className="text-white/50">
                     {" "}
                     (Wakeup retiene un {COMISION_WAKEUP} % por reserva)
                   </span>
@@ -336,7 +353,7 @@ export function ProfileForm({
             <div key={i} className="rounded-xl border border-white/5 bg-purple-950/40 p-5">
               <div className="grid gap-4 sm:grid-cols-4">
                 <div className="sm:col-span-2">
-                  <label className="block text-xs font-medium text-purple-300/50">Nombre</label>
+                  <label className="block text-xs font-medium text-white/60">Nombre</label>
                   <input
                     type="text"
                     value={service.name}
@@ -347,11 +364,11 @@ export function ProfileForm({
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-purple-300/50">Duración (min)</label>
+                  <label className="block text-xs font-medium text-white/60">Duración (min)</label>
                   <input type="number" value={service.durationMinutes} onChange={(e) => { const s = [...services]; s[i].durationMinutes = parseInt(e.target.value); setServices(s) }} disabled={!isSubActive} className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15 disabled:opacity-40" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-purple-300/50">Precio (€)</label>
+                  <label className="block text-xs font-medium text-white/60">Precio (€)</label>
                   <input type="number" value={service.price || ""} onChange={(e) => { const s = [...services]; s[i].price = parseInt(e.target.value); setServices(s) }} disabled={!isSubActive} className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15 disabled:opacity-40" />
                   {service.price > 0 && (
                     <p className="mt-1 text-xs text-emerald-400/70">
@@ -382,7 +399,7 @@ export function ProfileForm({
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-500/20 text-xl shadow-lg shadow-emerald-500/20">📅</span>
           <div>
             <h2 className="text-lg font-semibold text-white">Disponibilidad</h2>
-            <p className="text-sm text-purple-300/50">Define tu horario semanal</p>
+            <p className="text-sm text-white/60">Define tu horario semanal</p>
           </div>
         </div>
         <div className="space-y-4">
@@ -390,17 +407,17 @@ export function ProfileForm({
             <div key={i} className="rounded-xl border border-white/5 bg-purple-950/40 p-5">
               <div className="grid gap-4 sm:grid-cols-4">
                 <div>
-                  <label className="block text-xs font-medium text-purple-300/50">Día</label>
+                  <label className="block text-xs font-medium text-white/60">Día</label>
                   <select value={avail.dayOfWeek} onChange={(e) => { const a = [...availabilities]; a[i].dayOfWeek = parseInt(e.target.value); setAvailabilities(a) }} className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15">
                     {DAYS.map((day, idx) => (<option key={idx} value={idx} className="bg-[#0a0515] text-white">{day}</option>))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-purple-300/50">Desde</label>
+                  <label className="block text-xs font-medium text-white/60">Desde</label>
                   <input type="time" value={avail.startTime} onChange={(e) => { const a = [...availabilities]; a[i].startTime = e.target.value; setAvailabilities(a) }} className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-purple-300/50">Hasta</label>
+                  <label className="block text-xs font-medium text-white/60">Hasta</label>
                   <input type="time" value={avail.endTime} onChange={(e) => { const a = [...availabilities]; a[i].endTime = e.target.value; setAvailabilities(a) }} className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15" />
                 </div>
                 <div className="flex items-end">
@@ -419,7 +436,7 @@ export function ProfileForm({
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500/30 to-blue-500/20 text-xl shadow-lg shadow-sky-500/20">💳</span>
           <div>
             <h2 className="text-lg font-semibold text-white">Cobrar con Stripe</h2>
-            <p className="text-sm text-purple-300/50">Recibe los pagos directamente en tu banco</p>
+            <p className="text-sm text-white/60">Recibe los pagos directamente en tu banco</p>
           </div>
         </div>
         <StripeConnectSection />
@@ -446,12 +463,12 @@ function PlanControlledSection({ title, icon, gradient, unlocked, planName, limi
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white">{title}</h2>
             {!unlocked && (
-              <span className="rounded-full bg-purple-500/10 px-3 py-1 text-[10px] text-purple-300/50 border border-purple-500/20">
+              <span className="rounded-full bg-purple-500/10 px-3 py-1 text-[10px] text-white/60 border border-purple-500/20">
                 Elegir plan
               </span>
             )}
           </div>
-          <p className="text-sm text-purple-300/50">
+          <p className="text-sm text-white/60">
             {unlocked
               ? `${currentCount}/${limit >= 999 ? "∞" : limit} usadas`
               : `Elige un plan para desbloquear esta sección — ${planName || "Semilla, Árbol o Bosque"}`}
@@ -468,7 +485,7 @@ function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey,
 }) {
   if (subFetching) return (
     <div className="rounded-2xl border border-purple-500/20 bg-purple-950/50 p-6">
-      <p className="text-sm text-purple-300/40">Cargando planes...</p>
+      <p className="text-sm text-white/50">Cargando planes...</p>
     </div>
   )
 
@@ -478,7 +495,7 @@ function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey,
         <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-amber-500/20 text-xl shadow-lg shadow-purple-500/20">🌿</span>
         <div>
           <h2 className="text-lg font-semibold text-white">Tu plan</h2>
-          <p className="text-sm text-purple-300/50">Elige el plan que desbloquea todas las funciones</p>
+          <p className="text-sm text-white/60">Elige el plan que desbloquea todas las funciones</p>
         </div>
       </div>
 
@@ -552,7 +569,7 @@ function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey,
               <p className="text-center mt-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-amber-400">
                 {new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(plan.price / 100)}
               </p>
-              <p className="text-center text-xs text-purple-300/40">/mes</p>
+              <p className="text-center text-xs text-white/50">/mes</p>
 
               <ul className="mt-4 space-y-2">
                 {(plan.benefits || []).map((b: string, i: number) => (
@@ -660,7 +677,7 @@ function SpecialtySelector({ selected, onChange, max, disabled }: {
               </div>
             )}
             {open && query.trim() && filtered.length === 0 && (
-              <div className="absolute z-20 mt-1 w-full rounded-xl border border-purple-500/20 bg-[#120a1e] px-4 py-3 text-sm text-purple-300/50 shadow-xl shadow-purple-950/40">
+              <div className="absolute z-20 mt-1 w-full rounded-xl border border-purple-500/20 bg-[#120a1e] px-4 py-3 text-sm text-white/60 shadow-xl shadow-purple-950/40">
                 No se encontraron resultados
               </div>
             )}
@@ -690,7 +707,7 @@ function SpecialtySelector({ selected, onChange, max, disabled }: {
       )}
 
       {!disabled && selected.length === 0 && (
-        <p className="mt-2 text-xs text-purple-300/40">Escribe arriba para buscar y seleccionar especialidades</p>
+        <p className="mt-2 text-xs text-white/50">Escribe arriba para buscar y seleccionar especialidades</p>
       )}
     </div>
   )
@@ -724,7 +741,7 @@ function StripeConnectSection() {
     setLoading(false)
   }
 
-  if (fetching) return <p className="text-sm text-purple-300/40">Comprobando estado...</p>
+  if (fetching) return <p className="text-sm text-white/50">Comprobando estado...</p>
 
   if (stripeConnected) {
     return (
@@ -738,7 +755,7 @@ function StripeConnectSection() {
   if (!detailsSubmitted && stripeConnected) {
     return (
       <div className="rounded-xl border border-dashed border-amber-500/20 bg-amber-950/40 p-5 text-center">
-        <p className="mb-4 text-sm text-purple-300/50">La cuenta de Stripe está creada pero falta completar el registro (cuenta bancaria, etc.)</p>
+        <p className="mb-4 text-sm text-white/60">La cuenta de Stripe está creada pero falta completar el registro (cuenta bancaria, etc.)</p>
         <button type="button" onClick={handleConnect} disabled={loading} className="rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl disabled:opacity-50">
           {loading ? "Conectando..." : "Completar registro en Stripe"}
         </button>
@@ -748,7 +765,7 @@ function StripeConnectSection() {
 
   return (
     <div className="rounded-xl border border-dashed border-sky-500/20 bg-purple-950/40 p-5 text-center">
-      <p className="mb-4 text-sm text-purple-300/50">Conecta tu cuenta de Stripe para cobrar de forma segura</p>
+      <p className="mb-4 text-sm text-white/60">Conecta tu cuenta de Stripe para cobrar de forma segura</p>
       <button type="button" onClick={handleConnect} disabled={loading} className="rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:shadow-xl disabled:opacity-50">
         {loading ? "Conectando..." : "Conectar con Stripe"}
       </button>

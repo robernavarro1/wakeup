@@ -24,13 +24,13 @@ export default async function ProfessionalsPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-bold text-white">Profesionales</h1>
-      <p className="mt-1 text-purple-300/60">
+      <p className="mt-1 text-white/70">
         Encuentra al profesional perfecto para ti
       </p>
 
       {professionals.length === 0 ? (
         <div className="mt-16 text-center">
-          <p className="text-purple-300/40">
+          <p className="text-white/50">
             Aún no hay profesionales registrados. ¡Sé el primero!
           </p>
           <Link
@@ -63,7 +63,7 @@ export default async function ProfessionalsPage() {
                       {pro.name}
                     </h2>
                     {p.title && (
-                      <p className="text-sm text-purple-300/50">{p.title}</p>
+                      <p className="text-sm text-white/60">{p.title}</p>
                     )}
                   </div>
                 </div>

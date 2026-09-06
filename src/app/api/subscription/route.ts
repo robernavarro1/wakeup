@@ -115,7 +115,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    let customerId = profile.stripeAccountId
+    let customerId = profile.stripeCustomerId
 
     if (!customerId) {
       const customer = await stripe.customers.create({
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
 
       await prisma.professionalProfile.update({
         where: { userId: session.user.id },
-        data: { stripeAccountId: customerId },
+        data: { stripeCustomerId: customerId },
       })
     }
 
@@ -266,7 +266,7 @@ export async function PUT(request: Request) {
   }
 
   try {
-    let customerId = profile.stripeAccountId
+    let customerId = profile.stripeCustomerId
 
     if (!customerId) {
       const customer = await stripe.customers.create({
@@ -278,7 +278,7 @@ export async function PUT(request: Request) {
 
       await prisma.professionalProfile.update({
         where: { userId: session.user.id },
-        data: { stripeAccountId: customerId },
+        data: { stripeCustomerId: customerId },
       })
     }
 

@@ -58,7 +58,7 @@ function ResetForm() {
           </svg>
         </div>
         <h2 className="mt-4 text-lg font-semibold text-white">Contraseña actualizada</h2>
-        <p className="mt-2 text-sm text-purple-300/50">Ya puedes iniciar sesión con tu nueva contraseña.</p>
+        <p className="mt-2 text-sm text-white/60">Ya puedes iniciar sesión con tu nueva contraseña.</p>
         <Link href="/auth/login" className="mt-6 inline-block rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-6 py-2.5 text-sm font-semibold text-white">
           Iniciar sesión
         </Link>
@@ -112,10 +112,10 @@ export default function ResetPasswordPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-white">Nueva contraseña</h1>
-          <p className="mt-1 text-sm text-purple-300/50">Elige una contraseña nueva para tu cuenta</p>
+          <p className="mt-1 text-sm text-white/60">Elige una contraseña nueva para tu cuenta</p>
         </div>
         <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
-          <Suspense fallback={<p className="text-purple-300/50 text-center">Cargando...</p>}>
+          <Suspense fallback={<p className="text-white/60 text-center">Cargando...</p>}>
             <ResetForm />
           </Suspense>
         </div>

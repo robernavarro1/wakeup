@@ -13,6 +13,13 @@ import { Resend } from "resend"
  */
 export const MAIL_FROM = process.env.RESEND_FROM || "Wakeup <hola@wakeup-app.com>"
 
+/**
+ * Dirección de reply-to para todos los emails salientes.
+ * Mientras no exista buzón en hola@wakeup-app.com, las respuestas van aquí.
+ * Cuando crees el buzón, puedes borrar esta constante o cambiarla a hola@.
+ */
+export const MAIL_REPLY_TO = process.env.MAIL_REPLY_TO || "robernavarrotraiding@gmail.com"
+
 function createResend(): Resend {
   const key = process.env.RESEND_API_KEY
   if (!key || key === "re_placeholder") {

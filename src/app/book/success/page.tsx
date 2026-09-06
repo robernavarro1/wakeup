@@ -31,10 +31,10 @@ export default async function BookingSuccessPage({
           </svg>
         </div>
         <h1 className="mt-6 text-2xl font-bold text-white">¡Reserva confirmada!</h1>
-        <p className="mt-3 text-purple-200/60">
+        <p className="mt-3 text-white/70">
           Recibirás un email con los detalles de tu sesión y el enlace de la videollamada.
         </p>
-        <p className="mt-2 text-sm text-purple-300/40">ID de reserva: {bookingId}</p>
+        <p className="mt-2 text-sm text-white/50">ID de reserva: {bookingId}</p>
         <div className="mt-8 flex flex-col items-center gap-4">
           <Link
             href="/dashboard"

@@ -11,7 +11,7 @@ export default function Loading() {
             ●
           </span>
         </span>
-        <p className="mt-4 text-sm text-purple-300/50">Cargando...</p>
+        <p className="mt-4 text-sm text-white/60">Cargando...</p>
       </div>
     </div>
   )

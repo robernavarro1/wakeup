@@ -49,7 +49,7 @@ export default function Home() {
                 {" "}conciencia
               </span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-base text-purple-200/60 sm:text-lg">
+            <p className="mx-auto mt-6 max-w-2xl text-base text-white/70 sm:text-lg">
               El lugar donde profesionales del mundo holístico y espiritual
               comparten su sabiduría. Yoga, Reiki, meditación, Tai Chi,
               constelaciones, hipnosis, tarot, retiros y mucho más para
@@ -115,7 +115,7 @@ export default function Home() {
             <h2 className="mt-6 text-3xl font-bold text-white">
               ¿Eres profesional holístico?
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-purple-200/60">
+            <p className="mx-auto mt-4 max-w-xl text-white/70">
               Comparte tu don con el mundo. Crea tu perfil, ofrece sesiones,
               cursos y retiros. Gestiona tu agenda y recibe pagos de forma
               segura.
@@ -133,7 +133,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-8">
         <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-3 text-xs text-purple-300/50">
+          <div className="flex flex-col items-center gap-3 text-xs text-white/60">
             <span className="text-sm text-purple-300/30">☥</span>
             <p>Contacto: hola@wakeup-app.com</p>
             <div className="flex flex-wrap justify-center gap-4">

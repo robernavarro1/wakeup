@@ -77,7 +77,7 @@ export function FeaturedCarousel() {
             {p.title}
           </h3>
           {p.city && (
-            <p className="mt-2 text-sm text-purple-300/60">
+            <p className="mt-2 text-sm text-white/70">
               <span className="text-purple-400/50">📍</span> {p.city}
             </p>
           )}

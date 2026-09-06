@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <h1 className="text-2xl font-bold text-white">Restablecer contraseña</h1>
-          <p className="mt-1 text-sm text-purple-300/50">
+          <p className="mt-1 text-sm text-white/60">
             Te enviaremos un enlace para crear una nueva
           </p>
         </div>
@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
               </svg>
             </div>
             <h2 className="mt-4 text-lg font-semibold text-white">Revisa tu email</h2>
-            <p className="mt-2 text-sm text-purple-300/50">
+            <p className="mt-2 text-sm text-white/60">
               Si existe una cuenta con {email}, recibirás un enlace para restablecer tu contraseña.
             </p>
             <Link
@@ -75,7 +75,7 @@ export default function ForgotPasswordPage() {
             >
               {loading ? "Enviando..." : "Enviar enlace"}
             </button>
-            <p className="text-center text-sm text-purple-300/50">
+            <p className="text-center text-sm text-white/60">
               <Link href="/auth/login" className="font-medium text-purple-400 hover:text-purple-300">
                 Volver a inicio de sesión
               </Link>

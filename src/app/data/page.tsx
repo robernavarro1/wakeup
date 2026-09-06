@@ -17,7 +17,7 @@ export default function DataPage() {
       </Link>
 
       <h1 className="text-3xl font-bold text-white">Gestión de Datos y Consentimiento</h1>
-      <p className="mt-2 text-sm text-purple-300/50">Última actualización: junio 2026</p>
+      <p className="mt-2 text-sm text-white/60">Última actualización: junio 2026</p>
 
       <div className="mt-10 space-y-8 text-sm text-purple-200/80 leading-relaxed">
         <section>

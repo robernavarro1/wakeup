@@ -60,7 +60,7 @@ function VerifyContent() {
               </svg>
             </div>
             <h2 className="mt-4 text-lg font-semibold text-white">Email verificado</h2>
-            <p className="mt-2 text-sm text-purple-300/50">{message}</p>
+            <p className="mt-2 text-sm text-white/60">{message}</p>
             <Link
               href="/auth/login"
               className="mt-6 inline-block rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-600/25"
@@ -78,7 +78,7 @@ function VerifyContent() {
               </svg>
             </div>
             <h2 className="mt-4 text-lg font-semibold text-white">Error de verificación</h2>
-            <p className="mt-2 text-sm text-purple-300/50">{message}</p>
+            <p className="mt-2 text-sm text-white/60">{message}</p>
             <Link
               href="/auth/login"
               className="mt-6 inline-block rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-600/25"
@@ -97,7 +97,7 @@ export default function VerifyEmailPage() {
     <Suspense fallback={
       <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-4">
         <div className="rounded-2xl border border-white/10 bg-white/5 p-8 text-center">
-          <p className="text-purple-300/50">Cargando...</p>
+          <p className="text-white/60">Cargando...</p>
         </div>
       </div>
     }>

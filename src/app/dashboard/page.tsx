@@ -35,7 +35,7 @@ export default async function DashboardPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white">Dashboard</h1>
-        <p className="mt-1 text-purple-300/50">
+        <p className="mt-1 text-white/60">
           Bienvenido, {user.name || user.email}
         </p>
       </div>
@@ -93,21 +93,21 @@ export default async function DashboardPage() {
                         <span className="font-medium text-purple-200">
                           {new Date(booking.date).toLocaleDateString("es-ES")}
                         </span>{" "}
-                        <span className="text-purple-300/50">
+                        <span className="text-white/60">
                           {new Date(booking.date).toLocaleTimeString("es-ES", {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}
                         </span>
                       </p>
-                      <p className="mt-1 text-purple-300/40">
+                      <p className="mt-1 text-white/50">
                         Estado: {booking.status}
                       </p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="mt-4 text-sm text-purple-300/40">
+                <p className="mt-4 text-sm text-white/50">
                   No tienes reservas como profesional aún
                 </p>
               )}
@@ -121,7 +121,7 @@ export default async function DashboardPage() {
 
             <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl shadow-purple-950/40">
               <h2 className="text-lg font-semibold text-white">Mis productos</h2>
-              <p className="mt-2 text-sm text-purple-300/50">
+              <p className="mt-2 text-sm text-white/60">
                 Gestiona los productos que vendes en Wakeup. Añade artículos, edita precios y
                 recibe pagos directamente a tu cuenta de Stripe.
               </p>
@@ -147,14 +147,14 @@ export default async function DashboardPage() {
                   <p className="font-medium text-purple-200">
                     {new Date(booking.date).toLocaleDateString("es-ES")}
                   </p>
-                  <p className="mt-1 text-purple-300/40">
+                  <p className="mt-1 text-white/50">
                     Estado: {booking.status}
                   </p>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="mt-4 text-sm text-purple-300/40">
+            <p className="mt-4 text-sm text-white/50">
               No has hecho ninguna reserva aún
             </p>
           )}
@@ -169,7 +169,7 @@ export default async function DashboardPage() {
         {!hasProProfile && (
           <div className="rounded-2xl border border-dashed border-purple-500/30 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl shadow-purple-950/40">
             <h2 className="text-lg font-semibold text-white">¿Eres profesional?</h2>
-            <p className="mt-2 text-sm text-purple-300/50">
+            <p className="mt-2 text-sm text-white/60">
               Da el salto: crea tu perfil, ofrece tus servicios y empieza a recibir clientes. Puedes tener una misma cuenta para explorar y para ofrecer sesiones.
             </p>
             <Link

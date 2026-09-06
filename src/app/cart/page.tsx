@@ -22,7 +22,7 @@ export default async function CartPage() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Carrito</h1>
-          <p className="mt-1 text-sm text-purple-300/50">
+          <p className="mt-1 text-sm text-white/60">
             {itemCount > 0
               ? `${itemCount} producto${itemCount > 1 ? "s" : ""} en tu carrito`
               : "Tu carrito está vacío"}
@@ -44,7 +44,7 @@ export default async function CartPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
           </svg>
           <h2 className="text-xl font-semibold text-purple-300/70">Tu carrito está vacío</h2>
-          <p className="mt-2 text-sm text-purple-300/40">Explora nuestros productos y añade los que más te gusten</p>
+          <p className="mt-2 text-sm text-white/50">Explora nuestros productos y añade los que más te gusten</p>
           <Link
             href="/products"
             className="mt-6 rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-purple-600/25 transition hover:shadow-purple-600/40"

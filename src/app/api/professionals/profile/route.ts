@@ -36,7 +36,10 @@ export async function PUT(request: Request) {
 
     await prisma.user.update({
       where: { id: session.user.id },
-      data: { role: "PROFESSIONAL" },
+      data: {
+        role: "PROFESSIONAL",
+        ...(data.name ? { name: data.name } : {}),
+      },
     })
 
     if (data.services) {

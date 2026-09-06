@@ -44,6 +44,7 @@ export type ProfessionalProfileMinAggregateOutputType = {
   pricePerSession: number | null
   specialties: string | null
   stripeAccountId: string | null
+  stripeCustomerId: string | null
   published: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -59,6 +60,7 @@ export type ProfessionalProfileMaxAggregateOutputType = {
   pricePerSession: number | null
   specialties: string | null
   stripeAccountId: string | null
+  stripeCustomerId: string | null
   published: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -74,6 +76,7 @@ export type ProfessionalProfileCountAggregateOutputType = {
   pricePerSession: number
   specialties: number
   stripeAccountId: number
+  stripeCustomerId: number
   published: number
   createdAt: number
   updatedAt: number
@@ -99,6 +102,7 @@ export type ProfessionalProfileMinAggregateInputType = {
   pricePerSession?: true
   specialties?: true
   stripeAccountId?: true
+  stripeCustomerId?: true
   published?: true
   createdAt?: true
   updatedAt?: true
@@ -114,6 +118,7 @@ export type ProfessionalProfileMaxAggregateInputType = {
   pricePerSession?: true
   specialties?: true
   stripeAccountId?: true
+  stripeCustomerId?: true
   published?: true
   createdAt?: true
   updatedAt?: true
@@ -129,6 +134,7 @@ export type ProfessionalProfileCountAggregateInputType = {
   pricePerSession?: true
   specialties?: true
   stripeAccountId?: true
+  stripeCustomerId?: true
   published?: true
   createdAt?: true
   updatedAt?: true
@@ -231,6 +237,7 @@ export type ProfessionalProfileGroupByOutputType = {
   pricePerSession: number
   specialties: string
   stripeAccountId: string | null
+  stripeCustomerId: string | null
   published: boolean
   createdAt: Date
   updatedAt: Date
@@ -269,6 +276,7 @@ export type ProfessionalProfileWhereInput = {
   pricePerSession?: Prisma.IntFilter<"ProfessionalProfile"> | number
   specialties?: Prisma.StringFilter<"ProfessionalProfile"> | string
   stripeAccountId?: Prisma.StringNullableFilter<"ProfessionalProfile"> | string | null
+  stripeCustomerId?: Prisma.StringNullableFilter<"ProfessionalProfile"> | string | null
   published?: Prisma.BoolFilter<"ProfessionalProfile"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ProfessionalProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProfessionalProfile"> | Date | string
@@ -291,6 +299,7 @@ export type ProfessionalProfileOrderByWithRelationInput = {
   pricePerSession?: Prisma.SortOrder
   specialties?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   published?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -316,6 +325,7 @@ export type ProfessionalProfileWhereUniqueInput = Prisma.AtLeast<{
   pricePerSession?: Prisma.IntFilter<"ProfessionalProfile"> | number
   specialties?: Prisma.StringFilter<"ProfessionalProfile"> | string
   stripeAccountId?: Prisma.StringNullableFilter<"ProfessionalProfile"> | string | null
+  stripeCustomerId?: Prisma.StringNullableFilter<"ProfessionalProfile"> | string | null
   published?: Prisma.BoolFilter<"ProfessionalProfile"> | boolean
   createdAt?: Prisma.DateTimeFilter<"ProfessionalProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProfessionalProfile"> | Date | string
@@ -338,6 +348,7 @@ export type ProfessionalProfileOrderByWithAggregationInput = {
   pricePerSession?: Prisma.SortOrder
   specialties?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrderInput | Prisma.SortOrder
   published?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -361,6 +372,7 @@ export type ProfessionalProfileScalarWhereWithAggregatesInput = {
   pricePerSession?: Prisma.IntWithAggregatesFilter<"ProfessionalProfile"> | number
   specialties?: Prisma.StringWithAggregatesFilter<"ProfessionalProfile"> | string
   stripeAccountId?: Prisma.StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
+  stripeCustomerId?: Prisma.StringNullableWithAggregatesFilter<"ProfessionalProfile"> | string | null
   published?: Prisma.BoolWithAggregatesFilter<"ProfessionalProfile"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ProfessionalProfile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ProfessionalProfile"> | Date | string
@@ -375,6 +387,7 @@ export type ProfessionalProfileCreateInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -397,6 +410,7 @@ export type ProfessionalProfileUncheckedCreateInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -417,6 +431,7 @@ export type ProfessionalProfileUpdateInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -439,6 +454,7 @@ export type ProfessionalProfileUncheckedUpdateInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -460,6 +476,7 @@ export type ProfessionalProfileCreateManyInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -474,6 +491,7 @@ export type ProfessionalProfileUpdateManyMutationInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -489,6 +507,7 @@ export type ProfessionalProfileUncheckedUpdateManyInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -509,6 +528,7 @@ export type ProfessionalProfileCountOrderByAggregateInput = {
   pricePerSession?: Prisma.SortOrder
   specialties?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrder
   published?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -528,6 +548,7 @@ export type ProfessionalProfileMaxOrderByAggregateInput = {
   pricePerSession?: Prisma.SortOrder
   specialties?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrder
   published?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -543,6 +564,7 @@ export type ProfessionalProfileMinOrderByAggregateInput = {
   pricePerSession?: Prisma.SortOrder
   specialties?: Prisma.SortOrder
   stripeAccountId?: Prisma.SortOrder
+  stripeCustomerId?: Prisma.SortOrder
   published?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -696,6 +718,7 @@ export type ProfessionalProfileCreateWithoutUserInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -716,6 +739,7 @@ export type ProfessionalProfileUncheckedCreateWithoutUserInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -752,6 +776,7 @@ export type ProfessionalProfileUpdateWithoutUserInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -772,6 +797,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutUserInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -792,6 +818,7 @@ export type ProfessionalProfileCreateWithoutServicesInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -813,6 +840,7 @@ export type ProfessionalProfileUncheckedCreateWithoutServicesInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -848,6 +876,7 @@ export type ProfessionalProfileUpdateWithoutServicesInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -869,6 +898,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutServicesInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -888,6 +918,7 @@ export type ProfessionalProfileCreateWithoutAvailabilitiesInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -909,6 +940,7 @@ export type ProfessionalProfileUncheckedCreateWithoutAvailabilitiesInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -944,6 +976,7 @@ export type ProfessionalProfileUpdateWithoutAvailabilitiesInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -965,6 +998,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutAvailabilitiesInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -984,6 +1018,7 @@ export type ProfessionalProfileCreateWithoutBookingsInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1005,6 +1040,7 @@ export type ProfessionalProfileUncheckedCreateWithoutBookingsInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1040,6 +1076,7 @@ export type ProfessionalProfileUpdateWithoutBookingsInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1061,6 +1098,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutBookingsInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1080,6 +1118,7 @@ export type ProfessionalProfileCreateWithoutSubscriptionInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1101,6 +1140,7 @@ export type ProfessionalProfileUncheckedCreateWithoutSubscriptionInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1136,6 +1176,7 @@ export type ProfessionalProfileUpdateWithoutSubscriptionInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1157,6 +1198,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutSubscriptionInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1176,6 +1218,7 @@ export type ProfessionalProfileCreateWithoutAdCampaignsInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1197,6 +1240,7 @@ export type ProfessionalProfileUncheckedCreateWithoutAdCampaignsInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1232,6 +1276,7 @@ export type ProfessionalProfileUpdateWithoutAdCampaignsInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1253,6 +1298,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutAdCampaignsInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1272,6 +1318,7 @@ export type ProfessionalProfileCreateWithoutProductsInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1293,6 +1340,7 @@ export type ProfessionalProfileUncheckedCreateWithoutProductsInput = {
   pricePerSession?: number
   specialties?: string
   stripeAccountId?: string | null
+  stripeCustomerId?: string | null
   published?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1328,6 +1376,7 @@ export type ProfessionalProfileUpdateWithoutProductsInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1349,6 +1398,7 @@ export type ProfessionalProfileUncheckedUpdateWithoutProductsInput = {
   pricePerSession?: Prisma.IntFieldUpdateOperationsInput | number
   specialties?: Prisma.StringFieldUpdateOperationsInput | string
   stripeAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   published?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1436,6 +1486,7 @@ export type ProfessionalProfileSelect<ExtArgs extends runtime.Types.Extensions.I
   pricePerSession?: boolean
   specialties?: boolean
   stripeAccountId?: boolean
+  stripeCustomerId?: boolean
   published?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1459,6 +1510,7 @@ export type ProfessionalProfileSelectCreateManyAndReturn<ExtArgs extends runtime
   pricePerSession?: boolean
   specialties?: boolean
   stripeAccountId?: boolean
+  stripeCustomerId?: boolean
   published?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1475,6 +1527,7 @@ export type ProfessionalProfileSelectUpdateManyAndReturn<ExtArgs extends runtime
   pricePerSession?: boolean
   specialties?: boolean
   stripeAccountId?: boolean
+  stripeCustomerId?: boolean
   published?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1491,12 +1544,13 @@ export type ProfessionalProfileSelectScalar = {
   pricePerSession?: boolean
   specialties?: boolean
   stripeAccountId?: boolean
+  stripeCustomerId?: boolean
   published?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ProfessionalProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "bio" | "phone" | "city" | "pricePerSession" | "specialties" | "stripeAccountId" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["professionalProfile"]>
+export type ProfessionalProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "title" | "bio" | "phone" | "city" | "pricePerSession" | "specialties" | "stripeAccountId" | "stripeCustomerId" | "published" | "createdAt" | "updatedAt", ExtArgs["result"]["professionalProfile"]>
 export type ProfessionalProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   availabilities?: boolean | Prisma.ProfessionalProfile$availabilitiesArgs<ExtArgs>
@@ -1535,6 +1589,7 @@ export type $ProfessionalProfilePayload<ExtArgs extends runtime.Types.Extensions
     pricePerSession: number
     specialties: string
     stripeAccountId: string | null
+    stripeCustomerId: string | null
     published: boolean
     createdAt: Date
     updatedAt: Date
@@ -1977,6 +2032,7 @@ export interface ProfessionalProfileFieldRefs {
   readonly pricePerSession: Prisma.FieldRef<"ProfessionalProfile", 'Int'>
   readonly specialties: Prisma.FieldRef<"ProfessionalProfile", 'String'>
   readonly stripeAccountId: Prisma.FieldRef<"ProfessionalProfile", 'String'>
+  readonly stripeCustomerId: Prisma.FieldRef<"ProfessionalProfile", 'String'>
   readonly published: Prisma.FieldRef<"ProfessionalProfile", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"ProfessionalProfile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ProfessionalProfile", 'DateTime'>

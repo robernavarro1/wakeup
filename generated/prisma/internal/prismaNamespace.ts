@@ -2020,6 +2020,7 @@ export const ProfessionalProfileScalarFieldEnum = {
   pricePerSession: 'pricePerSession',
   specialties: 'specialties',
   stripeAccountId: 'stripeAccountId',
+  stripeCustomerId: 'stripeCustomerId',
   published: 'published',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

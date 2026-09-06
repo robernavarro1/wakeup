@@ -495,14 +495,14 @@ export function AIAdvisor() {
           <span className="text-lg">🤖</span>
           <div>
             <p className="text-sm font-semibold text-white">Guía Wakeup</p>
-            <p className="text-xs text-purple-300/50">
+            <p className="text-xs text-white/60">
               Recomendaciones y soporte
             </p>
           </div>
         </div>
         <button
           onClick={() => setIsOpen(false)}
-          className="rounded-lg p-1.5 text-purple-300/50 transition hover:bg-white/5 hover:text-purple-200"
+          className="rounded-lg p-1.5 text-white/60 transition hover:bg-white/5 hover:text-purple-200"
         >
           ✕
         </button>
@@ -537,7 +537,7 @@ export function AIAdvisor() {
                       <span>{m.icon}</span>
                       <div>
                         <p className="font-medium">{m.name}</p>
-                        <p className="text-xs text-purple-300/50">{m.reason}</p>
+                        <p className="text-xs text-white/60">{m.reason}</p>
                       </div>
                     </button>
                   ))}
@@ -548,7 +548,7 @@ export function AIAdvisor() {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="rounded-2xl bg-white/5 px-4 py-3 text-sm text-purple-300/50">
+            <div className="rounded-2xl bg-white/5 px-4 py-3 text-sm text-white/60">
               <span className="inline-flex gap-1">
                 <span className="animate-bounce">●</span>
                 <span className="animate-bounce" style={{ animationDelay: "0.2s" }}>●</span>
@@ -586,7 +586,7 @@ export function AIAdvisor() {
               onClick={() => {
                 setInput(action.label)
               }}
-              className="rounded-full border border-white/5 bg-white/5 px-2.5 py-1 text-xs text-purple-300/50 transition hover:bg-white/10 hover:text-purple-200"
+              className="rounded-full border border-white/5 bg-white/5 px-2.5 py-1 text-xs text-white/60 transition hover:bg-white/10 hover:text-purple-200"
             >
               {action.label}
             </button>

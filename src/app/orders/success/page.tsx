@@ -31,8 +31,8 @@ export default async function OrderSuccessPage({
           </svg>
         </div>
         <h1 className="mt-6 text-2xl font-bold text-white">¡Pedido confirmado!</h1>
-        <p className="mt-3 text-purple-200/60">Gracias por tu compra. Recibirás los detalles en tu email.</p>
-        <p className="mt-2 text-sm text-purple-300/40">ID: {orderId}</p>
+        <p className="mt-3 text-white/70">Gracias por tu compra. Recibirás los detalles en tu email.</p>
+        <p className="mt-2 text-sm text-white/50">ID: {orderId}</p>
         <div className="mt-8 flex flex-col items-center gap-4">
           <Link
             href="/products"

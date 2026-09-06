@@ -32,7 +32,7 @@ export function SocialBar() {
           href={s.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-purple-300/50 transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-500/15 hover:text-purple-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/10"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/60 transition-all duration-300 hover:border-purple-500/40 hover:bg-purple-500/15 hover:text-purple-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/10"
           title={s.name}
         >
           {s.icon}
@@ -51,7 +51,7 @@ export function SocialFooter() {
           href={s.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-purple-300/40 transition-all duration-300 hover:text-purple-300 hover:scale-110"
+          className="text-white/50 transition-all duration-300 hover:text-purple-300 hover:scale-110"
           title={s.name}
         >
           {s.icon}

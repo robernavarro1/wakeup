@@ -70,7 +70,7 @@ export default function MapComponent({
       <div
         className={`flex items-center justify-center rounded-xl border border-white/10 bg-white/[0.02] ${className}`}
       >
-        <p className="text-sm text-purple-300/50">Cargando mapa...</p>
+        <p className="text-sm text-white/60">Cargando mapa...</p>
       </div>
     )
   }

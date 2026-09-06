@@ -23,7 +23,7 @@ export function CookieConsentBanner() {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-[#0a0515]/95 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-4 sm:flex-row sm:px-6 lg:px-8">
-        <p className="text-center text-xs text-purple-300/60 sm:text-left">
+        <p className="text-center text-xs text-white/70 sm:text-left">
           Usamos cookies técnicas necesarias para el funcionamiento de la plataforma.
           Al continuar navegando, aceptas el uso de estas cookies.
           Más información en nuestra{" "}

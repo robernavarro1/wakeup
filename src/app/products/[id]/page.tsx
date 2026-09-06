@@ -51,7 +51,7 @@ export default async function ProductDetailPage({
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
       <Link
         href="/products"
-        className="mb-6 inline-block text-sm text-purple-300/50 hover:text-purple-200"
+        className="mb-6 inline-block text-sm text-white/60 hover:text-purple-200"
       >
         &larr; Volver a la tienda
       </Link>
@@ -76,11 +76,11 @@ export default async function ProductDetailPage({
             <h1 className="text-2xl font-bold text-white sm:text-3xl">
               {product.name}
             </h1>
-            <p className="mt-1 text-sm text-purple-300/50">
+            <p className="mt-1 text-sm text-white/60">
               por {product.profile.user.name}
             </p>
             {product.category && (
-              <p className="mt-2 text-xs text-purple-300/40">
+              <p className="mt-2 text-xs text-white/50">
                 Categoría: {product.category}
               </p>
             )}

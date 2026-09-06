@@ -34,7 +34,7 @@ export default async function BookingsPage() {
       <h1 className="text-2xl font-bold text-white">
         {isPro ? "Reservas recibidas" : "Mis reservas"}
       </h1>
-      <p className="mt-1 text-purple-300/50">
+      <p className="mt-1 text-white/60">
         {isPro
           ? "Tus próximas sesiones con alumnos"
           : "Tus sesiones reservadas"}
@@ -50,9 +50,9 @@ export default async function BookingsPage() {
       </div>
 
       {isPro && proBookings.length === 0 ? (
-        <p className="mt-16 text-center text-purple-300/40">No hay reservas aún</p>
+        <p className="mt-16 text-center text-white/50">No hay reservas aún</p>
       ) : !isPro && user.clientBookings.length === 0 ? (
-        <p className="mt-16 text-center text-purple-300/40">
+        <p className="mt-16 text-center text-white/50">
           No has hecho ninguna reserva aún
         </p>
       ) : (
@@ -72,7 +72,7 @@ export default async function BookingsPage() {
                           booking as (typeof user.clientBookings)[number]
                         ).professional.name || "Profesional"}
                   </p>
-                  <p className="mt-1 text-sm text-purple-300/50">
+                  <p className="mt-1 text-sm text-white/60">
                     {new Date(booking.date).toLocaleDateString("es-ES", {
                       weekday: "long",
                       year: "numeric",
@@ -121,14 +121,14 @@ export default async function BookingsPage() {
               )}
 
               {(booking as any).notes && (
-                <p className="mt-3 text-sm text-purple-300/50">
+                <p className="mt-3 text-sm text-white/60">
                   Notas: {(booking as any).notes}
                 </p>
               )}
 
               {booking.status === "CONFIRMED" && !isPro && !booking.review && (
                 <div className="mt-4 border-t border-white/10 pt-4">
-                  <p className="text-sm text-purple-300/60">
+                  <p className="text-sm text-white/70">
                     ¿Cómo fue tu experiencia?
                   </p>
                   <a
@@ -147,7 +147,7 @@ export default async function BookingsPage() {
                     {"☆".repeat(5 - booking.review.rating)}
                   </p>
                   {booking.review.comment && (
-                    <p className="mt-1 text-sm text-purple-300/60">
+                    <p className="mt-1 text-sm text-white/70">
                       {booking.review.comment}
                     </p>
                   )}

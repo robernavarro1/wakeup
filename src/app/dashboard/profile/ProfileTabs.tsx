@@ -45,10 +45,12 @@ export function ProfileTabs({
   userProfile,
   professionalProfile,
   userId,
+  userName,
 }: {
   userProfile: UserProfileData | null
   professionalProfile: ProfileData | null
   userId: string
+  userName?: string | null
 }) {
   const [tab, setTab] = useState<"user" | "professional">("user")
 
@@ -68,7 +70,7 @@ export function ProfileTabs({
             className={`flex-1 rounded-lg px-4 py-2.5 text-sm font-medium transition ${
               tab === t.key
                 ? "bg-gradient-to-r from-purple-600/80 to-amber-600/80 text-white shadow-lg"
-                : "text-purple-300/50 hover:text-purple-200"
+                : "text-white/60 hover:text-purple-200"
             }`}
           >
             <div className="flex flex-col items-center gap-0.5">
@@ -83,7 +85,7 @@ export function ProfileTabs({
       {tab === "user" ? (
         <UserProfileForm profile={userProfile} />
       ) : (
-        <ProfileForm profile={professionalProfile} userId={userId} />
+        <ProfileForm profile={professionalProfile} userId={userId} userName={userName} />
       )}
     </div>
   )

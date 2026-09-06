@@ -22,7 +22,7 @@ export default function Error({
         <h1 className="mt-6 text-2xl font-bold text-white">
           Algo no ha ido bien
         </h1>
-        <p className="mt-2 text-sm text-purple-300/60">
+        <p className="mt-2 text-sm text-white/70">
           Ha ocurrido un error inesperado. Puedes intentarlo de nuevo o volver al
           inicio.
         </p>

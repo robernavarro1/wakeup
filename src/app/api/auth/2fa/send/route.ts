@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
-import { getResend, MAIL_FROM } from "@/lib/resend"
+import { getResend, MAIL_FROM, MAIL_REPLY_TO } from "@/lib/resend"
 
 export async function POST(request: Request) {
   try {
@@ -25,6 +25,7 @@ export async function POST(request: Request) {
     try {
       await getResend().emails.send({
         from: MAIL_FROM,
+        replyTo: MAIL_REPLY_TO,
         to: normalizedEmail,
         subject: "Tu código de verificación — Wakeup",
         html: `<!DOCTYPE html>

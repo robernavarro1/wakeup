@@ -81,13 +81,13 @@ export function CartContent({
           </div>
           <div className="min-w-0 flex-1">
             <h3 className="font-medium text-white truncate">{item.product.name}</h3>
-            <p className="text-sm text-purple-300/50">{item.product.profile?.title || "Wakeup"}</p>
+            <p className="text-sm text-white/60">{item.product.profile?.title || "Wakeup"}</p>
             <p className="mt-1 text-sm font-semibold text-amber-300">
               {(item.product.price / 100).toFixed(2)} €
             </p>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-purple-300/50">x{item.quantity}</span>
+            <span className="text-sm text-white/60">x{item.quantity}</span>
             <span className="text-sm font-semibold text-white">
               {((item.product.price * item.quantity) / 100).toFixed(2)} €
             </span>
@@ -113,7 +113,7 @@ export function CartContent({
           <span className="text-base text-purple-300/70">Total</span>
           <span className="text-2xl font-bold text-white">{(total / 100).toFixed(2)} €</span>
         </div>
-        <p className="mt-1 text-xs text-purple-300/40">Incluye comisión de plataforma</p>
+        <p className="mt-1 text-xs text-white/50">Incluye comisión de plataforma</p>
         <button
           onClick={handleCheckout}
           disabled={checkingOut}

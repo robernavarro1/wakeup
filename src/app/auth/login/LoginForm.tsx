@@ -185,7 +185,7 @@ export function LoginForm() {
           />
         </div>
 
-        <label className="flex items-center gap-2 text-sm text-purple-300/50">
+        <label className="flex items-center gap-2 text-sm text-white/60">
           <input
             type="checkbox"
             checked={trustDevice}
@@ -306,7 +306,7 @@ export function LoginForm() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-purple-300/50">
+      <p className="mt-6 text-center text-sm text-white/60">
         ¿No tienes cuenta?{" "}
         <Link href="/auth/register" className="font-medium text-purple-400 hover:text-purple-300">
           Regístrate

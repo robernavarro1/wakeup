@@ -66,7 +66,7 @@ export function CartDrawer() {
           <div className="relative w-full max-w-md bg-[#0a0515] p-6 shadow-xl">
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-lg font-bold text-white">Carrito</h2>
-              <button onClick={() => setOpen(false)} className="text-purple-300/50 hover:text-white">✕</button>
+              <button onClick={() => setOpen(false)} className="text-white/60 hover:text-white">✕</button>
             </div>
 
             {items.length === 0 ? (
@@ -77,7 +77,7 @@ export function CartDrawer() {
                   <div key={item.id} className="flex items-center justify-between rounded-lg border border-white/10 p-3">
                     <div>
                       <p className="text-sm font-medium text-white">{item.product.name}</p>
-                      <p className="text-xs text-purple-300/50">{formatPrice(item.product.price)}</p>
+                      <p className="text-xs text-white/60">{formatPrice(item.product.price)}</p>
                     </div>
                     <button
                       onClick={() => handleRemove(item.product.id)}

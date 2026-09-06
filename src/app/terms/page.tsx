@@ -17,7 +17,7 @@ export default function TermsPage() {
       </Link>
 
       <h1 className="text-3xl font-bold text-white">Términos y Condiciones</h1>
-      <p className="mt-2 text-sm text-purple-300/50">Última actualización: junio 2026</p>
+      <p className="mt-2 text-sm text-white/60">Última actualización: junio 2026</p>
 
       <div className="mt-10 space-y-8 text-sm text-purple-200/80 leading-relaxed">
         <section>
@@ -147,7 +147,7 @@ export default function TermsPage() {
             <li>Wakeup no garantiza la disponibilidad continua ni el funcionamiento sin errores de la plataforma.</li>
             <li>Wakeup no se hace responsable de daños directos o indirectos derivados del uso de la plataforma, incluyendo pero no limitado a pérdida de datos o lucro cesante.</li>
           </ul>
-          <p className="mt-3 text-purple-200/60">
+          <p className="mt-3 text-white/70">
             Al utilizar Wakeup, clientes y profesionales aceptan que la relación
             contractual se establece exclusivamente entre ellos, siendo Wakeup un
             mero canal de conexión y procesamiento de pagos.

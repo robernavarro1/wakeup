@@ -70,7 +70,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Mis productos</h1>
-          <p className="mt-1 text-sm text-purple-300/50">Gestiona los productos que vendes en Wakeup</p>
+          <p className="mt-1 text-sm text-white/60">Gestiona los productos que vendes en Wakeup</p>
         </div>
         <button onClick={startCreate} className="rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-purple-600/25">
           + Nuevo producto
@@ -96,7 +96,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
 
       {products.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-purple-500/30 p-12 text-center">
-          <p className="text-purple-300/50">No tienes productos aún. Crea tu primer producto para vender en Wakeup.</p>
+          <p className="text-white/60">No tienes productos aún. Crea tu primer producto para vender en Wakeup.</p>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -106,7 +106,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
                 <img src={product.image} alt={product.name} className="mb-3 h-40 w-full rounded-lg object-cover" />
               )}
               <h3 className="font-semibold text-white">{product.name}</h3>
-              <p className="mt-1 text-sm text-purple-300/50">{product.description}</p>
+              <p className="mt-1 text-sm text-white/60">{product.description}</p>
               <p className="mt-2 text-lg font-bold text-amber-400">{(product.price / 100).toFixed(2)} €</p>
               {product.category && <p className="mt-1 text-xs text-purple-300/30">{product.category}</p>}
               <div className="mt-4 flex gap-2">

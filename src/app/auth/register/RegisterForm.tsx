@@ -90,7 +90,7 @@ export function RegisterForm() {
               className={`flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition ${
                 role === "STUDENT"
                   ? "border-purple-500/50 bg-purple-500/20 text-purple-200"
-                  : "border-white/10 text-purple-300/50 hover:bg-white/5"
+                  : "border-white/10 text-white/60 hover:bg-white/5"
               }`}
             >
               Empieza a explorar
@@ -101,7 +101,7 @@ export function RegisterForm() {
               className={`flex-1 rounded-lg border px-4 py-2.5 text-sm font-medium transition ${
                 role === "PROFESSIONAL"
                   ? "border-purple-500/50 bg-purple-500/20 text-purple-200"
-                  : "border-white/10 text-purple-300/50 hover:bg-white/5"
+                  : "border-white/10 text-white/60 hover:bg-white/5"
               }`}
             >
               Profesional
@@ -157,7 +157,7 @@ export function RegisterForm() {
           )}
         </div>
 
-        <label className="flex items-start gap-2 text-xs text-purple-300/50">
+        <label className="flex items-start gap-2 text-xs text-white/60">
           <input
             type="checkbox"
             checked={acceptTerms}
@@ -185,7 +185,7 @@ export function RegisterForm() {
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-purple-300/50">
+      <p className="mt-6 text-center text-sm text-white/60">
         ¿Ya tienes cuenta?{" "}
         <Link href="/auth/login" className="font-medium text-purple-400 hover:text-purple-300">
           Inicia sesión

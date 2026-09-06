@@ -8,11 +8,11 @@ export default function RegisterPage() {
         <div className="mb-8 text-center">
           <span className="text-4xl opacity-50">☥</span>
           <h1 className="mt-4 text-2xl font-bold text-white">Crear cuenta</h1>
-          <p className="mt-1 text-sm text-purple-300/50">
+          <p className="mt-1 text-sm text-white/60">
             Únete a la comunidad de despertar consciente
           </p>
         </div>
-        <Suspense fallback={<div className="text-purple-300/50 text-center">Cargando...</div>}>
+        <Suspense fallback={<div className="text-white/60 text-center">Cargando...</div>}>
           <RegisterForm />
         </Suspense>
       </div>

@@ -9,7 +9,7 @@ export default function NotFound() {
         <h1 className="mt-6 text-2xl font-bold text-white">
           Esta página no existe
         </h1>
-        <p className="mt-2 text-sm text-purple-300/60">
+        <p className="mt-2 text-sm text-white/70">
           Puede que el enlace haya cambiado o que la página ya no esté disponible.
         </p>
 

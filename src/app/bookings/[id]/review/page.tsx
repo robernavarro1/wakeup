@@ -31,7 +31,7 @@ export default async function ReviewPage({
         <h1 className="text-2xl font-bold text-white">
           Valora tu experiencia
         </h1>
-        <p className="mt-2 text-purple-300/60">
+        <p className="mt-2 text-white/70">
           ¿Cómo fue tu sesión con {booking.professional.name}?
         </p>
         <ReviewForm bookingId={id} />

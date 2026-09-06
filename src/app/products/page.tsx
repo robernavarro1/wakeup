@@ -26,7 +26,7 @@ export default async function ProductsPage() {
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <div className="mb-8 text-center">
         <h1 className="text-4xl font-bold text-white">Productos</h1>
-        <p className="mt-2 text-purple-300/50">Herramientas para tu despertar</p>
+        <p className="mt-2 text-white/60">Herramientas para tu despertar</p>
       </div>
 
       {products.length === 0 ? (
@@ -40,7 +40,7 @@ export default async function ProductsPage() {
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20 text-lg">🛒</span>
                 <div>
                   <h2 className="text-xl font-bold text-white">Recomendados en Amazon</h2>
-                  <p className="text-sm text-purple-300/50">Compra directa desde Amazon — envío rápido y seguro</p>
+                  <p className="text-sm text-white/60">Compra directa desde Amazon — envío rápido y seguro</p>
                 </div>
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -54,7 +54,7 @@ export default async function ProductsPage() {
                         <img src={product.image} alt={product.name} className="mb-4 h-48 w-full rounded-xl object-cover" />
                       )}
                       <h3 className="text-lg font-semibold text-white">{product.name}</h3>
-                      <p className="mt-1 line-clamp-2 text-sm text-purple-300/50">{product.description}</p>
+                      <p className="mt-1 line-clamp-2 text-sm text-white/60">{product.description}</p>
                       <p className="mt-2 text-sm text-purple-300/30">
                         por {product.profile.user.name}
                       </p>
@@ -80,7 +80,7 @@ export default async function ProductsPage() {
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/20 text-lg">✨</span>
                 <div>
                   <h2 className="text-xl font-bold text-white">Productos de profesionales</h2>
-                  <p className="text-sm text-purple-300/50">Creados por los profesionales de nuestra comunidad</p>
+                  <p className="text-sm text-white/60">Creados por los profesionales de nuestra comunidad</p>
                 </div>
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -91,7 +91,7 @@ export default async function ProductsPage() {
                         <img src={product.image} alt={product.name} className="mb-4 h-48 w-full rounded-xl object-cover" />
                       )}
                       <h3 className="text-lg font-semibold text-white">{product.name}</h3>
-                      <p className="mt-1 line-clamp-2 text-sm text-purple-300/50">{product.description}</p>
+                      <p className="mt-1 line-clamp-2 text-sm text-white/60">{product.description}</p>
                       <p className="mt-2 text-sm text-purple-300/30">
                         por {product.profile.user.name}
                       </p>

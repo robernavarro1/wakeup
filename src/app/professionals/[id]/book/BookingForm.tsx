@@ -142,7 +142,7 @@ export function BookingForm({
               className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition ${
                 step >= s
                   ? "bg-gradient-to-r from-purple-600 to-amber-600 text-white shadow-lg shadow-purple-600/25"
-                  : "border border-white/10 bg-purple-950/40 text-purple-300/50"
+                  : "border border-white/10 bg-purple-950/40 text-white/60"
               }`}
             >
               {s}
@@ -184,7 +184,7 @@ export function BookingForm({
                       <p className="font-medium text-white">
                         {service.name}
                       </p>
-                      <p className="text-sm text-purple-300/50">
+                      <p className="text-sm text-white/60">
                         {service.durationMinutes} min
                       </p>
                     </div>
@@ -202,7 +202,7 @@ export function BookingForm({
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium text-white">Sesión</p>
-                    <p className="text-sm text-purple-300/50">60 min</p>
+                    <p className="text-sm text-white/60">60 min</p>
                   </div>
                   <p className="text-lg font-semibold text-amber-300">
                     {profile.pricePerSession / 100} €
@@ -238,13 +238,13 @@ export function BookingForm({
                         : "border-white/5 bg-purple-950/40 hover:border-purple-500/20"
                     }`}
                   >
-                    <p className="text-xs text-purple-300/50">
+                    <p className="text-xs text-white/60">
                       {DAYS[date.getDay()].slice(0, 3)}
                     </p>
                     <p className="text-lg font-bold text-white">
                       {date.getDate()}
                     </p>
-                    <p className="text-xs text-purple-300/50">
+                    <p className="text-xs text-white/60">
                       {date.toLocaleDateString("es-ES", {
                         month: "short",
                       })}
@@ -306,13 +306,13 @@ export function BookingForm({
 
           <div className="mt-6 space-y-4 rounded-xl border border-white/5 bg-purple-950/40 p-6">
             <div className="flex justify-between text-sm">
-              <span className="text-purple-300/50">Servicio</span>
+              <span className="text-white/60">Servicio</span>
               <span className="font-medium text-white">
                 {selectedService?.name || "Sesión"}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-purple-300/50">Fecha</span>
+              <span className="text-white/60">Fecha</span>
               <span className="font-medium text-white">
                 {selectedDate?.toLocaleDateString("es-ES", {
                   weekday: "long",
@@ -323,11 +323,11 @@ export function BookingForm({
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-purple-300/50">Hora</span>
+              <span className="text-white/60">Hora</span>
               <span className="font-medium text-white">{selectedTime}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-purple-300/50">Duración</span>
+              <span className="text-white/60">Duración</span>
               <span className="font-medium text-white">
                 {selectedService?.durationMinutes || 60} min
               </span>
@@ -339,7 +339,7 @@ export function BookingForm({
                   {price / 100} €
                 </span>
               </div>
-              <p className="mt-1 text-xs text-purple-300/40">
+              <p className="mt-1 text-xs text-white/50">
                 Incluye tasas de plataforma
               </p>
             </div>
