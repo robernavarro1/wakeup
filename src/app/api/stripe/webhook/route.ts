@@ -72,6 +72,13 @@ export async function POST(request: Request) {
             },
           })
 
+          // Ahora que el pago está confirmado, ya se puede vaciar el carrito.
+          if (userId) {
+            await prisma.cartItem
+              .deleteMany({ where: { userId } })
+              .catch(() => {})
+          }
+
           const paymentIntentId = session.payment_intent as string
           if (paymentIntentId) {
             for (const item of order.orderItems) {

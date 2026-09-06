@@ -176,8 +176,8 @@ export async function POST(request: Request) {
         cancel_url: `${process.env.AUTH_URL || process.env.NEXTAUTH_URL || "https://wakeup-app.com"}/products`,
       })
 
-      await prisma.cartItem.deleteMany({ where: { userId: session.user.id } })
-
+      // El carrito se vacía en el webhook, una vez confirmado el pago. Si se
+      // borrase aquí, quien abandonase el checkout perdería su compra entera.
       return NextResponse.json({ url: checkoutSession.url })
     }
 
