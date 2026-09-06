@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { stripe } from "@/lib/stripe"
 import { prisma } from "@/lib/prisma"
-import { generateZoomLink } from "@/lib/utils"
+import { generateZoomLink, calculateFee } from "@/lib/utils"
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(request: Request) {
@@ -72,6 +72,10 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: "El profesional ya tiene una reserva en ese horario" }, { status: 409 })
       }
 
+      // La plataforma retiene su comisión y transfiere el resto al profesional.
+      const platformFee = calculateFee(actualPrice)
+      const professionalPayout = actualPrice - platformFee
+
       const booking = await prisma.booking.create({
         data: {
           clientId: session.user.id,
@@ -81,8 +85,8 @@ export async function POST(request: Request) {
           date: bookingDate,
           durationMinutes,
           price: actualPrice,
-          platformFee: 0,
-          professionalPayout: actualPrice,
+          platformFee,
+          professionalPayout,
           zoomLink: generateZoomLink(),
           notes: notes || undefined,
           status: "PENDING",
@@ -113,7 +117,7 @@ export async function POST(request: Request) {
         sessionParams.payment_intent_data = {
           transfer_data: {
             destination: profile.stripeAccountId,
-            amount: actualPrice,
+            amount: professionalPayout,
           },
         }
       }
@@ -142,7 +146,7 @@ export async function POST(request: Request) {
           profileId: item.product.profileId,
           quantity: item.quantity,
           price: item.product.price,
-          professionalPayout: itemTotal,
+          professionalPayout: itemTotal - calculateFee(itemTotal),
         }
       })
 
@@ -150,7 +154,7 @@ export async function POST(request: Request) {
         data: {
           userId: session.user.id,
           total,
-          platformFee: 0,
+          platformFee: calculateFee(total),
           status: "PENDING",
           orderItems: { create: orderItemsData },
         },
