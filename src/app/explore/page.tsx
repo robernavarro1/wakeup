@@ -725,7 +725,7 @@ function ProfessionalCard({
     : `/professionals/${pro.id}`
 
   return (
-    <Link href={href}>
+    <div className="cursor-pointer" onClick={() => window.location.href = href}>
       <GlassCard>
         <div className="flex items-start gap-3">
           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-amber-500 text-sm font-bold text-white shadow-lg">
@@ -758,18 +758,18 @@ function ProfessionalCard({
                 {pro.pricePerSession / 100} &euro;
               </span>
             )}
-            <Link
+            <a
               href={`/professionals/${pro.id}/book`}
               onClick={(e) => e.stopPropagation()}
               className="rounded-lg bg-purple-600/80 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-purple-500"
             >
               Reservar
-            </Link>
+            </a>
           </div>
         </div>
         <p className="mt-2 text-center text-[10px] text-white/30">El pago se realiza directamente con el profesional</p>
       </GlassCard>
-    </Link>
+    </div>
   )
 }
 

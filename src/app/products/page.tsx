@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { prisma } from "@/lib/prisma"
 import { formatPrice, amazonAffiliateUrl } from "@/lib/utils"
 import { AddToCartButton } from "./AddToCartButton"
@@ -33,7 +34,6 @@ export default async function ProductsPage() {
         <p className="text-center text-purple-300/30">No hay productos disponibles</p>
       ) : (
         <div className="space-y-12">
-          {/* Amazon products */}
           {amazonProducts.length > 0 && (
             <section>
               <div className="mb-6 flex items-center gap-3">
@@ -45,13 +45,15 @@ export default async function ProductsPage() {
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {amazonProducts.map((product) => (
-                  <Link key={product.id} href={`/products/${product.id}`}>
+                  <a key={product.id} href={product.amazonUrl || `/products/${product.id}`} target="_blank" rel="noopener noreferrer">
                     <div className="group rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-950/30 to-purple-950/40 p-6 shadow-lg shadow-amber-950/20 transition hover:border-amber-500/40">
                       <div className="mb-3 inline-block rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-300">
                         🛒 Amazon
                       </div>
                       {product.image && (
-                        <img src={product.image} alt={product.name} className="mb-4 h-48 w-full rounded-xl object-cover" />
+                        <div className="mb-4 h-48 w-full relative overflow-hidden rounded-xl">
+                          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="rounded-xl object-cover" unoptimized />
+                        </div>
                       )}
                       <h3 className="text-lg font-semibold text-white">{product.name}</h3>
                       <p className="mt-1 line-clamp-2 text-sm text-white/60">{product.description}</p>
@@ -67,13 +69,12 @@ export default async function ProductsPage() {
                         </span>
                       </div>
                     </div>
-                  </Link>
+                  </a>
                 ))}
               </div>
             </section>
           )}
 
-          {/* Local products */}
           {localProducts.length > 0 && (
             <section>
               <div className="mb-6 flex items-center gap-3">
@@ -88,7 +89,9 @@ export default async function ProductsPage() {
                   <Link key={product.id} href={`/products/${product.id}`}>
                     <div className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm transition hover:border-purple-500/30">
                       {product.image && (
-                        <img src={product.image} alt={product.name} className="mb-4 h-48 w-full rounded-xl object-cover" />
+                        <div className="mb-4 h-48 w-full relative overflow-hidden rounded-xl">
+                          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="rounded-xl object-cover" unoptimized />
+                        </div>
                       )}
                       <h3 className="text-lg font-semibold text-white">{product.name}</h3>
                       <p className="mt-1 line-clamp-2 text-sm text-white/60">{product.description}</p>

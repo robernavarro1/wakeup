@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { prisma } from "@/lib/prisma"
 import { formatPrice, amazonAffiliateUrl } from "@/lib/utils"
 import { notFound } from "next/navigation"
@@ -59,11 +60,14 @@ export default async function ProductDetailPage({
       <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
         <div className="grid gap-8 sm:grid-cols-2">
           {product.image && (
-            <div className="overflow-hidden rounded-xl">
-              <img
+            <div className="overflow-hidden rounded-xl relative aspect-square">
+              <Image
                 src={product.image}
                 alt={product.name}
-                className="h-full w-full object-cover"
+                fill
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="object-cover"
+                unoptimized
               />
             </div>
           )}
