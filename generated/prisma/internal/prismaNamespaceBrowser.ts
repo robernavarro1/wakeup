@@ -184,7 +184,12 @@ export const ServiceScalarFieldEnum = {
   type: 'type',
   durationMinutes: 'durationMinutes',
   price: 'price',
-  maxParticipants: 'maxParticipants',
+  maxStudents: 'maxStudents',
+  currentStudents: 'currentStudents',
+  mode: 'mode',
+  location: 'location',
+  virtualLink: 'virtualLink',
+  active: 'active',
   createdAt: 'createdAt'
 } as const
 
@@ -212,12 +217,7 @@ export const BookingScalarFieldEnum = {
   date: 'date',
   durationMinutes: 'durationMinutes',
   status: 'status',
-  price: 'price',
-  platformFee: 'platformFee',
-  professionalPayout: 'professionalPayout',
-  zoomLink: 'zoomLink',
   notes: 'notes',
-  stripePaymentIntentId: 'stripePaymentIntentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

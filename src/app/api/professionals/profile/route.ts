@@ -54,6 +54,11 @@ export async function PUT(request: Request) {
             description: service.description,
             durationMinutes: service.durationMinutes,
             price: service.price,
+            maxStudents: service.maxStudents || 1,
+            mode: service.mode || "IN_PERSON",
+            location: service.location || null,
+            virtualLink: service.virtualLink || null,
+            active: service.active !== false,
           },
         })
       }

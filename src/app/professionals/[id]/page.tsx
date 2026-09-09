@@ -165,28 +165,39 @@ export default async function ProfessionalPage({
           <div className="space-y-3">
             {profile.services.map((service) => {
               const rating = serviceRatings[service.id]
+              const remaining = service.maxStudents - service.currentStudents
+              const isFull = remaining <= 0
               return (
                 <div
                   key={service.id}
-                  className="rounded-xl border border-white/5 bg-purple-950/40 p-4 transition hover:border-purple-500/20"
+                  className={`rounded-xl border p-4 transition ${
+                    isFull
+                      ? "border-white/5 bg-white/[0.02] opacity-60"
+                      : "border-white/5 bg-purple-950/40 hover:border-purple-500/20"
+                  }`}
                 >
                   <div className="flex items-center justify-between">
-                    <p className="font-medium text-white">{service.name}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-medium text-white">{service.name}</p>
+                      {!service.active && (
+                        <span className="text-xs bg-white/10 text-white/50 rounded px-1.5 py-0.5">Inactivo</span>
+                      )}
+                    </div>
                     <p className="text-lg font-semibold text-amber-300">
                       {service.price / 100} €
                     </p>
                   </div>
                   <div className="mt-1 flex items-center gap-3 text-sm text-white/60">
                     <span>{service.durationMinutes} min</span>
+                    <span className={isFull ? "text-red-400" : remaining <= 2 ? "text-amber-400" : "text-emerald-400"}>
+                      {isFull ? "Sin plazas" : `${remaining} plazas libres`}
+                    </span>
                     {rating && (
                       <span className="text-amber-400">
                         {"★".repeat(Math.round(rating.avg))}
                         {"☆".repeat(5 - Math.round(rating.avg))}
                         <span className="text-white/60 ml-1">({rating.count})</span>
                       </span>
-                    )}
-                    {!rating && reviews.length > 0 && (
-                      <span className="text-purple-300/30">Sin valoraciones</span>
                     )}
                   </div>
                   {service.description && (

@@ -114,10 +114,16 @@ model Service {
   type            String   @default("INDIVIDUAL_SESSION")
   durationMinutes Int      @default(60)
   price           Int      @default(0)
-  maxParticipants Int?
+  maxStudents     Int      @default(1)
+  currentStudents Int      @default(0)
+  mode            String   @default("IN_PERSON")
+  location        String?
+  virtualLink     String?
+  active          Boolean  @default(true)
   createdAt       DateTime @default(now())
 
   profile ProfessionalProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  bookings Booking[]
 
   @@index([profileId])
   @@index([type])
@@ -142,19 +148,15 @@ model Booking {
   serviceId              String?
   date                   DateTime
   durationMinutes        Int      @default(60)
-  status                 String   @default("PENDING")
-  price                  Int      @default(0)
-  platformFee            Int      @default(0)
-  professionalPayout     Int      @default(0)
-  zoomLink               String?
+  status                 String   @default("CONFIRMED")
   notes                  String?
-  stripePaymentIntentId  String?
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
 
   client       User                @relation("ClientBookings", fields: [clientId], references: [id])
   professional User                @relation("ProfessionalBookings", fields: [professionalId], references: [id])
   profile      ProfessionalProfile? @relation("ProfessionalProfileBookings", fields: [professionalProfileId], references: [id])
+  service      Service?            @relation(fields: [serviceId], references: [id])
   review       Review?
 
   @@index([professionalProfileId, date, status])

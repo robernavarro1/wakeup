@@ -32,6 +32,11 @@ interface Service {
   description: string | null
   durationMinutes: number
   price: number
+  mode: string
+  location: string | null
+  virtualLink: string | null
+  maxStudents: number
+  active: boolean
 }
 
 interface Availability {

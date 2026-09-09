@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
+import BookingCard from "./BookingCard"
 
 export default async function BookingsPage() {
   const session = await auth()
@@ -10,15 +11,16 @@ export default async function BookingsPage() {
     where: { id: session.user.id },
     include: {
       clientBookings: {
-        include: { professional: true, review: true },
+        include: { professional: true, service: true, review: true },
         orderBy: { date: "desc" },
       },
       professionalProfile: {
         include: {
           bookings: {
-            include: { client: true, review: true },
+            include: { client: true, service: true, review: true },
             orderBy: { date: "desc" },
           },
+          services: true,
         },
       },
     },
@@ -28,6 +30,7 @@ export default async function BookingsPage() {
 
   const isPro = user.role === "PROFESSIONAL"
   const proBookings = user.professionalProfile?.bookings || []
+  const services = user.professionalProfile?.services || []
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
@@ -49,6 +52,43 @@ export default async function BookingsPage() {
         </a>
       </div>
 
+      {/* Panel del profesional: capacidad de servicios */}
+      {isPro && services.length > 0 && (
+        <div className="mb-8 rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl">
+          <h2 className="text-lg font-semibold text-white mb-4">Capacidad de servicios</h2>
+          <div className="space-y-3">
+            {services.map((service) => {
+              const remaining = service.maxStudents - service.currentStudents
+              const isFull = remaining <= 0
+              return (
+                <div key={service.id} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3">
+                  <div>
+                    <p className="font-medium text-purple-200">{service.name}</p>
+                    <p className="text-xs text-white/50">
+                      {service.currentStudents}/{service.maxStudents} plazas reservadas
+                      {!service.active && " · Inactivo"}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-32 h-2 rounded-full bg-white/10 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${
+                          isFull ? "bg-red-500" : remaining <= 2 ? "bg-amber-500" : "bg-emerald-500"
+                        }`}
+                        style={{ width: `${(service.currentStudents / service.maxStudents) * 100}%` }}
+                      />
+                    </div>
+                    <span className={`text-xs font-medium ${isFull ? "text-red-400" : "text-emerald-400"}`}>
+                      {isFull ? "Lleno" : `${remaining} libres`}
+                    </span>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
       {isPro && proBookings.length === 0 ? (
         <p className="mt-16 text-center text-white/50">No hay reservas aún</p>
       ) : !isPro && user.clientBookings.length === 0 ? (
@@ -58,102 +98,12 @@ export default async function BookingsPage() {
       ) : (
         <div className="mt-8 space-y-4">
           {(isPro ? proBookings : user.clientBookings).map((booking) => (
-            <div
+            <BookingCard
               key={booking.id}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-xl"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="font-semibold text-purple-200">
-                    {isPro
-                      ? (booking as typeof proBookings[number]).client.name ||
-                        "Alumno"
-                      : (
-                          booking as (typeof user.clientBookings)[number]
-                        ).professional.name || "Profesional"}
-                  </p>
-                  <p className="mt-1 text-sm text-white/60">
-                    {new Date(booking.date).toLocaleDateString("es-ES", {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <span
-                    className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
-                      booking.status === "CONFIRMED"
-                        ? "bg-emerald-500/20 text-emerald-300"
-                        : booking.status === "COMPLETED"
-                          ? "bg-blue-500/20 text-blue-300"
-                          : booking.status === "CANCELLED"
-                            ? "bg-red-500/20 text-red-300"
-                            : "bg-yellow-500/20 text-yellow-300"
-                    }`}
-                  >
-                    {booking.status === "CONFIRMED"
-                      ? "Confirmada"
-                      : booking.status === "COMPLETED"
-                        ? "Completada"
-                        : booking.status === "CANCELLED"
-                          ? "Cancelada"
-                          : booking.status}
-                  </span>
-                  <p className="mt-1 text-sm font-medium text-amber-300">
-                    {booking.price / 100} &euro;
-                  </p>
-                </div>
-              </div>
-
-              {(booking as any).zoomLink && booking.status === "CONFIRMED" && (
-                <a
-                  href={(booking as any).zoomLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-block rounded-lg border border-white/10 px-4 py-2 text-sm font-medium text-purple-400 hover:bg-white/5"
-                >
-                  Unirse a la videollamada
-                </a>
-              )}
-
-              {(booking as any).notes && (
-                <p className="mt-3 text-sm text-white/60">
-                  Notas: {(booking as any).notes}
-                </p>
-              )}
-
-              {booking.status === "CONFIRMED" && !isPro && !booking.review && (
-                <div className="mt-4 border-t border-white/10 pt-4">
-                  <p className="text-sm text-white/70">
-                    ¿Cómo fue tu experiencia?
-                  </p>
-                  <a
-                    href={`/bookings/${booking.id}/review`}
-                    className="mt-2 inline-block text-sm font-medium text-purple-400 hover:text-purple-300"
-                  >
-                    Dejar valoración
-                  </a>
-                </div>
-              )}
-
-              {booking.review && (
-                <div className="mt-4 border-t border-white/10 pt-4">
-                  <p className="text-sm text-amber-400">
-                    {"★".repeat(booking.review.rating)}
-                    {"☆".repeat(5 - booking.review.rating)}
-                  </p>
-                  {booking.review.comment && (
-                    <p className="mt-1 text-sm text-white/70">
-                      {booking.review.comment}
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
+              booking={booking as any}
+              isPro={isPro}
+              currentUserId={user.id}
+            />
           ))}
         </div>
       )}

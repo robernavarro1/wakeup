@@ -18,6 +18,11 @@ interface Service {
   description: string | null
   durationMinutes: number
   price: number
+  mode: string
+  location: string | null
+  virtualLink: string | null
+  maxStudents: number
+  active: boolean
 }
 
 interface ProfileData {
@@ -65,7 +70,7 @@ export function ProfileForm({
     profile?.specialties ? profile.specialties.split(",").map(s => s.trim()).filter(Boolean) : []
   )
   const [services, setServices] = useState<Service[]>(
-    profile?.services || [{ name: "", description: "", durationMinutes: 60, price: 0 }]
+    profile?.services || [{ name: "", description: "", durationMinutes: 60, price: 0, mode: "IN_PERSON", location: "", virtualLink: "", maxStudents: 1, active: true }]
   )
   const [availabilities, setAvailabilities] = useState<Availability[]>(
     profile?.availabilities || [
@@ -369,10 +374,10 @@ export function ProfileForm({
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-white/60">Precio (€)</label>
-                  <input type="number" value={service.price || ""} onChange={(e) => { const s = [...services]; s[i].price = parseInt(e.target.value); setServices(s) }} disabled={!isSubActive} className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15 disabled:opacity-40" />
+                  <input type="number" value={service.price ? String(service.price / 100) : ""} onChange={(e) => { const s = [...services]; s[i].price = Math.round(parseFloat(e.target.value || "0") * 100); setServices(s) }} disabled={!isSubActive} className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15 disabled:opacity-40" />
                   {service.price > 0 && (
                     <p className="mt-1 text-xs text-emerald-400/70">
-                      Recibes {(service.price * (1 - COMISION_WAKEUP / 100)).toFixed(2)} €
+                      Recibes {(service.price * (1 - COMISION_WAKEUP / 100) / 100).toFixed(2)} €
                     </p>
                   )}
                 </div>
@@ -380,11 +385,99 @@ export function ProfileForm({
               {services.length > 1 && (
                 <button type="button" onClick={() => setServices(services.filter((_, j) => j !== i))} className="mt-3 text-sm text-red-400/70 hover:text-red-300">Eliminar servicio</button>
               )}
+
+              {/* Modo: Presencial o Virtual */}
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="block text-xs font-medium text-white/60">Modalidad</label>
+                  <div className="mt-1.5 flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => { const s = [...services]; s[i].mode = "IN_PERSON"; setServices(s) }}
+                      disabled={!isSubActive}
+                      className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
+                        service.mode === "IN_PERSON"
+                          ? "bg-emerald-600/80 text-white"
+                          : "border border-white/10 text-white/60 hover:bg-white/5"
+                      } disabled:opacity-40`}
+                    >
+                      Presencial
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { const s = [...services]; s[i].mode = "VIRTUAL"; setServices(s) }}
+                      disabled={!isSubActive}
+                      className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
+                        service.mode === "VIRTUAL"
+                          ? "bg-blue-600/80 text-white"
+                          : "border border-white/10 text-white/60 hover:bg-white/5"
+                      } disabled:opacity-40`}
+                    >
+                      Virtual
+                    </button>
+                  </div>
+                </div>
+
+                {service.mode === "IN_PERSON" ? (
+                  <div>
+                    <label className="block text-xs font-medium text-white/60">Ubicación / Dirección</label>
+                    <input
+                      type="text"
+                      value={service.location || ""}
+                      onChange={(e) => { const s = [...services]; s[i].location = e.target.value; setServices(s) }}
+                      disabled={!isSubActive}
+                      className="mt-1.5 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15 disabled:opacity-40"
+                      placeholder="Calle ejemplo 12, Torrelodones"
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-xs font-medium text-white/60">Enlace videollamada</label>
+                    <input
+                      type="url"
+                      value={service.virtualLink || ""}
+                      onChange={(e) => { const s = [...services]; s[i].virtualLink = e.target.value; setServices(s) }}
+                      disabled={!isSubActive}
+                      className="mt-1.5 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15 disabled:opacity-40"
+                      placeholder="https://zoom.us/j/..."
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Capacidad y estado */}
+              <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                <div>
+                  <label className="block text-xs font-medium text-white/60">Plazas máximas</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={service.maxStudents || 1}
+                    onChange={(e) => { const s = [...services]; s[i].maxStudents = parseInt(e.target.value) || 1; setServices(s) }}
+                    disabled={!isSubActive}
+                    className="mt-1.5 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15 disabled:opacity-40"
+                  />
+                </div>
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={() => { const s = [...services]; s[i].active = !s[i].active; setServices(s) }}
+                    disabled={!isSubActive}
+                    className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
+                      service.active
+                        ? "bg-emerald-600/80 text-white"
+                        : "border border-white/10 text-white/50 hover:bg-white/5"
+                    } disabled:opacity-40`}
+                  >
+                    {service.active ? "Publicado" : "Borrador"}
+                  </button>
+                </div>
+              </div>
             </div>
           ))}
           <button
             type="button"
-            onClick={() => setServices([...services, { name: "", description: "", durationMinutes: 60, price: 0 }])}
+            onClick={() => setServices([...services, { name: "", description: "", durationMinutes: 60, price: 0, mode: "IN_PERSON", location: "", virtualLink: "", maxStudents: 1, active: true }])}
             disabled={!canAddService}
             className="flex items-center gap-2 text-sm font-medium text-amber-400/70 hover:text-amber-300 disabled:opacity-30 disabled:cursor-not-allowed"
           >

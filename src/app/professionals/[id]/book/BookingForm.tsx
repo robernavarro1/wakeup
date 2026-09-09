@@ -9,6 +9,10 @@ interface Service {
   description: string | null
   durationMinutes: number
   price: number
+  maxStudents: number
+  currentStudents: number
+  mode: string
+  active: boolean
 }
 
 interface Availability {
@@ -166,17 +170,22 @@ export function BookingForm({
           </h2>
           <div className="mt-4 space-y-3">
             {profile.services.length > 0 ? (
-              profile.services.map((service) => (
+              profile.services.filter(s => s.active).map((service) => {
+                const remaining = service.maxStudents - service.currentStudents
+                const isFull = remaining <= 0
+                return (
                 <button
                   key={service.id}
                   onClick={() => {
-                    setSelectedService(service)
-                    setStep(2)
+                    if (!isFull) { setSelectedService(service); setStep(2) }
                   }}
+                  disabled={isFull}
                   className={`w-full rounded-xl border p-4 text-left transition ${
-                    selectedService?.id === service.id
-                      ? "border-purple-500/40 bg-purple-950/80"
-                      : "border-white/5 bg-purple-950/40 hover:border-purple-500/20"
+                    isFull
+                      ? "border-white/5 bg-white/[0.02] opacity-50 cursor-not-allowed"
+                      : selectedService?.id === service.id
+                        ? "border-purple-500/40 bg-purple-950/80"
+                        : "border-white/5 bg-purple-950/40 hover:border-purple-500/20"
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -185,7 +194,7 @@ export function BookingForm({
                         {service.name}
                       </p>
                       <p className="text-sm text-white/60">
-                        {service.durationMinutes} min
+                        {service.durationMinutes} min · {isFull ? "Sin plazas" : `${remaining} plazas libres`}
                       </p>
                     </div>
                     <p className="text-lg font-semibold text-amber-300">
@@ -193,7 +202,8 @@ export function BookingForm({
                     </p>
                   </div>
                 </button>
-              ))
+              )
+              })
             ) : (
               <button
                 onClick={() => setStep(2)}
