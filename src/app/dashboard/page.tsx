@@ -132,6 +132,21 @@ export default async function DashboardPage() {
                 Gestionar productos &rarr;
               </Link>
             </div>
+
+            {isBosque && (
+              <div className="rounded-2xl border border-amber-500/20 bg-gradient-to-br from-amber-950/50 to-purple-950/60 p-6 shadow-xl shadow-amber-950/20">
+                <h2 className="text-lg font-semibold text-white">Estadísticas avanzadas</h2>
+                <p className="mt-2 text-sm text-white/60">
+                  Conoce la demografía de tus clientes, motivos de cancelación y tendencias.
+                </p>
+                <Link
+                  href="/dashboard/stats"
+                  className="mt-4 inline-block text-sm font-medium text-amber-400 hover:text-amber-300"
+                >
+                  Ver estadísticas &rarr;
+                </Link>
+              </div>
+            )}
           </>
         )}
 

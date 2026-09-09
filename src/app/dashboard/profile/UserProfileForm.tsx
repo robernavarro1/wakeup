@@ -14,6 +14,9 @@ interface UserProfileData {
   level: string
   bio: string | null
   goals: string | null
+  birthYear: number | null
+  gender: string | null
+  city: string | null
 }
 
 function parseDisciplines(raw: string): Discipline[] {
@@ -41,6 +44,9 @@ export function UserProfileForm({ profile }: { profile: UserProfileData | null }
   )
   const [bio, setBio] = useState(profile?.bio || "")
   const [goals, setGoals] = useState(profile?.goals || "")
+  const [birthYear, setBirthYear] = useState(profile?.birthYear?.toString() || "")
+  const [gender, setGender] = useState(profile?.gender || "")
+  const [city, setCity] = useState(profile?.city || "")
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
@@ -57,6 +63,9 @@ export function UserProfileForm({ profile }: { profile: UserProfileData | null }
         disciplines: JSON.stringify(disciplines.filter((d) => d.name)),
         bio,
         goals,
+        birthYear: birthYear ? parseInt(birthYear) : null,
+        gender: gender || null,
+        city: city || null,
       }),
     })
 
@@ -182,6 +191,45 @@ export function UserProfileForm({ profile }: { profile: UserProfileData | null }
               placeholder="¿Qué te gustaría lograr? Esto ayuda a los profesionales a conocerte mejor..."
             />
           </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div>
+              <label className="block text-sm font-medium text-purple-300/70">Año de nacimiento</label>
+              <input
+                type="number"
+                min="1920"
+                max={new Date().getFullYear() - 10}
+                value={birthYear}
+                onChange={(e) => setBirthYear(e.target.value)}
+                className="mt-1.5 block w-full rounded-xl border border-purple-500/20 bg-purple-950/60 px-4 py-3 text-sm text-white placeholder-purple-300/30 focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                placeholder="1990"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-purple-300/70">Género</label>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="mt-1.5 block w-full rounded-xl border border-purple-500/20 bg-purple-950/60 px-4 py-3 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+              >
+                <option value="" className="bg-[#0a0515]">Prefiero no decir</option>
+                <option value="female" className="bg-[#0a0515]">Mujer</option>
+                <option value="male" className="bg-[#0a0515]">Hombre</option>
+                <option value="non_binary" className="bg-[#0a0515]">No binario</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-purple-300/70">Ciudad</label>
+              <input
+                type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="mt-1.5 block w-full rounded-xl border border-purple-500/20 bg-purple-950/60 px-4 py-3 text-sm text-white placeholder-purple-300/30 focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                placeholder="Madrid"
+              />
+            </div>
+          </div>
+          <p className="text-xs text-white/30">Estos datos son opcionales y ayudan a los profesionales a conocer mejor a su audiencia.</p>
         </div>
       </div>
 

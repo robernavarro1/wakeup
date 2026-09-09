@@ -124,7 +124,7 @@ export function BookingForm({
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || "Error al procesar el pago")
+        setError(data.error || "Error al reservar")
         setLoading(false)
         return
       }
@@ -350,7 +350,7 @@ export function BookingForm({
                 </span>
               </div>
               <p className="mt-1 text-xs text-white/50">
-                Incluye tasas de plataforma
+                El pago se realiza directamente con el profesional
               </p>
             </div>
           </div>
@@ -380,7 +380,7 @@ export function BookingForm({
               disabled={loading}
               className="rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-purple-600/25 hover:shadow-purple-600/40 disabled:opacity-50"
             >
-              {loading ? "Procesando..." : "Confirmar y pagar"}
+              {loading ? "Reservando..." : "Confirmar reserva"}
             </button>
           </div>
         </div>

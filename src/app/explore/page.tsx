@@ -752,12 +752,22 @@ function ProfessionalCard({
         </div>
         <div className="mt-4 flex items-center justify-between">
           <span className="text-sm text-white/70">{pro.city}</span>
-          {pro.pricePerSession > 0 && (
-            <span className="font-semibold text-amber-300">
-              {pro.pricePerSession / 100} &euro;
-            </span>
-          )}
+          <div className="flex items-center gap-3">
+            {pro.pricePerSession > 0 && (
+              <span className="font-semibold text-amber-300">
+                {pro.pricePerSession / 100} &euro;
+              </span>
+            )}
+            <Link
+              href={`/professionals/${pro.id}/book`}
+              onClick={(e) => e.stopPropagation()}
+              className="rounded-lg bg-purple-600/80 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-purple-500"
+            >
+              Reservar
+            </Link>
+          </div>
         </div>
+        <p className="mt-2 text-center text-[10px] text-white/30">El pago se realiza directamente con el profesional</p>
       </GlassCard>
     </Link>
   )

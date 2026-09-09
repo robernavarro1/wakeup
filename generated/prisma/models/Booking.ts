@@ -43,6 +43,8 @@ export type BookingMinAggregateOutputType = {
   date: Date | null
   durationMinutes: number | null
   status: string | null
+  cancelReason: string | null
+  cancelDetail: string | null
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -57,6 +59,8 @@ export type BookingMaxAggregateOutputType = {
   date: Date | null
   durationMinutes: number | null
   status: string | null
+  cancelReason: string | null
+  cancelDetail: string | null
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -71,6 +75,8 @@ export type BookingCountAggregateOutputType = {
   date: number
   durationMinutes: number
   status: number
+  cancelReason: number
+  cancelDetail: number
   notes: number
   createdAt: number
   updatedAt: number
@@ -95,6 +101,8 @@ export type BookingMinAggregateInputType = {
   date?: true
   durationMinutes?: true
   status?: true
+  cancelReason?: true
+  cancelDetail?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -109,6 +117,8 @@ export type BookingMaxAggregateInputType = {
   date?: true
   durationMinutes?: true
   status?: true
+  cancelReason?: true
+  cancelDetail?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -123,6 +133,8 @@ export type BookingCountAggregateInputType = {
   date?: true
   durationMinutes?: true
   status?: true
+  cancelReason?: true
+  cancelDetail?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -224,6 +236,8 @@ export type BookingGroupByOutputType = {
   date: Date
   durationMinutes: number
   status: string
+  cancelReason: string | null
+  cancelDetail: string | null
   notes: string | null
   createdAt: Date
   updatedAt: Date
@@ -261,6 +275,8 @@ export type BookingWhereInput = {
   date?: Prisma.DateTimeFilter<"Booking"> | Date | string
   durationMinutes?: Prisma.IntFilter<"Booking"> | number
   status?: Prisma.StringFilter<"Booking"> | string
+  cancelReason?: Prisma.StringNullableFilter<"Booking"> | string | null
+  cancelDetail?: Prisma.StringNullableFilter<"Booking"> | string | null
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
@@ -280,6 +296,8 @@ export type BookingOrderByWithRelationInput = {
   date?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelDetail?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -302,6 +320,8 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   date?: Prisma.DateTimeFilter<"Booking"> | Date | string
   durationMinutes?: Prisma.IntFilter<"Booking"> | number
   status?: Prisma.StringFilter<"Booking"> | string
+  cancelReason?: Prisma.StringNullableFilter<"Booking"> | string | null
+  cancelDetail?: Prisma.StringNullableFilter<"Booking"> | string | null
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
@@ -321,6 +341,8 @@ export type BookingOrderByWithAggregationInput = {
   date?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  cancelDetail?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -343,6 +365,8 @@ export type BookingScalarWhereWithAggregatesInput = {
   date?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
   durationMinutes?: Prisma.IntWithAggregatesFilter<"Booking"> | number
   status?: Prisma.StringWithAggregatesFilter<"Booking"> | string
+  cancelReason?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  cancelDetail?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
@@ -353,6 +377,8 @@ export type BookingCreateInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -372,6 +398,8 @@ export type BookingUncheckedCreateInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -383,6 +411,8 @@ export type BookingUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -402,6 +432,8 @@ export type BookingUncheckedUpdateInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -417,6 +449,8 @@ export type BookingCreateManyInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -427,6 +461,8 @@ export type BookingUpdateManyMutationInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -441,6 +477,8 @@ export type BookingUncheckedUpdateManyInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -465,6 +503,8 @@ export type BookingCountOrderByAggregateInput = {
   date?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
+  cancelDetail?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -483,6 +523,8 @@ export type BookingMaxOrderByAggregateInput = {
   date?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
+  cancelDetail?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -497,6 +539,8 @@ export type BookingMinOrderByAggregateInput = {
   date?: Prisma.SortOrder
   durationMinutes?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  cancelReason?: Prisma.SortOrder
+  cancelDetail?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -698,6 +742,8 @@ export type BookingCreateWithoutClientInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -715,6 +761,8 @@ export type BookingUncheckedCreateWithoutClientInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -736,6 +784,8 @@ export type BookingCreateWithoutProfessionalInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -753,6 +803,8 @@ export type BookingUncheckedCreateWithoutProfessionalInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -797,6 +849,8 @@ export type BookingScalarWhereInput = {
   date?: Prisma.DateTimeFilter<"Booking"> | Date | string
   durationMinutes?: Prisma.IntFilter<"Booking"> | number
   status?: Prisma.StringFilter<"Booking"> | string
+  cancelReason?: Prisma.StringNullableFilter<"Booking"> | string | null
+  cancelDetail?: Prisma.StringNullableFilter<"Booking"> | string | null
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
@@ -823,6 +877,8 @@ export type BookingCreateWithoutProfileInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -840,6 +896,8 @@ export type BookingUncheckedCreateWithoutProfileInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -877,6 +935,8 @@ export type BookingCreateWithoutServiceInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -894,6 +954,8 @@ export type BookingUncheckedCreateWithoutServiceInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -931,6 +993,8 @@ export type BookingCreateWithoutReviewInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -949,6 +1013,8 @@ export type BookingUncheckedCreateWithoutReviewInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -975,6 +1041,8 @@ export type BookingUpdateWithoutReviewInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -993,6 +1061,8 @@ export type BookingUncheckedUpdateWithoutReviewInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1006,6 +1076,8 @@ export type BookingCreateManyClientInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1019,6 +1091,8 @@ export type BookingCreateManyProfessionalInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1029,6 +1103,8 @@ export type BookingUpdateWithoutClientInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1046,6 +1122,8 @@ export type BookingUncheckedUpdateWithoutClientInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1060,6 +1138,8 @@ export type BookingUncheckedUpdateManyWithoutClientInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1070,6 +1150,8 @@ export type BookingUpdateWithoutProfessionalInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1087,6 +1169,8 @@ export type BookingUncheckedUpdateWithoutProfessionalInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1101,6 +1185,8 @@ export type BookingUncheckedUpdateManyWithoutProfessionalInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1114,6 +1200,8 @@ export type BookingCreateManyProfileInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1124,6 +1212,8 @@ export type BookingUpdateWithoutProfileInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1141,6 +1231,8 @@ export type BookingUncheckedUpdateWithoutProfileInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1155,6 +1247,8 @@ export type BookingUncheckedUpdateManyWithoutProfileInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1168,6 +1262,8 @@ export type BookingCreateManyServiceInput = {
   date: Date | string
   durationMinutes?: number
   status?: string
+  cancelReason?: string | null
+  cancelDetail?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1178,6 +1274,8 @@ export type BookingUpdateWithoutServiceInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1195,6 +1293,8 @@ export type BookingUncheckedUpdateWithoutServiceInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1209,6 +1309,8 @@ export type BookingUncheckedUpdateManyWithoutServiceInput = {
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  cancelReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cancelDetail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1225,6 +1327,8 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   date?: boolean
   durationMinutes?: boolean
   status?: boolean
+  cancelReason?: boolean
+  cancelDetail?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1244,6 +1348,8 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   date?: boolean
   durationMinutes?: boolean
   status?: boolean
+  cancelReason?: boolean
+  cancelDetail?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1262,6 +1368,8 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   date?: boolean
   durationMinutes?: boolean
   status?: boolean
+  cancelReason?: boolean
+  cancelDetail?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1280,12 +1388,14 @@ export type BookingSelectScalar = {
   date?: boolean
   durationMinutes?: boolean
   status?: boolean
+  cancelReason?: boolean
+  cancelDetail?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "professionalId" | "professionalProfileId" | "serviceId" | "date" | "durationMinutes" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clientId" | "professionalId" | "professionalProfileId" | "serviceId" | "date" | "durationMinutes" | "status" | "cancelReason" | "cancelDetail" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   client?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   professional?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1324,6 +1434,8 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     date: Date
     durationMinutes: number
     status: string
+    cancelReason: string | null
+    cancelDetail: string | null
     notes: string | null
     createdAt: Date
     updatedAt: Date
@@ -1763,6 +1875,8 @@ export interface BookingFieldRefs {
   readonly date: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly durationMinutes: Prisma.FieldRef<"Booking", 'Int'>
   readonly status: Prisma.FieldRef<"Booking", 'String'>
+  readonly cancelReason: Prisma.FieldRef<"Booking", 'String'>
+  readonly cancelDetail: Prisma.FieldRef<"Booking", 'String'>
   readonly notes: Prisma.FieldRef<"Booking", 'String'>
   readonly createdAt: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Booking", 'DateTime'>

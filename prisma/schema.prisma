@@ -76,6 +76,9 @@ model UserProfile {
   level       String   @default("")
   bio         String?
   goals       String?
+  birthYear   Int?
+  gender      String?
+  city        String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -149,6 +152,8 @@ model Booking {
   date                   DateTime
   durationMinutes        Int      @default(60)
   status                 String   @default("CONFIRMED")
+  cancelReason           String?
+  cancelDetail           String?
   notes                  String?
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt

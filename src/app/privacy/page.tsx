@@ -37,8 +37,9 @@ export default function PrivacyPage() {
             <li>Dirección de email</li>
             <li>Contraseña (almacenada de forma cifrada)</li>
             <li>Datos de perfil profesional (si aplica): título, categorías, disciplinas, especialidades, ciudades, disponibilidad, precio</li>
-            <li>Datos de reservas y compras</li>
-            <li>Identificador de cuenta de Stripe Connect (para pagos a profesionales)</li>
+            <li>Datos de reservas (sin información de pago)</li>
+            <li>Datos demográficos opcionales: año de nacimiento, género, ciudad — utilizados exclusivamente para estadísticas agregadas que ayudan a los profesionales a conocer mejor a su audiencia</li>
+            <li>Motivos de cancelación (opcionales): utilizados de forma agregada e anónima para mejorar el servicio</li>
           </ul>
         </section>
 

@@ -150,6 +150,9 @@ export const UserProfileScalarFieldEnum = {
   level: 'level',
   bio: 'bio',
   goals: 'goals',
+  birthYear: 'birthYear',
+  gender: 'gender',
+  city: 'city',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -217,6 +220,8 @@ export const BookingScalarFieldEnum = {
   date: 'date',
   durationMinutes: 'durationMinutes',
   status: 'status',
+  cancelReason: 'cancelReason',
+  cancelDetail: 'cancelDetail',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

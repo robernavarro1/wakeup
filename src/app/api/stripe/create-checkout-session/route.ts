@@ -77,6 +77,35 @@ export async function POST(request: Request) {
       }
     }
 
+    // Comprobar que el cliente no tenga ya una reserva activa para este servicio
+    if (serviceId) {
+      const existingBooking = await prisma.booking.findFirst({
+        where: {
+          clientId: session.user.id,
+          serviceId,
+          status: { in: ["PENDING", "CONFIRMED"] },
+        },
+      })
+      if (existingBooking) {
+        return NextResponse.json({ error: "Ya tienes una reserva activa para este servicio" }, { status: 400 })
+      }
+    } else {
+      // Sin servicio asignado: no permitir dos reservas el mismo día con el mismo profesional
+      const dayStart = new Date(bookingDate); dayStart.setHours(0, 0, 0, 0)
+      const dayEnd = new Date(bookingDate); dayEnd.setHours(23, 59, 59, 999)
+      const existingSameDay = await prisma.booking.findFirst({
+        where: {
+          clientId: session.user.id,
+          professionalId,
+          date: { gte: dayStart, lte: dayEnd },
+          status: { in: ["PENDING", "CONFIRMED"] },
+        },
+      })
+      if (existingSameDay) {
+        return NextResponse.json({ error: "Ya tienes una reserva con este profesional para este día" }, { status: 400 })
+      }
+    }
+
     // Crear la reserva directamente
     const booking = await prisma.booking.create({
       data: {

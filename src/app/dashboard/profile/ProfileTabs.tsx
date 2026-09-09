@@ -11,6 +11,9 @@ interface UserProfileData {
   level: string
   bio: string | null
   goals: string | null
+  birthYear: number | null
+  gender: string | null
+  city: string | null
 }
 
 interface ProfileData {

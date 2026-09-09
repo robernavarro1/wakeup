@@ -7,11 +7,11 @@ export async function PUT(req: Request) {
   if (!session?.user) return NextResponse.json({ error: "No autorizado" }, { status: 401 })
 
   const body = await req.json()
-  const { interests, disciplines, level, bio, goals } = body
+  const { interests, disciplines, level, bio, goals, birthYear, gender, city } = body
 
   const profile = await prisma.userProfile.upsert({
     where: { userId: session.user.id },
-    update: { interests, disciplines, level, bio, goals },
+    update: { interests, disciplines, level, bio, goals, birthYear, gender, city },
     create: {
       userId: session.user.id,
       interests,
@@ -19,6 +19,9 @@ export async function PUT(req: Request) {
       level,
       bio,
       goals,
+      birthYear,
+      gender,
+      city,
     },
   })
 

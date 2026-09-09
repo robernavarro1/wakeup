@@ -20,8 +20,18 @@ export type UserProfileModel = runtime.Types.Result.DefaultSelection<Prisma.$Use
 
 export type AggregateUserProfile = {
   _count: UserProfileCountAggregateOutputType | null
+  _avg: UserProfileAvgAggregateOutputType | null
+  _sum: UserProfileSumAggregateOutputType | null
   _min: UserProfileMinAggregateOutputType | null
   _max: UserProfileMaxAggregateOutputType | null
+}
+
+export type UserProfileAvgAggregateOutputType = {
+  birthYear: number | null
+}
+
+export type UserProfileSumAggregateOutputType = {
+  birthYear: number | null
 }
 
 export type UserProfileMinAggregateOutputType = {
@@ -32,6 +42,9 @@ export type UserProfileMinAggregateOutputType = {
   level: string | null
   bio: string | null
   goals: string | null
+  birthYear: number | null
+  gender: string | null
+  city: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +57,9 @@ export type UserProfileMaxAggregateOutputType = {
   level: string | null
   bio: string | null
   goals: string | null
+  birthYear: number | null
+  gender: string | null
+  city: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,11 +72,22 @@ export type UserProfileCountAggregateOutputType = {
   level: number
   bio: number
   goals: number
+  birthYear: number
+  gender: number
+  city: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type UserProfileAvgAggregateInputType = {
+  birthYear?: true
+}
+
+export type UserProfileSumAggregateInputType = {
+  birthYear?: true
+}
 
 export type UserProfileMinAggregateInputType = {
   id?: true
@@ -70,6 +97,9 @@ export type UserProfileMinAggregateInputType = {
   level?: true
   bio?: true
   goals?: true
+  birthYear?: true
+  gender?: true
+  city?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +112,9 @@ export type UserProfileMaxAggregateInputType = {
   level?: true
   bio?: true
   goals?: true
+  birthYear?: true
+  gender?: true
+  city?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +127,9 @@ export type UserProfileCountAggregateInputType = {
   level?: true
   bio?: true
   goals?: true
+  birthYear?: true
+  gender?: true
+  city?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -137,6 +173,18 @@ export type UserProfileAggregateArgs<ExtArgs extends runtime.Types.Extensions.In
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserProfileAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserProfileSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserProfileMinAggregateInputType
@@ -167,6 +215,8 @@ export type UserProfileGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   _count?: UserProfileCountAggregateInputType | true
+  _avg?: UserProfileAvgAggregateInputType
+  _sum?: UserProfileSumAggregateInputType
   _min?: UserProfileMinAggregateInputType
   _max?: UserProfileMaxAggregateInputType
 }
@@ -179,9 +229,14 @@ export type UserProfileGroupByOutputType = {
   level: string
   bio: string | null
   goals: string | null
+  birthYear: number | null
+  gender: string | null
+  city: string | null
   createdAt: Date
   updatedAt: Date
   _count: UserProfileCountAggregateOutputType | null
+  _avg: UserProfileAvgAggregateOutputType | null
+  _sum: UserProfileSumAggregateOutputType | null
   _min: UserProfileMinAggregateOutputType | null
   _max: UserProfileMaxAggregateOutputType | null
 }
@@ -212,6 +267,9 @@ export type UserProfileWhereInput = {
   level?: Prisma.StringFilter<"UserProfile"> | string
   bio?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   goals?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  birthYear?: Prisma.IntNullableFilter<"UserProfile"> | number | null
+  gender?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  city?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   createdAt?: Prisma.DateTimeFilter<"UserProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -225,6 +283,9 @@ export type UserProfileOrderByWithRelationInput = {
   level?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   goals?: Prisma.SortOrderInput | Prisma.SortOrder
+  birthYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -241,6 +302,9 @@ export type UserProfileWhereUniqueInput = Prisma.AtLeast<{
   level?: Prisma.StringFilter<"UserProfile"> | string
   bio?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   goals?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  birthYear?: Prisma.IntNullableFilter<"UserProfile"> | number | null
+  gender?: Prisma.StringNullableFilter<"UserProfile"> | string | null
+  city?: Prisma.StringNullableFilter<"UserProfile"> | string | null
   createdAt?: Prisma.DateTimeFilter<"UserProfile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"UserProfile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -254,11 +318,16 @@ export type UserProfileOrderByWithAggregationInput = {
   level?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
   goals?: Prisma.SortOrderInput | Prisma.SortOrder
+  birthYear?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
+  city?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserProfileCountOrderByAggregateInput
+  _avg?: Prisma.UserProfileAvgOrderByAggregateInput
   _max?: Prisma.UserProfileMaxOrderByAggregateInput
   _min?: Prisma.UserProfileMinOrderByAggregateInput
+  _sum?: Prisma.UserProfileSumOrderByAggregateInput
 }
 
 export type UserProfileScalarWhereWithAggregatesInput = {
@@ -272,6 +341,9 @@ export type UserProfileScalarWhereWithAggregatesInput = {
   level?: Prisma.StringWithAggregatesFilter<"UserProfile"> | string
   bio?: Prisma.StringNullableWithAggregatesFilter<"UserProfile"> | string | null
   goals?: Prisma.StringNullableWithAggregatesFilter<"UserProfile"> | string | null
+  birthYear?: Prisma.IntNullableWithAggregatesFilter<"UserProfile"> | number | null
+  gender?: Prisma.StringNullableWithAggregatesFilter<"UserProfile"> | string | null
+  city?: Prisma.StringNullableWithAggregatesFilter<"UserProfile"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"UserProfile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UserProfile"> | Date | string
 }
@@ -283,6 +355,9 @@ export type UserProfileCreateInput = {
   level?: string
   bio?: string | null
   goals?: string | null
+  birthYear?: number | null
+  gender?: string | null
+  city?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutUserProfileInput
@@ -296,6 +371,9 @@ export type UserProfileUncheckedCreateInput = {
   level?: string
   bio?: string | null
   goals?: string | null
+  birthYear?: number | null
+  gender?: string | null
+  city?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -307,6 +385,9 @@ export type UserProfileUpdateInput = {
   level?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutUserProfileNestedInput
@@ -320,6 +401,9 @@ export type UserProfileUncheckedUpdateInput = {
   level?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -332,6 +416,9 @@ export type UserProfileCreateManyInput = {
   level?: string
   bio?: string | null
   goals?: string | null
+  birthYear?: number | null
+  gender?: string | null
+  city?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -343,6 +430,9 @@ export type UserProfileUpdateManyMutationInput = {
   level?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -355,6 +445,9 @@ export type UserProfileUncheckedUpdateManyInput = {
   level?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -372,8 +465,15 @@ export type UserProfileCountOrderByAggregateInput = {
   level?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   goals?: Prisma.SortOrder
+  birthYear?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserProfileAvgOrderByAggregateInput = {
+  birthYear?: Prisma.SortOrder
 }
 
 export type UserProfileMaxOrderByAggregateInput = {
@@ -384,6 +484,9 @@ export type UserProfileMaxOrderByAggregateInput = {
   level?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   goals?: Prisma.SortOrder
+  birthYear?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -396,8 +499,15 @@ export type UserProfileMinOrderByAggregateInput = {
   level?: Prisma.SortOrder
   bio?: Prisma.SortOrder
   goals?: Prisma.SortOrder
+  birthYear?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
+  city?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserProfileSumOrderByAggregateInput = {
+  birthYear?: Prisma.SortOrder
 }
 
 export type UserProfileCreateNestedOneWithoutUserInput = {
@@ -439,6 +549,9 @@ export type UserProfileCreateWithoutUserInput = {
   level?: string
   bio?: string | null
   goals?: string | null
+  birthYear?: number | null
+  gender?: string | null
+  city?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -450,6 +563,9 @@ export type UserProfileUncheckedCreateWithoutUserInput = {
   level?: string
   bio?: string | null
   goals?: string | null
+  birthYear?: number | null
+  gender?: string | null
+  city?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -477,6 +593,9 @@ export type UserProfileUpdateWithoutUserInput = {
   level?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -488,6 +607,9 @@ export type UserProfileUncheckedUpdateWithoutUserInput = {
   level?: Prisma.StringFieldUpdateOperationsInput | string
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goals?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthYear?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -502,6 +624,9 @@ export type UserProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   level?: boolean
   bio?: boolean
   goals?: boolean
+  birthYear?: boolean
+  gender?: boolean
+  city?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -515,6 +640,9 @@ export type UserProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   level?: boolean
   bio?: boolean
   goals?: boolean
+  birthYear?: boolean
+  gender?: boolean
+  city?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -528,6 +656,9 @@ export type UserProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   level?: boolean
   bio?: boolean
   goals?: boolean
+  birthYear?: boolean
+  gender?: boolean
+  city?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -541,11 +672,14 @@ export type UserProfileSelectScalar = {
   level?: boolean
   bio?: boolean
   goals?: boolean
+  birthYear?: boolean
+  gender?: boolean
+  city?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "interests" | "disciplines" | "level" | "bio" | "goals" | "createdAt" | "updatedAt", ExtArgs["result"]["userProfile"]>
+export type UserProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "interests" | "disciplines" | "level" | "bio" | "goals" | "birthYear" | "gender" | "city" | "createdAt" | "updatedAt", ExtArgs["result"]["userProfile"]>
 export type UserProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -569,6 +703,9 @@ export type $UserProfilePayload<ExtArgs extends runtime.Types.Extensions.Interna
     level: string
     bio: string | null
     goals: string | null
+    birthYear: number | null
+    gender: string | null
+    city: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["userProfile"]>
@@ -1002,6 +1139,9 @@ export interface UserProfileFieldRefs {
   readonly level: Prisma.FieldRef<"UserProfile", 'String'>
   readonly bio: Prisma.FieldRef<"UserProfile", 'String'>
   readonly goals: Prisma.FieldRef<"UserProfile", 'String'>
+  readonly birthYear: Prisma.FieldRef<"UserProfile", 'Int'>
+  readonly gender: Prisma.FieldRef<"UserProfile", 'String'>
+  readonly city: Prisma.FieldRef<"UserProfile", 'String'>
   readonly createdAt: Prisma.FieldRef<"UserProfile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"UserProfile", 'DateTime'>
 }
