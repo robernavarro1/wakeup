@@ -67,7 +67,7 @@ export default async function ProductDetailPage({
                 fill
                 sizes="(max-width: 640px) 100vw, 50vw"
                 className="object-cover"
-                unoptimized
+
               />
             </div>
           )}

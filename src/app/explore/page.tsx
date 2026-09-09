@@ -725,7 +725,7 @@ function ProfessionalCard({
     : `/professionals/${pro.id}`
 
   return (
-    <div className="cursor-pointer" onClick={() => window.location.href = href}>
+    <Link href={href} className="block">
       <GlassCard>
         <div className="flex items-start gap-3">
           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-amber-500 text-sm font-bold text-white shadow-lg">
@@ -769,7 +769,7 @@ function ProfessionalCard({
         </div>
         <p className="mt-2 text-center text-[10px] text-white/30">El pago se realiza directamente con el profesional</p>
       </GlassCard>
-    </div>
+    </Link>
   )
 }
 

@@ -52,7 +52,7 @@ export default async function ProductsPage() {
                       </div>
                       {product.image && (
                         <div className="mb-4 h-48 w-full relative overflow-hidden rounded-xl">
-                          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="rounded-xl object-cover" unoptimized />
+                          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="rounded-xl object-cover" />
                         </div>
                       )}
                       <h3 className="text-lg font-semibold text-white">{product.name}</h3>
@@ -90,7 +90,7 @@ export default async function ProductsPage() {
                     <div className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 backdrop-blur-sm transition hover:border-purple-500/30">
                       {product.image && (
                         <div className="mb-4 h-48 w-full relative overflow-hidden rounded-xl">
-                          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="rounded-xl object-cover" unoptimized />
+                          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="rounded-xl object-cover" />
                         </div>
                       )}
                       <h3 className="text-lg font-semibold text-white">{product.name}</h3>
