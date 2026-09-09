@@ -23,6 +23,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         description: data.description ?? product.description,
         price: data.price ? Math.round(data.price * 100) : product.price,
         image: data.image ?? product.image,
+        amazonUrl: data.amazonUrl ?? product.amazonUrl,
         category: data.category ?? product.category,
         active: data.active ?? product.active,
       },

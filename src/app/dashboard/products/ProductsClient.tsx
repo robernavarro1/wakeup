@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 interface Product {
@@ -18,7 +18,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
   const [products, setProducts] = useState(initialProducts)
   const [editing, setEditing] = useState<string | null>(null)
   const [creating, setCreating] = useState(false)
-  const [form, setForm] = useState({ name: "", description: "", price: "", image: "", category: "" })
+  const [form, setForm] = useState({ name: "", description: "", price: "", image: "", amazonUrl: "", category: "" })
   const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent) {
@@ -31,7 +31,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
       })
       if (res.ok) {
         setEditing(null)
-        setForm({ name: "", description: "", price: "", image: "", category: "" })
+        setForm({ name: "", description: "", price: "", image: "", amazonUrl: "", category: "" })
         router.refresh()
       }
     } else {
@@ -42,7 +42,7 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
       })
       if (res.ok) {
         setCreating(false)
-        setForm({ name: "", description: "", price: "", image: "", category: "" })
+        setForm({ name: "", description: "", price: "", image: "", amazonUrl: "", category: "" })
         router.refresh()
       }
     }
@@ -57,12 +57,12 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
 
   function startEdit(p: Product) {
     setEditing(p.id)
-    setForm({ name: p.name, description: p.description || "", price: (p.price / 100).toString(), image: p.image || "", category: p.category || "" })
+    setForm({ name: p.name, description: p.description || "", price: (p.price / 100).toString(), image: p.image || "", amazonUrl: p.amazonUrl || "", category: p.category || "" })
   }
 
   function startCreate() {
     setCreating(true)
-    setForm({ name: "", description: "", price: "", image: "", category: "" })
+    setForm({ name: "", description: "", price: "", image: "", amazonUrl: "", category: "" })
   }
 
   return (
@@ -80,13 +80,22 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
       {(creating || editing) && (
         <form onSubmit={handleSubmit} className="mb-8 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl">
           <h2 className="mb-4 text-lg font-semibold text-white">{editing ? "Editar producto" : "Nuevo producto"}</h2>
+
+          {form.image && (
+            <div className="mb-4">
+              <img src={form.image} alt="Preview" className="h-40 w-full rounded-lg object-cover" />
+            </div>
+          )}
+
           <div className="grid gap-4 sm:grid-cols-2">
-            <input placeholder="Nombre" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none" required />
+            <input placeholder="Nombre del producto" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none" required />
             <input placeholder="Precio (€)" type="number" step="0.01" min="0" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none" required />
-            <input placeholder="URL de imagen" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none sm:col-span-2" />
-            <input placeholder="Categoría (yoga, meditacion, terapias, tarot, crecimiento...)" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none sm:col-span-2" />
-            <textarea placeholder="Descripción" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none sm:col-span-2" rows={3} />
+            <input placeholder="URL de imagen del producto" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none sm:col-span-2" />
+            <input placeholder="URL de Amazon (enlace de afiliado)" value={form.amazonUrl} onChange={(e) => setForm({ ...form, amazonUrl: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none sm:col-span-2" />
+            <input placeholder="Categoría (yoga, meditacion, terapias, tarot...)" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none sm:col-span-2" />
+            <textarea placeholder="Descripción del producto" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="rounded-lg border border-purple-500/30 bg-purple-950/40 px-4 py-2 text-sm text-white placeholder-purple-300/30 focus:border-purple-400 focus:outline-none sm:col-span-2" rows={3} />
           </div>
+          <p className="mt-3 text-xs text-white/40">Para productos de Amazon: pega la URL del producto de Amazon y añade la imagen del producto (clic derecho &rarr; copiar imagen).</p>
           <div className="mt-4 flex gap-3">
             <button type="submit" className="rounded-lg bg-purple-600 px-5 py-2 text-sm font-semibold text-white hover:bg-purple-500">Guardar</button>
             <button type="button" onClick={() => { setEditing(null); setCreating(false) }} className="rounded-lg border border-purple-500/30 px-5 py-2 text-sm text-purple-300 hover:bg-purple-500/10">Cancelar</button>
@@ -102,12 +111,17 @@ export default function ProductsClient({ initialProducts }: { initialProducts: P
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
             <div key={product.id} className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-5 shadow-xl">
-              {product.image && (
+              {product.image ? (
                 <img src={product.image} alt={product.name} className="mb-3 h-40 w-full rounded-lg object-cover" />
+              ) : (
+                <div className="mb-3 flex h-40 w-full items-center justify-center rounded-lg bg-purple-950/40 text-3xl text-white/10">
+                  {product.amazonUrl ? "🛒" : "📦"}
+                </div>
               )}
               <h3 className="font-semibold text-white">{product.name}</h3>
               <p className="mt-1 text-sm text-white/60">{product.description}</p>
               <p className="mt-2 text-lg font-bold text-amber-400">{(product.price / 100).toFixed(2)} €</p>
+              {product.amazonUrl && <p className="mt-1 text-xs text-amber-300/50">🛒 Amazon</p>}
               {product.category && <p className="mt-1 text-xs text-purple-300/30">{product.category}</p>}
               <div className="mt-4 flex gap-2">
                 <button onClick={() => startEdit(product)} className="rounded-lg bg-purple-600/50 px-3 py-1.5 text-xs font-medium text-white hover:bg-purple-600">Editar</button>

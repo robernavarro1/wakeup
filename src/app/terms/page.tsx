@@ -85,7 +85,7 @@ export default function TermsPage() {
           <ul className="list-disc pl-5 space-y-1">
             <li>Las reservas son gratuitas para el cliente. Wakeup no cobra comisión por reservas.</li>
             <li>El pago de la sesión se realiza directamente entre el cliente y el profesional, fuera de la plataforma.</li>
-            <li>Wakeup actúa como intermediario para la gestión de reservas y la公共idad, pero no forma parte de la transacción económica.</li>
+            <li>Wakeup actúa como intermediario para la gestión de reservas y la publicidad, pero no forma parte de la transacción económica.</li>
             <li>El profesional es responsable de gestionar los cobros, facturación e impuestos derivados de sus servicios.</li>
           </ul>
         </section>
