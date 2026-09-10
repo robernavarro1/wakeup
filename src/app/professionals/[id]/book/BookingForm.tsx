@@ -169,57 +169,61 @@ export function BookingForm({
             1. Selecciona un servicio
           </h2>
           <div className="mt-4 space-y-3">
-            {profile.services.length > 0 ? (
-              profile.services.filter(s => s.active).map((service) => {
-                const remaining = service.maxStudents - service.currentStudents
-                const isFull = remaining <= 0
-                return (
+            {(() => {
+              const activeServices = profile.services.filter(s => s.active)
+              if (activeServices.length > 0) {
+                return activeServices.map((service) => {
+                  const remaining = service.maxStudents - service.currentStudents
+                  const isFull = remaining <= 0
+                  return (
+                  <button
+                    key={service.id}
+                    onClick={() => {
+                      if (!isFull) { setSelectedService(service); setStep(2) }
+                    }}
+                    disabled={isFull}
+                    className={`w-full rounded-xl border p-4 text-left transition ${
+                      isFull
+                        ? "border-white/5 bg-white/[0.02] opacity-50 cursor-not-allowed"
+                        : selectedService?.id === service.id
+                          ? "border-purple-500/40 bg-purple-950/80"
+                          : "border-white/5 bg-purple-950/40 hover:border-purple-500/20"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium text-white">
+                          {service.name}
+                        </p>
+                        <p className="text-sm text-white/60">
+                          {service.durationMinutes} min · {isFull ? "Sin plazas" : `${remaining} plazas libres`}
+                        </p>
+                      </div>
+                      <p className="text-lg font-semibold text-amber-300">
+                        {service.price / 100} €
+                      </p>
+                    </div>
+                  </button>
+                )
+                })
+              }
+              return (
                 <button
-                  key={service.id}
-                  onClick={() => {
-                    if (!isFull) { setSelectedService(service); setStep(2) }
-                  }}
-                  disabled={isFull}
-                  className={`w-full rounded-xl border p-4 text-left transition ${
-                    isFull
-                      ? "border-white/5 bg-white/[0.02] opacity-50 cursor-not-allowed"
-                      : selectedService?.id === service.id
-                        ? "border-purple-500/40 bg-purple-950/80"
-                        : "border-white/5 bg-purple-950/40 hover:border-purple-500/20"
-                  }`}
+                  onClick={() => setStep(2)}
+                  className={`w-full rounded-xl border border-white/5 bg-purple-950/40 p-4 text-left transition hover:border-purple-500/20`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium text-white">
-                        {service.name}
-                      </p>
-                      <p className="text-sm text-white/60">
-                        {service.durationMinutes} min · {isFull ? "Sin plazas" : `${remaining} plazas libres`}
-                      </p>
+                      <p className="font-medium text-white">Sesión</p>
+                      <p className="text-sm text-white/60">60 min</p>
                     </div>
                     <p className="text-lg font-semibold text-amber-300">
-                      {service.price / 100} €
+                      {profile.pricePerSession / 100} €
                     </p>
                   </div>
                 </button>
               )
-              })
-            ) : (
-              <button
-                onClick={() => setStep(2)}
-                className={`w-full rounded-xl border border-white/5 bg-purple-950/40 p-4 text-left transition hover:border-purple-500/20`}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium text-white">Sesión</p>
-                    <p className="text-sm text-white/60">60 min</p>
-                  </div>
-                  <p className="text-lg font-semibold text-amber-300">
-                    {profile.pricePerSession / 100} €
-                  </p>
-                </div>
-              </button>
-            )}
+            })()}
           </div>
         </div>
       )}
