@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
+import BookingCard from "./bookings/BookingCard"
 
 export default async function DashboardPage() {
   const session = await auth()
@@ -12,12 +13,12 @@ export default async function DashboardPage() {
     include: {
       professionalProfile: {
         include: {
-          bookings: { orderBy: { date: "desc" }, take: 5 },
+          bookings: { include: { client: true, service: true, review: true }, orderBy: { date: "desc" }, take: 5 },
           subscription: true,
         },
       },
       clientBookings: {
-        include: { professional: true },
+        include: { professional: true, service: true, review: true },
         orderBy: { date: "desc" },
         take: 5,
       },
@@ -85,25 +86,12 @@ export default async function DashboardPage() {
               user.professionalProfile.bookings.length > 0 ? (
                 <div className="mt-4 space-y-3">
                   {user.professionalProfile.bookings.map((booking) => (
-                    <div
+                    <BookingCard
                       key={booking.id}
-                      className="rounded-lg border border-white/5 bg-purple-950/40 p-3 text-sm"
-                    >
-                      <p>
-                        <span className="font-medium text-purple-200">
-                          {new Date(booking.date).toLocaleDateString("es-ES")}
-                        </span>{" "}
-                        <span className="text-white/60">
-                          {new Date(booking.date).toLocaleTimeString("es-ES", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </span>
-                      </p>
-                      <p className="mt-1 text-white/50">
-                        Estado: {booking.status}
-                      </p>
-                    </div>
+                      booking={booking as any}
+                      isPro={true}
+                      currentUserId={user.id}
+                    />
                   ))}
                 </div>
               ) : (
@@ -155,17 +143,12 @@ export default async function DashboardPage() {
           {user.clientBookings.length > 0 ? (
             <div className="mt-4 space-y-3">
               {user.clientBookings.map((booking) => (
-                <div
+                <BookingCard
                   key={booking.id}
-                  className="rounded-lg border border-white/5 bg-white/[0.02] p-3 text-sm"
-                >
-                  <p className="font-medium text-purple-200">
-                    {new Date(booking.date).toLocaleDateString("es-ES")}
-                  </p>
-                  <p className="mt-1 text-white/50">
-                    Estado: {booking.status}
-                  </p>
-                </div>
+                  booking={booking as any}
+                  isPro={false}
+                  currentUserId={user.id}
+                />
               ))}
             </div>
           ) : (
@@ -174,10 +157,10 @@ export default async function DashboardPage() {
             </p>
           )}
           <Link
-            href="/explore"
+            href="/dashboard/bookings"
             className="mt-4 inline-block text-sm font-medium text-purple-400 hover:text-purple-300"
           >
-            Explorar profesionales &rarr;
+            Ver todas &rarr;
           </Link>
         </div>
 
