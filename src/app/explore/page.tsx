@@ -1,5 +1,6 @@
 import Link from "next/link"
 import MapComponent from "@/components/MapComponent"
+import { ProfessionalCard } from "@/components/ProfessionalCard"
 import {
   CATEGORIES,
   DEMO_PROFESSIONALS,
@@ -709,67 +710,6 @@ function CategoryView({
         )}
       </SectionCard>
     </div>
-  )
-}
-
-function ProfessionalCard({
-  pro,
-}: {
-  pro: (typeof DEMO_PROFESSIONALS)[0]
-}) {
-  // Los perfiles de demostración no existen en la base de datos: enlazarlos a
-  // /professionals/<id> devuelve un 404. Llevamos al registro, igual que hace
-  // FeaturedCarousel.
-  const href = pro.id.startsWith("demo")
-    ? "/auth/register?role=PROFESSIONAL"
-    : `/professionals/${pro.id}`
-
-  return (
-    <Link href={href} className="block">
-      <GlassCard>
-        <div className="flex items-start gap-3">
-          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-amber-500 text-sm font-bold text-white shadow-lg">
-            {pro.name[0]}
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="truncate font-semibold text-white">{pro.name}</p>
-            <p className="truncate text-sm text-purple-300/80">{pro.title}</p>
-            <StarRating rating={pro.rating} count={pro.reviews} />
-          </div>
-        </div>
-        <p className="mt-3 line-clamp-2 text-sm text-purple-200/70">
-          {pro.bio}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {pro.specialties.slice(0, 3).map((s) => (
-            <span
-              key={s}
-              className="rounded-full bg-purple-500/15 px-2.5 py-0.5 text-xs text-purple-300"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
-        <div className="mt-4 flex items-center justify-between">
-          <span className="text-sm text-white/70">{pro.city}</span>
-          <div className="flex items-center gap-3">
-            {pro.pricePerSession > 0 && (
-              <span className="font-semibold text-amber-300">
-                {pro.pricePerSession / 100} &euro;
-              </span>
-            )}
-            <a
-              href={`/professionals/${pro.id}/book`}
-              onClick={(e) => e.stopPropagation()}
-              className="rounded-lg bg-purple-600/80 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-purple-500"
-            >
-              Reservar
-            </a>
-          </div>
-        </div>
-        <p className="mt-2 text-center text-[10px] text-white/30">El pago se realiza directamente con el profesional</p>
-      </GlassCard>
-    </Link>
   )
 }
 
