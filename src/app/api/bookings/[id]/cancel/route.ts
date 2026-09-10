@@ -9,7 +9,7 @@ const CANCEL_REASONS = [
   "ya_no_me_interesa",
   "encontré_algo_mejor",
   "precio",
-  "malacomunicación",
+  "mala_comunicación",
   "otro",
 ]
 

@@ -146,10 +146,10 @@ export default function BookingCard({ booking, isPro, currentUserId }: BookingCa
         )}
 
         {status === "CONFIRMED" && (
-          <div className="mt-4 border-t border-white/10 pt-4 flex items-center gap-4">
+          <div className="mt-4 border-t border-white/10 pt-4 flex items-center gap-4 flex-wrap">
             <button
               onClick={() => setShowCancelModal(true)}
-              className="text-sm font-medium text-red-400/70 hover:text-red-300"
+              className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-300 transition hover:bg-red-500/20 hover:text-red-200"
             >
               Cancelar reserva
             </button>
@@ -157,7 +157,7 @@ export default function BookingCard({ booking, isPro, currentUserId }: BookingCa
             {!isPro && !booking.review && (
               <a
                 href={`/bookings/${booking.id}/review`}
-                className="text-sm font-medium text-purple-400 hover:text-purple-300"
+                className="rounded-xl border border-purple-500/30 bg-purple-500/10 px-4 py-2 text-sm font-medium text-purple-300 transition hover:bg-purple-500/20 hover:text-purple-200"
               >
                 Dejar valoración
               </a>
