@@ -129,7 +129,7 @@ export function BookingForm({
         return
       }
 
-      window.location.href = data.url
+      window.location.href = data.redirectUrl || "/dashboard/bookings"
     } catch (e) {
       console.error("Booking error:", e)
       setError("Error de conexión. Inténtalo de nuevo.")
