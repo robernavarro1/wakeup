@@ -42,11 +42,7 @@ const DAYS = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "
 
 const planIcons: Record<string, string> = { SEMILLA: "🌱", ARBOL: "🌳", BOSQUE: "🌲" }
 
-/**
- * Comisión que retiene Wakeup por reserva. Se muestra al profesional junto al
- * precio para que sepa desde el principio cuánto va a cobrar realmente.
- */
-const COMISION_WAKEUP = 10
+
 
 export function ProfileForm({
   profile,
@@ -101,12 +97,6 @@ export function ProfileForm({
   const trialActive = subData?.trialActive
   const trialUsed = subData?.trialUsed
   const isSubActive = subData?.isActive
-
-  const precioNum = parseFloat(pricePerSession)
-  const netoPorSesion =
-    Number.isFinite(precioNum) && precioNum > 0
-      ? precioNum * (1 - COMISION_WAKEUP / 100)
-      : null
 
   const maxCategories = currentPlan?.maxCategories ?? 0
   const maxDisciplines = currentPlan?.maxDisciplines ?? 0
@@ -277,22 +267,6 @@ export function ProfileForm({
                 className="mt-1.5 block w-full rounded-xl border border-purple-500/20 bg-purple-950/60 px-4 py-3 text-sm text-white placeholder-purple-300/30 focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
                 placeholder="50"
               />
-              {netoPorSesion !== null && (
-                <p className="mt-2 text-xs text-white/70">
-                  El cliente paga{" "}
-                  <span className="font-semibold text-white">
-                    {Number(pricePerSession).toFixed(2)} €
-                  </span>{" "}
-                  y tú recibes{" "}
-                  <span className="font-semibold text-emerald-400">
-                    {netoPorSesion.toFixed(2)} €
-                  </span>
-                  <span className="text-white/50">
-                    {" "}
-                    (Wakeup retiene un {COMISION_WAKEUP} % por reserva)
-                  </span>
-                </p>
-              )}
             </div>
           </div>
         </div>
@@ -346,14 +320,6 @@ export function ProfileForm({
         currentCount={services.filter(s => s.name).length}
       >
         <div className="space-y-4">
-          <div className="rounded-xl border border-amber-500/20 bg-amber-950/30 p-4 text-xs text-amber-200/80">
-            <span className="font-semibold text-amber-300">Cómo funciona el cobro:</span>{" "}
-            el cliente paga el precio que indiques y Wakeup retiene un{" "}
-            <span className="font-semibold text-amber-300">{COMISION_WAKEUP} %</span> en
-            concepto de comisión por reserva. El resto se transfiere a tu cuenta
-            de Stripe. Debajo de cada precio verás el importe exacto que recibirás.
-          </div>
-
           {services.map((service, i) => (
             <div key={i} className="rounded-xl border border-white/5 bg-purple-950/40 p-5">
               <div className="grid gap-4 sm:grid-cols-4">
@@ -375,11 +341,6 @@ export function ProfileForm({
                 <div>
                   <label className="block text-xs font-medium text-white/60">Precio (€)</label>
                   <input type="number" value={service.price ? String(service.price / 100) : ""} onChange={(e) => { const s = [...services]; s[i].price = Math.round(parseFloat(e.target.value || "0") * 100); setServices(s) }} disabled={!isSubActive} className="mt-1 block w-full rounded-lg border border-purple-500/20 bg-purple-950/70 px-3 py-2 text-sm text-white focus:border-purple-400/50 focus:outline-none focus:ring-2 focus:ring-purple-500/15 disabled:opacity-40" />
-                  {service.price > 0 && (
-                    <p className="mt-1 text-xs text-emerald-400/70">
-                      Recibes {(service.price * (1 - COMISION_WAKEUP / 100) / 100).toFixed(2)} €
-                    </p>
-                  )}
                 </div>
               </div>
               {services.length > 1 && (
@@ -397,7 +358,7 @@ export function ProfileForm({
                       disabled={!isSubActive}
                       className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
                         service.mode === "IN_PERSON"
-                          ? "bg-emerald-600/80 text-white"
+                          ? "bg-gradient-to-r from-purple-600/80 to-amber-600/80 text-white"
                           : "border border-white/10 text-white/60 hover:bg-white/5"
                       } disabled:opacity-40`}
                     >
@@ -409,7 +370,7 @@ export function ProfileForm({
                       disabled={!isSubActive}
                       className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium transition ${
                         service.mode === "VIRTUAL"
-                          ? "bg-blue-600/80 text-white"
+                          ? "bg-gradient-to-r from-purple-600/80 to-amber-600/80 text-white"
                           : "border border-white/10 text-white/60 hover:bg-white/5"
                       } disabled:opacity-40`}
                     >
@@ -465,7 +426,7 @@ export function ProfileForm({
                     disabled={!isSubActive}
                     className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                       service.active
-                        ? "bg-emerald-600/80 text-white"
+                        ? "bg-gradient-to-r from-purple-600/80 to-amber-600/80 text-white"
                         : "border border-white/10 text-white/50 hover:bg-white/5"
                     } disabled:opacity-40`}
                   >
@@ -487,9 +448,9 @@ export function ProfileForm({
       </PlanControlledSection>
 
       {/* Disponibilidad */}
-      <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950/50 to-purple-950/60 p-6 shadow-xl shadow-emerald-950/20">
+      <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl shadow-purple-950/40">
         <div className="mb-6 flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500/30 to-teal-500/20 text-xl shadow-lg shadow-emerald-500/20">📅</span>
+          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-amber-500/20 text-xl shadow-lg shadow-purple-500/20">📅</span>
           <div>
             <h2 className="text-lg font-semibold text-white">Disponibilidad</h2>
             <p className="text-sm text-white/60">Define tu horario semanal</p>
@@ -524,9 +485,9 @@ export function ProfileForm({
       </div>
 
       {/* Stripe */}
-      <div className="rounded-2xl border border-sky-500/20 bg-gradient-to-br from-sky-950/50 to-purple-950/60 p-6 shadow-xl shadow-sky-950/20">
+      <div className="rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-950/80 to-indigo-950/60 p-6 shadow-xl shadow-purple-950/40">
         <div className="mb-6 flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500/30 to-blue-500/20 text-xl shadow-lg shadow-sky-500/20">💳</span>
+          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-amber-500/20 text-xl shadow-lg shadow-purple-500/20">💳</span>
           <div>
             <h2 className="text-lg font-semibold text-white">Cobrar con Stripe</h2>
             <p className="text-sm text-white/60">Recibe los pagos directamente en tu banco</p>
