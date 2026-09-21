@@ -70,25 +70,14 @@ export interface DemoActivity {
   category: string
 }
 
+import { DAILY_PHRASES } from "./daily-phrases"
+
 export function getDailyPhrase(): { text: string; author: string } {
-  const phrases = [
-    { text: "El despertar no es cambiar quién eres, sino recordar quién eres realmente.", author: "Siddhartha Gautama" },
-    { text: "La paz viene de dentro. No la busques fuera.", author: "Buda" },
-    { text: "El universo no es más que un gran eco. Todo lo que das, vuelve.", author: "Proverbio espiritual" },
-    { text: "No hay camino hacia la paz, la paz es el camino.", author: "Mahatma Gandhi" },
-    { text: "Conócete a ti mismo y conocerás el universo y los dioses.", author: "Sócrates" },
-    { text: "Lo único que te impide obtener lo que deseas es la historia que te cuentas a ti mismo.", author: "Don Miguel Ruiz" },
-    { text: "La conciencia es el campo donde todo ocurre. Eres ese campo.", author: "Eckhart Tolle" },
-    { text: "Cuando te das cuenta de que nada te falta, el mundo entero te pertenece.", author: "Lao Tse" },
-    { text: "No eres una gota en el océano. Eres el océano entero en una gota.", author: "Rumi" },
-    { text: "La danza entre la oscuridad y la luz es lo que te hace despertar.", author: "Deepak Chopra" },
-    { text: "El corazón es el faro del alma. Síguelo siempre.", author: "Proverbio sufí" },
-    { text: "Tu vibración atrae tu realidad. Elévate.", author: "Anónimo" },
-    { text: "No se trata de encontrar la salida, sino de ver que nunca estuviste encerrado.", author: "Mooji" },
-    { text: "Cada persona que cruza tu camino tiene una lección que enseñarte. El despertar está en aprenderla.", author: "Osho" },
-  ]
-  const day = new Date().getDate()
-  return phrases[day % phrases.length]
+  const now = new Date()
+  const start = new Date(now.getFullYear(), 0, 0)
+  const diff = now.getTime() - start.getTime()
+  const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24))
+  return DAILY_PHRASES[dayOfYear % DAILY_PHRASES.length]
 }
 
 export const DEMO_PROFESSIONALS: DemoProfessional[] = [
