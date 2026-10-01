@@ -1,12 +1,14 @@
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import Script from "next/script"
+import { Suspense } from "react"
 import "./globals.css"
 import { AuthProvider } from "@/providers/AuthProvider"
 import { Navbar } from "@/components/Navbar"
 import { AIAdvisorWrapper } from "@/components/AIAdvisorWrapper"
 import { CookieConsentBanner } from "@/components/CookieConsentBanner"
 import { ScrollToTop } from "@/components/ScrollToTop"
+import { ConversionTracker } from "@/components/ConversionTracker"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,8 +61,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // Medición de Google Analytics. Se puede sobreescribir con NEXT_PUBLIC_GA_ID.
+  // Medición de Google Analytics + Google Ads. Se puede sobreescribir con env vars.
   const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-T3WFDPN6SN"
+  const gAdsId = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID || "AW-18445097426"
 
   return (
     <html lang="es" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
@@ -77,6 +80,7 @@ export default function RootLayout({
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 gtag('config', '${gaId}');
+                ${gAdsId ? `gtag('config', '${gAdsId}');` : ""}
               `}
             </Script>
           </>
@@ -84,6 +88,9 @@ export default function RootLayout({
       </head>
       <body className="flex min-h-full flex-col">
         <AuthProvider>
+          <Suspense fallback={null}>
+            <ConversionTracker />
+          </Suspense>
           <Navbar />
           <main className="flex-1">{children}</main>
           <AIAdvisorWrapper />
