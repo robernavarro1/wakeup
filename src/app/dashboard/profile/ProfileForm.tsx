@@ -97,6 +97,8 @@ export function ProfileForm({
   const trialActive = subData?.trialActive
   const trialUsed = subData?.trialUsed
   const isSubActive = subData?.isActive
+  const hasCard = subData?.hasCard
+  const needsCard = subData?.needsCard
 
   const maxCategories = currentPlan?.maxCategories ?? 0
   const maxDisciplines = currentPlan?.maxDisciplines ?? 0
@@ -282,6 +284,8 @@ export function ProfileForm({
         trialUsed={trialUsed}
         trialEnds={trialEnds}
         subLoading={subLoading}
+        hasCard={hasCard}
+        needsCard={needsCard}
         onPay={payPlan}
         onSelect={selectPlan}
         onCancel={cancelSub}
@@ -534,8 +538,8 @@ function PlanControlledSection({ title, icon, gradient, unlocked, planName, limi
   )
 }
 
-function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey, trialActive, trialUsed, trialEnds, subLoading, onPay, onSelect, onCancel, promoCode, setPromoCode, promoStatus, setPromoStatus }: {
-  subFetching: boolean; subData: any; plans: any; currentPlanKey: string | null; trialActive: boolean; trialUsed: boolean; trialEnds: Date | null; subLoading: string | null; onPay: (plan: string) => Promise<void>; onSelect: (plan: string) => Promise<void>; onCancel: () => Promise<void>; promoCode: string; setPromoCode: (v: string) => void; promoStatus: "idle" | "checking" | "valid" | "invalid"; setPromoStatus: (v: "idle" | "checking" | "valid" | "invalid") => void
+function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey, trialActive, trialUsed, trialEnds, subLoading, hasCard, needsCard, onPay, onSelect, onCancel, promoCode, setPromoCode, promoStatus, setPromoStatus }: {
+  subFetching: boolean; subData: any; plans: any; currentPlanKey: string | null; trialActive: boolean; trialUsed: boolean; trialEnds: Date | null; subLoading: string | null; hasCard: boolean; needsCard: boolean; onPay: (plan: string) => Promise<void>; onSelect: (plan: string) => Promise<void>; onCancel: () => Promise<void>; promoCode: string; setPromoCode: (v: string) => void; promoStatus: "idle" | "checking" | "valid" | "invalid"; setPromoStatus: (v: "idle" | "checking" | "valid" | "invalid") => void
 }) {
   if (subFetching) return (
     <div className="rounded-2xl border border-purple-500/20 bg-purple-950/50 p-6">
@@ -549,13 +553,25 @@ function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey,
         <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500/30 to-amber-500/20 text-xl shadow-lg shadow-purple-500/20">🌿</span>
         <div>
           <h2 className="text-lg font-semibold text-white">Tu plan</h2>
-          <p className="text-sm text-white/60">Elige el plan que desbloquea todas las funciones</p>
+          <p className="text-sm text-white/60">Tarjeta obligatoria — sin comisiones en reservas</p>
         </div>
       </div>
 
-      {currentPlanKey && trialActive && (
+      {needsCard && currentPlanKey && (
+        <div className="mb-4 rounded-xl border border-amber-500/30 bg-amber-950/60 px-4 py-3 text-sm text-amber-300">
+          ⚠️ Tu plan <strong>{currentPlanKey}</strong> está pendiente de activación. Introduce tu tarjeta para completar la suscripción.
+        </div>
+      )}
+
+      {currentPlanKey && trialActive && hasCard && (
         <div className="mb-4 rounded-xl border border-emerald-500/20 bg-emerald-950/60 px-4 py-3 text-sm text-emerald-300">
           {planIcons[currentPlanKey] || "🌱"} Plan {currentPlanKey} — periodo de prueba hasta el {trialEnds?.toLocaleDateString("es-ES")}
+        </div>
+      )}
+
+      {currentPlanKey && !needsCard && subData?.subscription?.status === "ACTIVE" && (
+        <div className="mb-4 rounded-xl border border-emerald-500/20 bg-emerald-950/60 px-4 py-3 text-sm text-emerald-300">
+          {planIcons[currentPlanKey] || "🌿"} Plan {currentPlanKey} — activo ✓
         </div>
       )}
 
@@ -608,6 +624,7 @@ function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey,
             <span>✕</span> Código no válido o ya utilizado
           </p>
         )}
+        <p className="mt-2 text-xs text-white/40">🔒 La tarjeta es obligatoria. No se cobra nada durante la prueba gratuita.</p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-3">
@@ -645,14 +662,20 @@ function SubscriptionSectionBlock({ subFetching, subData, plans, currentPlanKey,
                 </button>
               )}
 
+              {isCurrent && needsCard && (
+                <button onClick={() => onPay(key)} disabled={subLoading === key} className="mt-2 w-full rounded-lg bg-gradient-to-r from-amber-600 to-red-600 py-2.5 text-xs font-semibold text-white transition hover:opacity-90 disabled:opacity-50">
+                  {subLoading === key ? "..." : "💳 Activar — introducir tarjeta"}
+                </button>
+              )}
+
               {!isCurrent && (
                 <div className="mt-5 flex flex-col gap-2">
                   <button onClick={() => onPay(key)} disabled={subLoading === key} className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-amber-600 py-2.5 text-xs font-semibold text-white transition hover:opacity-90 disabled:opacity-50">
-                    {subLoading === key ? "..." : "Pagar ahora"}
+                    {subLoading === key ? "..." : "💳 Suscribirse — tarjeta obligatoria"}
                   </button>
                   {!trialUsed && (
                     <button onClick={() => onSelect(key)} disabled={subLoading === key} className="w-full rounded-lg border border-purple-500/30 py-2 text-xs text-purple-300/70 transition hover:bg-purple-500/10 disabled:opacity-50">
-                      Probar {plan.trialDays} días gratis
+                      Probar {plan.trialDays} días gratis (con tarjeta)
                     </button>
                   )}
                 </div>

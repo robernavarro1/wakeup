@@ -6,10 +6,6 @@ import { PLANS, AD_PLANS } from "@/lib/plans"
 
 /**
  * Devuelve la tarifa mensual del plan en Stripe, reutilizándola si ya existe.
- *
- * Antes se creaba un producto y una tarifa nuevos en cada intento de
- * suscripción, lo que llenaba la cuenta de Stripe de duplicados y hacía
- * ilegible el panel de ingresos.
  */
 async function getOrCreatePrice(
   plan: string,
@@ -39,6 +35,151 @@ async function getOrCreatePrice(
   })
 }
 
+/**
+ * Crea (o reutiliza) el cliente de Stripe y registra un estado PENDING_CARD
+ * en la base de datos local. La suscripción solo se activa cuando el webhook
+ * confirma que la tarjeta ha sido adjuntada correctamente.
+ *
+ * Modelo seguido por Netflix, Spotify, Calendly, Mindvalley, etc:
+ * la tarjeta es obligatoria desde el primer momento, incluso con prueba
+ * gratis o código promocional.
+ */
+async function startSubscriptionFlow(
+  userId: string,
+  userEmail: string | null | undefined,
+  userName: string | null | undefined,
+  plan: string,
+  promoRecord: { code: string; freeMonths: number } | null
+) {
+  const planConfig = PLANS[plan as keyof typeof PLANS]
+  const trialDays = promoRecord ? promoRecord.freeMonths * 30 : planConfig.trialDays
+
+  const profile = await prisma.professionalProfile.findUnique({
+    where: { userId },
+  })
+  if (!profile) {
+    return { error: "Crea tu perfil profesional primero", status: 400 }
+  }
+
+  // Crear cliente de Stripe si no existe
+  let customerId = profile.stripeCustomerId
+  if (!customerId) {
+    const customer = await stripe.customers.create({
+      email: userEmail || undefined,
+      name: userName || undefined,
+      metadata: { userId },
+    })
+    customerId = customer.id
+    await prisma.professionalProfile.update({
+      where: { userId },
+      data: { stripeCustomerId: customerId },
+    })
+  }
+
+  // Comprobar si ya tiene una suscripción activa con tarjeta
+  const existingSub = await prisma.professionalSubscription.findUnique({
+    where: { profileId: profile.id },
+  })
+
+  if (
+    existingSub &&
+    existingSub.hasCard &&
+    (existingSub.status === "ACTIVE" || existingSub.status === "TRIALING")
+  ) {
+    if (existingSub.plan === plan) {
+      return { error: "Ya tienes este plan activo", status: 400 }
+    }
+    return {
+      error: "Ya tienes una suscripción activa. Cancela la actual primero.",
+      status: 400,
+    }
+  }
+
+  // Crear suscripción en Stripe (modo subscription — Stripe exige tarjeta)
+  const price = await getOrCreatePrice(plan, planConfig)
+
+  const stripeSub = await stripe.subscriptions.create({
+    customer: customerId,
+    items: [{ price: price.id }],
+    trial_period_days: trialDays,
+    payment_settings: {
+      save_default_payment_method: "on_subscription",
+    },
+    metadata: {
+      userId,
+      profileId: profile.id,
+      plan,
+      promoCode: promoRecord?.code || "",
+    },
+  })
+
+  // Escribir la suscripción local en estado PENDING_CARD.
+  // NO se activa hasta que el webhook confirme la tarjeta.
+  await prisma.professionalSubscription.upsert({
+    where: { profileId: profile.id },
+    update: {
+      plan,
+      maxCategories: planConfig.maxCategories,
+      maxDisciplines: planConfig.maxDisciplines,
+      status: "PENDING_CARD",
+      stripeSubscriptionId: stripeSub.id,
+      hasCard: false,
+      paymentMethodId: null,
+      trialEndsAt: null,
+    },
+    create: {
+      profileId: profile.id,
+      plan,
+      maxCategories: planConfig.maxCategories,
+      maxDisciplines: planConfig.maxDisciplines,
+      status: "PENDING_CARD",
+      stripeSubscriptionId: stripeSub.id,
+      hasCard: false,
+      paymentMethodId: null,
+    },
+  })
+
+  // Crear sesión de Stripe Checkout en modo "subscription".
+  // Stripe exige introducir una tarjeta válida para completar el checkout,
+  // incluso cuando hay un periodo de prueba gratuito.
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wakeup-app.com"
+
+  const checkoutSession = await stripe.checkout.sessions.create({
+    customer: customerId,
+    mode: "subscription",
+    payment_method_types: ["card"],
+    line_items: [{ price: price.id, quantity: 1 }],
+    subscription_data: {
+      trial_period_days: trialDays,
+      metadata: {
+        userId,
+        profileId: profile.id,
+        plan,
+        promoCode: promoRecord?.code || "",
+      },
+    },
+    success_url: `${baseUrl}/dashboard/profile?subscription=success`,
+    cancel_url: `${baseUrl}/dashboard/profile?subscription=cancelled`,
+    metadata: {
+      userId,
+      profileId: profile.id,
+      plan,
+      type: "subscription",
+      promoCode: promoRecord?.code || "",
+    },
+  })
+
+  return {
+    success: true,
+    url: checkoutSession.url,
+    subscriptionId: stripeSub.id,
+    trialDays,
+    message: promoRecord
+      ? `${promoRecord.freeMonths} meses gratis con código ${promoRecord.code} — introduce tu tarjeta para activar`
+      : `${trialDays} días de prueba gratis — introduce tu tarjeta para continuar`,
+  }
+}
+
 export async function GET() {
   const session = await auth()
   if (!session?.user?.id) return NextResponse.json({ error: "No autorizado" }, { status: 401 })
@@ -48,17 +189,44 @@ export async function GET() {
     include: { subscription: true },
   })
 
-  let sub = null, trialActive = false, isActive = false, planInfo = null, trialUsed = false
+  let sub = null
+  let trialActive = false
+  let isActive = false
+  let planInfo = null
+  let trialUsed = false
+  let hasCard = false
+  let needsCard = false
 
   if (profile?.subscription) {
     sub = profile.subscription
-    trialActive = sub.status === "TRIALING" && sub.trialEndsAt ? new Date(sub.trialEndsAt) > new Date() : false
-    isActive = sub.status === "ACTIVE" || trialActive
+    hasCard = sub.hasCard
+
+    trialActive =
+      sub.status === "TRIALING" && sub.trialEndsAt
+        ? new Date(sub.trialEndsAt) > new Date()
+        : false
+
+    // Solo activo si tiene tarjeta Y está en período válido
+    isActive =
+      sub.hasCard &&
+      (sub.status === "ACTIVE" || trialActive)
+
+    needsCard = !sub.hasCard
     planInfo = PLANS[sub.plan as keyof typeof PLANS] || null
     trialUsed = sub.status === "CANCELLED"
   }
 
-  return NextResponse.json({ subscription: sub, trialActive, isActive, trialUsed, planInfo, plans: PLANS, adPlans: AD_PLANS })
+  return NextResponse.json({
+    subscription: sub,
+    trialActive,
+    isActive,
+    trialUsed,
+    hasCard,
+    needsCard,
+    planInfo,
+    plans: PLANS,
+    adPlans: AD_PLANS,
+  })
 }
 
 export async function POST(request: Request) {
@@ -71,17 +239,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Plan no válido" }, { status: 400 })
   }
 
-  const profile = await prisma.professionalProfile.findUnique({
-    where: { userId: session.user.id },
-  })
-
-  if (!profile) return NextResponse.json({ error: "Crea tu perfil profesional primero" }, { status: 400 })
-
-  const planConfig = PLANS[plan as keyof typeof PLANS]
-
-  let trialDays = planConfig.trialDays
   let promoRecord = null
-
   if (promoCode) {
     promoRecord = await prisma.promoCode.findUnique({
       where: { code: promoCode.toUpperCase().trim() },
@@ -95,9 +253,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Código agotado" }, { status: 400 })
     }
 
-    // Un solo uso por usuario. El registro se crea en el webhook, cuando la
-    // suscripción se confirma de verdad, así que un intento abandonado no
-    // consume el código.
     const yaUsado = await prisma.promoCodeUsage.findUnique({
       where: {
         promoCodeId_userId: { promoCodeId: promoRecord.id, userId: session.user.id },
@@ -110,104 +265,20 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
-
-    trialDays = promoRecord.freeMonths * 30
   }
 
   try {
-    let customerId = profile.stripeCustomerId
-
-    if (!customerId) {
-      const customer = await stripe.customers.create({
-        email: session.user.email || undefined,
-        name: session.user.name || undefined,
-        metadata: { userId: session.user.id },
-      })
-      customerId = customer.id
-
-      await prisma.professionalProfile.update({
-        where: { userId: session.user.id },
-        data: { stripeCustomerId: customerId },
-      })
+    const result = await startSubscriptionFlow(
+      session.user.id,
+      session.user.email,
+      session.user.name,
+      plan,
+      promoRecord
+    )
+    if (result.error) {
+      return NextResponse.json({ error: result.error }, { status: result.status || 500 })
     }
-
-    const existingSub = await prisma.professionalSubscription.findUnique({
-      where: { profileId: profile.id },
-    })
-
-    if (existingSub && existingSub.status === "ACTIVE" && existingSub.plan === plan) {
-      return NextResponse.json({ error: "Ya tienes este plan activo" }, { status: 400 })
-    }
-
-    if (existingSub) {
-      await prisma.professionalSubscription.delete({ where: { profileId: profile.id } })
-    }
-
-    const price = await getOrCreatePrice(plan, planConfig)
-
-    const stripeSub = await stripe.subscriptions.create({
-      customer: customerId,
-      items: [{ price: price.id }],
-      trial_period_days: trialDays,
-      payment_settings: {
-        save_default_payment_method: "on_subscription",
-      },
-      metadata: {
-        userId: session.user.id,
-        profileId: profile.id,
-        plan,
-        promoCode: promoRecord?.code || "",
-      },
-    })
-
-    await prisma.professionalSubscription.upsert({
-      where: { profileId: profile.id },
-      update: {
-        plan,
-        maxCategories: planConfig.maxCategories,
-        maxDisciplines: planConfig.maxDisciplines,
-        status: "TRIALING",
-        trialEndsAt: new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000),
-        stripeSubscriptionId: stripeSub.id,
-      },
-      create: {
-        profileId: profile.id,
-        plan,
-        maxCategories: planConfig.maxCategories,
-        maxDisciplines: planConfig.maxDisciplines,
-        status: "TRIALING",
-        trialEndsAt: new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000),
-        stripeSubscriptionId: stripeSub.id,
-      },
-    })
-
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wakeup-app.com"
-
-    const checkoutSession = await stripe.checkout.sessions.create({
-      customer: customerId,
-      mode: "setup",
-      payment_method_types: ["card"],
-      success_url: `${baseUrl}/dashboard/profile?subscription=success`,
-      cancel_url: `${baseUrl}/dashboard/profile?subscription=cancelled`,
-      metadata: {
-        userId: session.user.id,
-        profileId: profile.id,
-        plan,
-        type: "subscription",
-        stripeSubscriptionId: stripeSub.id,
-        promoCode: promoRecord?.code || "",
-      },
-    })
-
-    return NextResponse.json({
-      success: true,
-      url: checkoutSession.url,
-      subscriptionId: stripeSub.id,
-      trialDays,
-      message: promoRecord
-        ? `${promoRecord.freeMonths} meses gratis con código ${promoRecord.code}`
-        : `${trialDays} días de prueba gratis — registra tu tarjeta para continuar`,
-    })
+    return NextResponse.json(result)
   } catch (error) {
     console.error("Subscription error:", error)
     const msg = error instanceof Error ? error.message : "Error desconocido"
@@ -225,17 +296,7 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: "Plan no válido" }, { status: 400 })
   }
 
-  const profile = await prisma.professionalProfile.findUnique({
-    where: { userId: session.user.id },
-  })
-
-  if (!profile) return NextResponse.json({ error: "Crea tu perfil profesional primero" }, { status: 400 })
-
-  const planConfig = PLANS[plan as keyof typeof PLANS]
-
-  let trialDays = planConfig.trialDays
   let promoRecord = null
-
   if (promoCode) {
     promoRecord = await prisma.promoCode.findUnique({
       where: { code: promoCode.toUpperCase().trim() },
@@ -261,102 +322,20 @@ export async function PUT(request: Request) {
         { status: 400 }
       )
     }
-
-    trialDays = promoRecord.freeMonths * 30
   }
 
   try {
-    let customerId = profile.stripeCustomerId
-
-    if (!customerId) {
-      const customer = await stripe.customers.create({
-        email: session.user.email || undefined,
-        name: session.user.name || undefined,
-        metadata: { userId: session.user.id },
-      })
-      customerId = customer.id
-
-      await prisma.professionalProfile.update({
-        where: { userId: session.user.id },
-        data: { stripeCustomerId: customerId },
-      })
+    const result = await startSubscriptionFlow(
+      session.user.id,
+      session.user.email,
+      session.user.name,
+      plan,
+      promoRecord
+    )
+    if (result.error) {
+      return NextResponse.json({ error: result.error }, { status: result.status || 500 })
     }
-
-    const existingSub = await prisma.professionalSubscription.findUnique({
-      where: { profileId: profile.id },
-    })
-
-    if (existingSub && (existingSub.status === "ACTIVE" || existingSub.status === "TRIALING")) {
-      return NextResponse.json({ error: "Ya tienes una suscripción activa. Cancela la actual primero." }, { status: 400 })
-    }
-
-    if (existingSub) {
-      await prisma.professionalSubscription.delete({ where: { profileId: profile.id } })
-    }
-
-    const price = await getOrCreatePrice(plan, planConfig)
-
-    const stripeSub = await stripe.subscriptions.create({
-      customer: customerId,
-      items: [{ price: price.id }],
-      trial_period_days: trialDays,
-      payment_settings: {
-        save_default_payment_method: "on_subscription",
-      },
-      metadata: {
-        userId: session.user.id,
-        profileId: profile.id,
-        plan,
-        promoCode: promoRecord?.code || "",
-      },
-    })
-
-    await prisma.professionalSubscription.upsert({
-      where: { profileId: profile.id },
-      update: {
-        plan,
-        maxCategories: planConfig.maxCategories,
-        maxDisciplines: planConfig.maxDisciplines,
-        status: "TRIALING",
-        trialEndsAt: new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000),
-        stripeSubscriptionId: stripeSub.id,
-      },
-      create: {
-        profileId: profile.id,
-        plan,
-        maxCategories: planConfig.maxCategories,
-        maxDisciplines: planConfig.maxDisciplines,
-        status: "TRIALING",
-        trialEndsAt: new Date(Date.now() + trialDays * 24 * 60 * 60 * 1000),
-        stripeSubscriptionId: stripeSub.id,
-      },
-    })
-
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wakeup-app.com"
-
-    const checkoutSession = await stripe.checkout.sessions.create({
-      customer: customerId,
-      mode: "setup",
-      payment_method_types: ["card"],
-      success_url: `${baseUrl}/dashboard/profile?subscription=success`,
-      cancel_url: `${baseUrl}/dashboard/profile?subscription=cancelled`,
-      metadata: {
-        userId: session.user.id,
-        profileId: profile.id,
-        plan,
-        type: "subscription",
-        stripeSubscriptionId: stripeSub.id,
-        promoCode: promoRecord?.code || "",
-      },
-    })
-
-    return NextResponse.json({
-      success: true,
-      url: checkoutSession.url,
-      message: promoRecord
-        ? `${promoRecord.freeMonths} meses gratis con código ${promoRecord.code} — registra tu tarjeta`
-        : `${trialDays} días de prueba gratis — registra tu tarjeta para continuar después`,
-    })
+    return NextResponse.json(result)
   } catch (error) {
     console.error("Subscription PUT error:", error)
     const msg = error instanceof Error ? error.message : "Error desconocido"
@@ -383,7 +362,7 @@ export async function DELETE() {
     if (sub.status === "CANCELLED") return NextResponse.json({ error: "Ya está cancelada" }, { status: 400 })
 
     if (sub.stripeSubscriptionId) {
-      await stripe.subscriptions.cancel(sub.stripeSubscriptionId, { prorate: false })
+      await stripe.subscriptions.cancel(sub.stripeSubscriptionId, { prorate: false }).catch(() => {})
     }
 
     await prisma.professionalSubscription.update({

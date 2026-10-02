@@ -2124,6 +2124,8 @@ export const ProfessionalSubscriptionScalarFieldEnum = {
   maxCategories: 'maxCategories',
   maxDisciplines: 'maxDisciplines',
   stripeSubscriptionId: 'stripeSubscriptionId',
+  paymentMethodId: 'paymentMethodId',
+  hasCard: 'hasCard',
   status: 'status',
   trialEndsAt: 'trialEndsAt',
   currentPeriodStart: 'currentPeriodStart',

@@ -44,56 +44,73 @@ export async function POST(request: Request) {
             const plan = (session.metadata?.plan as string) || "SEMILLA"
             const { PLANS } = await import("@/lib/plans")
             const planConfig = PLANS[plan as keyof typeof PLANS] || PLANS.SEMILLA
-            const stripeSubId = session.metadata?.stripeSubscriptionId as string
+            const stripeSubId = session.subscription as string || (session.metadata?.stripeSubscriptionId as string)
 
+            // Recuperar la suscripción de Stripe para verificar la tarjeta
+            let hasCard = false
             let paymentMethodId: string | null = null
-            try {
-              const setupIntentId = session.setup_intent as string | null
-              if (setupIntentId) {
-                const setupIntent = await stripe.setupIntents.retrieve(setupIntentId)
-                paymentMethodId = (setupIntent.payment_method as string) || null
-              }
-
-              if (paymentMethodId && session.customer) {
-                const customerId = session.customer as string
-
-                await stripe.paymentMethods
-                  .attach(paymentMethodId, { customer: customerId })
-                  .catch(() => {})
-
-                await stripe.customers.update(customerId, {
-                  invoice_settings: { default_payment_method: paymentMethodId },
-                })
-
-                if (stripeSubId) {
-                  await stripe.subscriptions.update(stripeSubId, {
-                    default_payment_method: paymentMethodId,
-                  })
-                }
-              }
-            } catch (e) {
-              console.error("No se pudo asignar la tarjeta a la suscripción:", e)
-            }
-
-            let subStatus = "ACTIVE"
+            let subStatus = "PENDING_CARD"
             let trialEndsAt: Date | null = null
+
             if (stripeSubId) {
               try {
                 const stripeSub = await stripe.subscriptions.retrieve(stripeSubId)
-                if (stripeSub.status === "trialing") subStatus = "TRIALING"
+
+                // Obtener el método de pago por defecto de la suscripción
+                const defaultPm = stripeSub.default_payment_method
+                if (typeof defaultPm === "string") {
+                  paymentMethodId = defaultPm
+                  hasCard = true
+                } else if (defaultPm && defaultPm.id) {
+                  paymentMethodId = defaultPm.id
+                  hasCard = true
+                }
+
+                // También comprobar el invoice_settings del cliente
+                if (!hasCard && session.customer) {
+                  try {
+                    const customer = await stripe.customers.retrieve(session.customer as string)
+                    if (customer && !("deleted" in customer)) {
+                      const custDefaultPm = customer.invoice_settings?.default_payment_method
+                      if (typeof custDefaultPm === "string") {
+                        paymentMethodId = custDefaultPm
+                        hasCard = true
+                      } else if (custDefaultPm && custDefaultPm.id) {
+                        paymentMethodId = custDefaultPm.id
+                        hasCard = true
+                      }
+                    }
+                  } catch {}
+                }
+
+                // Determinar estado
+                if (hasCard) {
+                  if (stripeSub.status === "trialing") subStatus = "TRIALING"
+                  else if (stripeSub.status === "active") subStatus = "ACTIVE"
+                  else subStatus = "PENDING_CARD"
+                } else {
+                  subStatus = "PENDING_CARD"
+                }
+
                 if (stripeSub.trial_end) {
                   trialEndsAt = new Date(stripeSub.trial_end * 1000)
                 }
-              } catch {}
+              } catch (e) {
+                console.error("Error al recuperar suscripción de Stripe:", e)
+              }
             }
 
+            // Solo activar si hay tarjeta. Si no, mantener PENDING_CARD.
             await prisma.professionalSubscription.upsert({
               where: { profileId: profile.id },
               update: {
-                status: subStatus,
+                status: hasCard ? subStatus : "PENDING_CARD",
                 plan,
                 maxCategories: planConfig.maxCategories,
                 maxDisciplines: planConfig.maxDisciplines,
+                hasCard,
+                paymentMethodId,
+                stripeSubscriptionId: stripeSubId || null,
                 ...(trialEndsAt ? { trialEndsAt } : {}),
               },
               create: {
@@ -101,8 +118,10 @@ export async function POST(request: Request) {
                 plan,
                 maxCategories: planConfig.maxCategories,
                 maxDisciplines: planConfig.maxDisciplines,
-                status: subStatus,
+                status: hasCard ? subStatus : "PENDING_CARD",
                 stripeSubscriptionId: stripeSubId || null,
+                hasCard,
+                paymentMethodId,
                 ...(trialEndsAt ? { trialEndsAt } : {}),
               },
             })
@@ -215,7 +234,7 @@ export async function POST(request: Request) {
           if (existing) {
             await prisma.professionalSubscription.update({
               where: { id: existing.id },
-              data: { status: "ACTIVE" },
+              data: { status: "ACTIVE", hasCard: true },
             })
           }
         }
