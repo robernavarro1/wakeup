@@ -514,6 +514,31 @@ function AllView({ allPros }: { allPros: typeof DEMO_PROFESSIONALS }) {
       <div className="relative overflow-hidden rounded-2xl border border-purple-500/30 bg-gradient-to-r from-purple-900/80 via-purple-800/60 to-amber-900/50 p-6 sm:p-8 shadow-xl shadow-purple-500/10">
         <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-amber-500/10 blur-3xl" />
         <div className="absolute -left-10 -bottom-10 h-32 w-32 rounded-full bg-purple-500/10 blur-3xl" />
+        <style>{`
+          .banner-btn-primary {
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #f59e0b);
+            border: 1px solid rgba(168,85,247,0.4);
+            box-shadow: 0 4px 14px rgba(124,58,237,0.35);
+            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+          }
+          .banner-btn-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+            transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+          }
+          .banner-btn-group:hover .banner-btn-primary {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+          }
+          .banner-btn-group .banner-btn-secondary:hover {
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #f59e0b);
+            border-color: rgba(168,85,247,0.4);
+            box-shadow: 0 0 30px rgba(124,58,237,0.45), 0 0 60px rgba(168,85,247,0.15);
+            transform: scale(1.05);
+          }
+        `}</style>
         <div className="relative">
           <p className="text-xs font-semibold uppercase tracking-widest text-amber-400/80 mb-2">✦ Tu primera reserva con 20% de descuento</p>
           <h2 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
@@ -522,17 +547,17 @@ function AllView({ allPros }: { allPros: typeof DEMO_PROFESSIONALS }) {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-amber-300">Reserva al instante, sin comisiones.</span>
           </h2>
           <p className="mt-3 text-sm text-white/70 max-w-lg">Encuentra profesionales holísticos cerca de ti o en línea. Pago directo al profesional. Sin intermediarios.</p>
-          <div className="mt-5 flex flex-wrap gap-3">
+          <div className="banner-btn-group mt-5 flex flex-wrap gap-3">
             <Link
               href="/auth/register"
-              className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-600 to-amber-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-purple-600/30 transition hover:shadow-purple-600/50 hover:scale-105"
+              className="banner-btn-primary inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white"
             >
               Regístrate gratis
               <span>→</span>
             </Link>
             <Link
               href="/auth/register?role=PROFESSIONAL"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3 text-sm font-semibold text-white/80 transition hover:bg-white/5"
+              className="banner-btn-secondary inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white/80"
             >
               Soy profesional
             </Link>
